@@ -2,6 +2,9 @@
 logs
 *.log
 
+#css
+css/
+
 # Runtime data
 pids
 *.pid
