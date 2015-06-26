@@ -1,3 +1,5 @@
+'use strict';
+
 function Resources() {
 	this.images = [];
 }
@@ -27,3 +29,5 @@ Resources.prototype.loadSprites = function(spriteList) {
 	}.bind(this));
 	return Promise.all(promises);
 };
+
+module.exports = Resources;

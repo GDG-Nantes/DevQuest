@@ -5,6 +5,9 @@ logs
 #css
 css/
 
+#browserify
+bundle.js
+
 # Runtime data
 pids
 *.pid
