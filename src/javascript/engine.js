@@ -1,24 +1,13 @@
 'use strict';
 var Model = require('./model');
-
-// Méthodes internes
-function paint() {
-	
-	// Affichage des décors
-	paintBackground();		
-
-}
-
-function paintBackground(){
-	
-}
+var UI = require('./ui.js');
 
 
 // API
 
 function run(){
 	try{
-
+		UI.paint();
 		window.requestAnimationFrame(run);
 	}catch(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);			
