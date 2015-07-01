@@ -6,7 +6,11 @@ var ui = {
 	canvas : null,
 	context : null,
 	mapCollision : [],
-	resources : new Resources()
+	resources : new Resources(),
+	screenSize : {
+			width : 0
+			, height : 0
+	}
 };
 
 var gameModel = {		

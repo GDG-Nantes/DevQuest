@@ -9,9 +9,6 @@ var contourArray = Background.initContour();
 var mursArray = Background.initMurs();;
 var herbeArray = Background.initHerbe();
 var sortiesArray = Background.initSorties();
-var screenSize = {
-				width : Model.ui.canvas.width
-				, height : Model.ui.canvas.height};
 
 
 function addFromArray(cel, arrayOri, row, col){	
@@ -27,12 +24,12 @@ function addFromArray(cel, arrayOri, row, col){
 
 function extractBackground(){
 	var array = [];
-	var minX = Math.min(Model.gameModel.position.x, CONST.SIZE_UNIT.w - screenSize.width);
-	var minY = Math.min(Model.gameModel.position.y, CONST.SIZE_UNIT.h - screenSize.height);
+	var minX = Math.min(Model.gameModel.position.x, CONST.SIZE_UNIT.w - Model.ui.screenSize.width);
+	var minY = Math.min(Model.gameModel.position.y, CONST.SIZE_UNIT.h - Model.ui.screenSize.height);
 
-	for (var row = minY; row < minY + screenSize.height; row++){
+	for (var row = minY; row < minY + Model.ui.screenSize.height; row++){
 		var arrayRow = [];
-		for (var col =minX; col < minY + screenSize.width; col++){
+		for (var col =minX; col < minY + Model.ui.screenSize.width; col++){
 			var cel = [];
 			addFromArray(cel,solArray,row, col);
 			addFromArray(cel,contourArray,row, col);
@@ -52,7 +49,8 @@ function drawPixel(pixelToPaint, row, col){
 		return;
 	var image = Model.ui.resources.images['magecity'];	
 	var regExp = /(\d\d).(\d)/;
-	var pixelValue = 32;
+	var pixelValue = CONST.UNIT;
+	var drawPixelValue = CONST.UNIT * (window.devicePixelRatio || 1);
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2];
 
@@ -61,10 +59,10 @@ function drawPixel(pixelToPaint, row, col){
 		, pixelValue * rowOri //sy clipping de l'image originale
 		, pixelValue // swidth clipping de l'image originale
 		, pixelValue // sheight clipping de l'image originale
-		, pixelValue * col // x Coordonnées dans le dessin du Model.ui.canvas
-		, pixelValue * row // y Coordonnées dans le dessin du Model.ui.canvas
-		, pixelValue // width taille du dessin
-		, pixelValue // height taille du dessin			
+		, drawPixelValue * col // x Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue * row // y Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue // width taille du dessin
+		, drawPixelValue // height taille du dessin			
 		);
 }
 

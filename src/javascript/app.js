@@ -1,4 +1,5 @@
 'use strict';
+var CONST = require('./const.js');
 var Resources = require('./resources');
 var Engine = require('./engine');
 var Model = require('./model');
@@ -13,6 +14,9 @@ function pageLoad(){
 	Model.ui.canvas.width  = window.innerWidth;
 	Model.ui.canvas.height = window.innerHeight;
 	Model.ui.context = Model.ui.canvas.getContext('2d');
+	var rect = Model.ui.canvas.getBoundingClientRect();
+	Model.ui.screenSize.width = screen.width / CONST.UNIT;
+	Model.ui.screenSize.height = screen.height / CONST.UNIT;
 	
 	// On précharge toutes les ressources nécessaires
 	Model.ui.resources.loadSprites([	
