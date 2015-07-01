@@ -1,8 +1,16 @@
 'use strict';
+var CONST = require('./const.js');
+var Model = require('./model.js');
 
 var widthSilver = 5
 	,widthGold = 7
-	, widthPlatinium = 9;
+	, widthPlatinium = 9
+	, TYPE_SILVER = 1
+	, TYPE_GOLD = 2
+	, TYPE_PLATINIUM = 3
+	, arraySilver = []
+	, arrayGold = []
+	, arrayPlatinium = [];
 
 
 // Stand silver tout seul
@@ -43,14 +51,14 @@ function standSilver(){
 				}else if (col === 2 && row === 5){					
 					arrayRow.push('41.6');
 				}else{
-					arrayRow.push('23.4');
+					arrayRow.push('23.3');
 
 				}
 			}else if (row === 6){
 				if (col === 0){					
-					arrayRow.push('09.4');
+					arrayRow.push('09.3');
 				}else if (col === widthSilver - 1){					
-					arrayRow.push('09.5');
+					arrayRow.push('09.4');
 				}else{
 					arrayRow.push('10.1');
 
@@ -171,7 +179,7 @@ function standPlatinium(){
 			}else if (row === 3){
 				if (col === 0){
 					arrayRow.push('26.4');
-				}else if (col === widthGold - 1){
+				}else if (col === widthPlatinium - 1){
 					arrayRow.push('26.6');
 				}else{
 					arrayRow.push('26.5');
@@ -181,7 +189,7 @@ function standPlatinium(){
 					arrayRow.push('40.6');
 				}else if (col === 0){
 					arrayRow.push('27.4');
-				}else if (col === widthGold - 1){
+				}else if (col === widthPlatinium - 1){
 					arrayRow.push('27.6');
 				}else{
 					arrayRow.push('27.5');
@@ -191,7 +199,7 @@ function standPlatinium(){
 					arrayRow.push('41.6');
 				}else if (col === 0){
 					arrayRow.push('28.4');
-				}else if (col === widthGold - 1){
+				}else if (col === widthPlatinium - 1){
 					arrayRow.push('28.6');
 				}else{
 					arrayRow.push('28.5');
@@ -199,7 +207,7 @@ function standPlatinium(){
 			}else if (row === 6){
 				if (col === 0){					
 					arrayRow.push('09.0');
-				}else if (col === widthGold - 1){					
+				}else if (col === widthPlatinium - 1){					
 					arrayRow.push('09.2');
 				}else{
 					arrayRow.push('09.1');
@@ -208,7 +216,7 @@ function standPlatinium(){
 			}else if (row === 7){
 				if (col === 0){					
 					arrayRow.push('10.0');
-				}else if (col === widthGold - 1){					
+				}else if (col === widthPlatinium - 1){					
 					arrayRow.push('10.2');
 				}else{
 					arrayRow.push('10.1');
@@ -217,7 +225,7 @@ function standPlatinium(){
 			}else if (row === 8){
 				if (col === 0){					
 					arrayRow.push('11.0');
-				}else if (col === widthGold - 1){					
+				}else if (col === widthPlatinium - 1){					
 					arrayRow.push('11.2');
 				}else{
 					arrayRow.push('11.1');
@@ -230,6 +238,87 @@ function standPlatinium(){
 	return array;
 }
 
+
+
+// Initialise la map vide des Stands
+function initMap(){
+	var array = [];
+	for (var row = 0; row < CONST.SIZE_UNIT.h; row++){
+		var arrayRow = [];
+		for (var col =0; col < CONST.SIZE_UNIT.w; col++){
+			arrayRow.push('');
+		}
+		array.push(arrayRow);
+	}
+	return array;
+}
+
+// Fonction qui positionne un stand  en fonction d'un point de départ
+// La map complète est générée afin de placer correctement le stand
+function placeStand(type, rowIndex, colIndex, map){
+	var standArray = type === TYPE_SILVER ? arraySilver : 
+				(type === TYPE_GOLD ? arrayGold : arrayPlatinium);
+	for (var row = 0; row < CONST.SIZE_UNIT.h; row++){
+		for (var col =0; col < CONST.SIZE_UNIT.w; col++){
+			// Si on trouve notre place, alors, on positionne un stand à cette place
+			if (row === rowIndex && col === colIndex){
+				for (var rowStand = 0; rowStand < standArray.length; rowStand++){
+					for (var colStand = 0; colStand < standArray[0].length; colStand++){
+						map[row+rowStand][col+colStand] = standArray[rowStand][colStand];
+						// On doit aussi mettre à jour la map de collision 
+						switch (type){
+							case TYPE_SILVER :
+								if (rowStand === 6){
+									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+								}else{
+									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+								}
+							break;
+							case TYPE_GOLD:
+								if (rowStand === 6
+									|| rowStand === 7){
+									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+								}else{
+									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+								}
+							break;
+							case TYPE_PLATINIUM:
+								if (rowStand === 6
+									|| rowStand === 7
+									|| rowStand === 8){
+									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+								}else{
+									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+								}
+							break;
+						}						
+					}
+				}
+				return map;
+			}
+		}
+	}
+	return map;
+}
+
+//////////////////////////////////
+//////API
+/////////////////////////////////
+
+function initStands(){
+	var map = initMap();
+	placeStand(TYPE_SILVER, 10,5,map);
+	placeStand(TYPE_GOLD, 10,15,map);
+	placeStand(TYPE_PLATINIUM, 10,25,map);
+	return map;
+}
+
+
+// Initialisation des variables de stand
+arraySilver = standSilver();
+arrayGold = standGold();
+arrayPlatinium = standPlatinium();
+
 module.exports = {
-	
+	initStands : initStands
 };
