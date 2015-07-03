@@ -29,7 +29,7 @@ function extractBackground(){
 
 	for (var row = minY; row < minY + Model.ui.screenSize.height; row++){
 		var arrayRow = [];
-		for (var col =minX; col < minY + Model.ui.screenSize.width; col++){
+		for (var col =minX; col < minX + Model.ui.screenSize.width; col++){
 			var cel = [];
 			addFromArray(cel,solArray,row, col);
 			addFromArray(cel,contourArray,row, col);
@@ -52,7 +52,7 @@ function drawPixel(pixelToPaint, row, col){
 	var pixelValue = CONST.UNIT;
 	var drawPixelValue = CONST.UNIT * (window.devicePixelRatio || 1);
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
-	var colOri = regExp.exec(pixelToPaint)[2];
+	var colOri = regExp.exec(pixelToPaint)[2]|0;
 
 	Model.ui.context.drawImage(image
 		, pixelValue * colOri //sx clipping de l'image originale
@@ -78,10 +78,10 @@ function paintBackground(){
 		for (var col in rowArray){
 			if (Array.isArray(rowArray[col])){
 				for (var doublon in rowArray[col]){
-					drawPixel(rowArray[col][doublon], rowIndex, colIndex);	
+					drawPixel(rowArray[col][doublon], rowIndex|0, colIndex|0);	
 				}
 			}else{
-				drawPixel(rowArray[col], rowIndex, colIndex);
+				drawPixel(rowArray[col], rowIndex|0, colIndex|0);
 			}
 			/*if (Array.isArray(arrayStands[row][col])){
 				for (var doublon in arrayStands[row][col]){

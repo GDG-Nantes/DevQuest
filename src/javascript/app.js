@@ -3,6 +3,7 @@ var CONST = require('./const.js');
 var Resources = require('./resources');
 var Engine = require('./engine');
 var Model = require('./model');
+require('./inputs.js');
 
 // Méthodes Internes 
 
@@ -17,6 +18,9 @@ function pageLoad(){
 	var rect = Model.ui.canvas.getBoundingClientRect();
 	Model.ui.screenSize.width = screen.width / CONST.UNIT;
 	Model.ui.screenSize.height = screen.height / CONST.UNIT;
+	Model.ui.screenSize.width = Math.floor((rect.width / window.devicePixelRatio) / CONST.UNIT)+1;
+	Model.ui.screenSize.height = Math.floor((rect.height / window.devicePixelRatio) / CONST.UNIT)+ 1;
+	console.log(Model.ui.screenSize);
 	
 	// On précharge toutes les ressources nécessaires
 	Model.ui.resources.loadSprites([	
