@@ -50,7 +50,7 @@ function drawPixel(pixelToPaint, row, col){
 	var image = Model.ui.resources.images['magecity'];	
 	var regExp = /(\d\d).(\d)/;
 	var pixelValue = CONST.UNIT;
-	var drawPixelValue = CONST.UNIT * (window.devicePixelRatio || 1);
+	var drawPixelValue = CONST.UNIT * 1;//(window.devicePixelRatio || 1);
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2]|0;
 
@@ -94,6 +94,22 @@ function paintBackground(){
 		}
 		colIndex = 0;
 		rowIndex++;
+	}
+	// Grille 
+	var grille = false;
+	if (grille){		
+		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
+			Model.ui.context.beginPath();
+			Model.ui.context.moveTo(x,0);
+			Model.ui.context.lineTo(x, Model.ui.canvas.height);
+			Model.ui.context.stroke();
+		}
+		for (var y = 0; y < Model.ui.canvas.height; y+=CONST.UNIT){
+			Model.ui.context.beginPath();
+			Model.ui.context.moveTo(0,y);
+			Model.ui.context.lineTo(Model.ui.canvas.width, y);
+			Model.ui.context.stroke();
+		}
 	}
 }
 

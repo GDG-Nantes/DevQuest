@@ -15,11 +15,11 @@ function pageLoad(){
 	Model.ui.canvas.width  = window.innerWidth;
 	Model.ui.canvas.height = window.innerHeight;
 	Model.ui.context = Model.ui.canvas.getContext('2d');
-	var rect = Model.ui.canvas.getBoundingClientRect();
-	Model.ui.screenSize.width = screen.width / CONST.UNIT;
-	Model.ui.screenSize.height = screen.height / CONST.UNIT;
-	Model.ui.screenSize.width = Math.floor((rect.width / window.devicePixelRatio) / CONST.UNIT)+1;
-	Model.ui.screenSize.height = Math.floor((rect.height / window.devicePixelRatio) / CONST.UNIT)+ 1;
+	Model.ui.context.scale(window.devicePixelRatio || 1 , window.devicePixelRatio || 1);
+	var widthRatio = Model.ui.canvas.width / window.devicePixelRatio / CONST.UNIT;
+	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.UNIT;
+	Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
+	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
 	console.log(Model.ui.screenSize);
 	
 	// On précharge toutes les ressources nécessaires
