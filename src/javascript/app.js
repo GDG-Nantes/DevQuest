@@ -8,7 +8,56 @@ require('./inputs.js');
 // Méthodes Internes 
 
 
+function checkConfig(){
+	/* 
+	On doit vérifier : 
+	OBLIGATOIRE
+		* Canvas
+		* HTML5 Audio
+		* WebSockets
+		* localStorage
+		* getusermedia
+		* page visibility
+	OPTIONNELS
+		* Touch Events
+		* full screen
+		* Device motion
+		* vibration 
+	*/
+
+	console.log(Modernizr.canvas);
+	console.log(Modernizr.localstorage);
+	console.log(Modernizr.websockets);
+	console.log(Modernizr.touch);
+	console.log(Modernizr.vibrate);
+	console.log(Modernizr.devicemotion);
+	console.log(Modernizr.fullscreen);
+	console.log(Modernizr.getusermedia);
+	console.log((window.AudioContext || window.webkitAudioContext));
+	console.log(typeof document.hidden != "undefined"
+			|| typeof document.mozHidden != "undefined"
+			|| typeof document.msHidden != "undefined"
+			|| typeof document.webkitHidden != "undefined");
+
+	return Modernizr.canvas 
+		&& Modernizr.localstorage
+		&& Modernizr.websockets
+		&& Modernizr.getusermedia
+		&& (window.AudioContext || window.webkitAudioContext)
+		&& (typeof document.hidden != "undefined"
+			|| typeof document.mozHidden != "undefined"
+			|| typeof document.msHidden != "undefined"
+			|| typeof document.webkitHidden != "undefined");
+
+}
+
 function pageLoad(){
+
+	if (!checkConfig()){
+		// Faire qqe chose ! 
+		return;
+	}
+
 	
 	// On initialise le canvas
 	Model.ui.canvas = document.getElementById('game');
