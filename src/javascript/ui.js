@@ -9,6 +9,7 @@ var contourArray = Background.initContour();
 var mursArray = Background.initMurs();;
 var herbeArray = Background.initHerbe();
 var sortiesArray = Background.initSorties();
+var stepMove = 0;
 
 
 function addFromArray(cel, arrayOri, row, col){	
@@ -50,7 +51,7 @@ function drawPixel(pixelToPaint, row, col){
 	var image = Model.ui.resources.images['magecity'];	
 	var regExp = /(\d\d).(\d)/;
 	var pixelValue = CONST.UNIT;
-	var drawPixelValue = CONST.UNIT * 1;//(window.devicePixelRatio || 1);
+	var drawPixelValue = CONST.UNIT;
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2]|0;
 
@@ -113,10 +114,46 @@ function paintBackground(){
 	}
 }
 
+function paintUser(){
+	var image = Model.ui.resources.images['healer_f'];	
+	var pixelColValue = CONST.UNIT;
+	var pixelRowValue = CONST.HEIGHT_CHARS;
+	var drawPixelValue = CONST.UNIT;
+	var rowOri = 0;
+	switch(Model.gameModel.position.direction){
+		case CONST.UP:
+			rowOri = 0;
+			break;
+		case CONST.RIGHT:
+			rowOri = 1;
+			break;
+		case CONST.DOWN:
+			rowOri = 2;
+			break;
+		case CONST.LEFT:
+			rowOri = 3;
+			break;
+	}
+	var colOri = Model.gameModel.position.stepCount;
+
+	Model.ui.context.drawImage(image
+		, pixelColValue * colOri //sx clipping de l'image originale
+		, pixelRowValue * rowOri //sy clipping de l'image originale
+		, pixelColValue // swidth clipping de l'image originale
+		, pixelRowValue // sheight clipping de l'image originale
+		, drawPixelValue * 10 // x Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue * 10 // y Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue // width taille du dessin
+		, drawPixelValue // height taille du dessin			
+		);	
+	
+}
+
 // API
 
 function paint(){	
 	paintBackground();
+	paintUser();
 }
 
 module.exports = {

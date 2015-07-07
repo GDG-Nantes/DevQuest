@@ -6,23 +6,21 @@ var trackAcceleration = true;
 var arrayZ = [];
 var lastPick = new Date().getTime();
 var orientation = 0;
-var UP = 1,
-	LEFT = 2,
-	RIGHT = 3,
-	DOWN = 4;
 
 function applyDirection(direction){
+	Model.gameModel.position.direction = direction;
+	Model.gameModel.position.stepCount = (Model.gameModel.position.stepCount + 1) % 3;
 	switch (direction){
-		case LEFT:
+		case CONST.LEFT:
 			Model.gameModel.position.x = Math.max(0, Model.gameModel.position.x - 1);
 			break;
-		case UP:
+		case CONST.UP:
 			Model.gameModel.position.y = Math.max(0, Model.gameModel.position.y - 1);
 			break;
-		case RIGHT:
+		case CONST.RIGHT:
 			Model.gameModel.position.x = Math.min(CONST.SIZE_UNIT.w, Model.gameModel.position.x + 1);
 			break;
-		case DOWN:
+		case CONST.DOWN:
 			Model.gameModel.position.y = Math.min(CONST.SIZE_UNIT.h, Model.gameModel.position.y + 1);
 			break;
 
@@ -31,17 +29,17 @@ function applyDirection(direction){
 
 function keypress(event){
 	switch (event.keyCode){
-		case 37: //LEFT
-			applyDirection(LEFT);
+		case 37: //CONST.LEFT
+			applyDirection(CONST.LEFT);
 			break;
 		case 38: //UP
-			applyDirection(UP);
+			applyDirection(CONST.UP);
 			break;
-		case 39: //RIGHT
-			applyDirection(RIGHT);
+		case 39: //CONST.RIGHT
+			applyDirection(CONST.RIGHT);
 			break;
-		case 40: //DOWN
-			applyDirection(DOWN);
+		case 40: //CONST.DOWN
+			applyDirection(CONST.DOWN);
 			break;
 	}
 }
@@ -55,15 +53,15 @@ function transformOrientationToDirection(orientation){
 		Bas => >= 135 && < 225
 		Droite=> >= 225 && < 315
 	*/
-	var directionStep = RIGHT;
+	var directionStep = CONST.RIGHT;
 	if (orientation < 45 || orientation >= 315){
-		directionStep = UP;
+		directionStep = CONST.UP;
 	}else if (orientation >= 45 && orientation < 135){
-		directionStep = LEFT;
+		directionStep = CONST.LEFT;
 	}else if (orientation >= 135 && orientation < 225){
-		directionStep = DOWN;
+		directionStep = CONST.DOWN;
 	}else{
-		directionStep = RIGHT;
+		directionStep = CONST.RIGHT;
 	}
 
 	return directionStep;

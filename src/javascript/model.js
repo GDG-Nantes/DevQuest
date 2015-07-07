@@ -14,7 +14,12 @@ var ui = {
 };
 
 var gameModel = {		
-	position: {x:0, y:0}
+		position: {
+			x:0, 
+			y:0, 
+			direction : CONST.UP,
+			stepCount : 0
+		}
 };
 
 
