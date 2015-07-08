@@ -2,6 +2,7 @@
 var CONST = require('./const.js');
 var Resources = require('./resources');
 var Engine = require('./engine');
+var UI = require('./ui.js');
 var Model = require('./model');
 require('./inputs.js');
 
@@ -69,8 +70,9 @@ function pageLoad(){
 	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.UNIT;
 	Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
 	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
-	console.log(Model.ui.screenSize);
-	
+	Model.ui.middlePoint.x = Math.floor(Model.ui.screenSize.width/2);
+	Model.ui.middlePoint.y = Math.floor(Model.ui.screenSize.height/2);
+		
 	// On précharge toutes les ressources nécessaires
 	Model.ui.resources.loadSprites([	
 							// Personnages
@@ -92,6 +94,7 @@ function pageLoad(){
 						])
 	.then(function(value) {			
 		Engine.run();		
+		UI.paint();
 	}).catch(function(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);
 	});

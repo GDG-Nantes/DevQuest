@@ -25,8 +25,8 @@ function addFromArray(cel, arrayOri, row, col){
 
 function extractBackground(){
 	var array = [];
-	var minX = Math.min(Model.gameModel.position.x, CONST.SIZE_UNIT.w - Model.ui.screenSize.width);
-	var minY = Math.min(Model.gameModel.position.y, CONST.SIZE_UNIT.h - Model.ui.screenSize.height);
+	var minX = Model.gameModel.positionScreen.x;
+	var minY = Model.gameModel.positionScreen.y;
 
 	for (var row = minY; row < minY + Model.ui.screenSize.height; row++){
 		var arrayRow = [];
@@ -114,13 +114,13 @@ function paintBackground(){
 	}
 }
 
-function paintUser(){
-	var image = Model.ui.resources.images['healer_f'];	
+function paintCharacter(sprite, direction, step, x, y){
+	var image = Model.ui.resources.images[sprite];	
 	var pixelColValue = CONST.UNIT;
 	var pixelRowValue = CONST.HEIGHT_CHARS;
 	var drawPixelValue = CONST.UNIT;
 	var rowOri = 0;
-	switch(Model.gameModel.position.direction){
+	switch(direction){
 		case CONST.UP:
 			rowOri = 0;
 			break;
@@ -134,19 +134,27 @@ function paintUser(){
 			rowOri = 3;
 			break;
 	}
-	var colOri = Model.gameModel.position.stepCount;
+	var colOri = step;
 
 	Model.ui.context.drawImage(image
 		, pixelColValue * colOri //sx clipping de l'image originale
 		, pixelRowValue * rowOri //sy clipping de l'image originale
 		, pixelColValue // swidth clipping de l'image originale
 		, pixelRowValue // sheight clipping de l'image originale
-		, drawPixelValue * 10 // x Coordonnées dans le dessin du Model.ui.canvas
-		, drawPixelValue * 10 // y Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue * x // x Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue * y // y Coordonnées dans le dessin du Model.ui.canvas
 		, drawPixelValue // width taille du dessin
 		, drawPixelValue // height taille du dessin			
 		);	
-	
+}
+
+function paintUser(){
+	paintCharacter('healer_f',// sprite à utiliser
+		Model.gameModel.position.direction, // Orientation du joeur
+		Model.gameModel.position.stepCount, // état du sprite
+		Model.gameModel.position.x - Model.gameModel.positionScreen.x, // x du joueur
+		Model.gameModel.position.y - Model.gameModel.positionScreen.y // y du joueur
+		);	
 }
 
 // API
@@ -154,6 +162,7 @@ function paintUser(){
 function paint(){	
 	paintBackground();
 	paintUser();
+	window.requestAnimationFrame(paint);
 }
 
 module.exports = {

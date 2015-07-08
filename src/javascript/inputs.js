@@ -10,21 +10,8 @@ var orientation = 0;
 function applyDirection(direction){
 	Model.gameModel.position.direction = direction;
 	Model.gameModel.position.stepCount = (Model.gameModel.position.stepCount + 1) % 3;
-	switch (direction){
-		case CONST.LEFT:
-			Model.gameModel.position.x = Math.max(0, Model.gameModel.position.x - 1);
-			break;
-		case CONST.UP:
-			Model.gameModel.position.y = Math.max(0, Model.gameModel.position.y - 1);
-			break;
-		case CONST.RIGHT:
-			Model.gameModel.position.x = Math.min(CONST.SIZE_UNIT.w, Model.gameModel.position.x + 1);
-			break;
-		case CONST.DOWN:
-			Model.gameModel.position.y = Math.min(CONST.SIZE_UNIT.h, Model.gameModel.position.y + 1);
-			break;
-
-	}
+	Model.gameModel.inputArray.push(direction);
+	
 }
 
 function keypress(event){

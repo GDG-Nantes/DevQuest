@@ -7,6 +7,10 @@ var ui = {
 	context : null,
 	mapCollision : [],
 	resources : new Resources(),
+	middlePoint : {
+		x : 0,
+		y : 0
+	},
 	screenSize : {
 			width : 0
 			, height : 0
@@ -14,9 +18,14 @@ var ui = {
 };
 
 var gameModel = {		
+		inputArray : [],
+		positionScreen: {
+			x:0,
+			y:0
+		},
 		position: {
-			x:0, 
-			y:0, 
+			x:10, 
+			y:10, 
 			direction : CONST.UP,
 			stepCount : 0
 		}
