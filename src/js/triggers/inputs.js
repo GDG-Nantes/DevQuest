@@ -2,10 +2,12 @@
 
 var Model = require('../model/model.js');
 var CONST = require('../model/const.js');
+var SonicServer = require('../ultrasonic/sonic-server.js');
 var trackAcceleration = true;
 var arrayZ = [];
 var lastPick = new Date().getTime();
 var orientation = 0;
+var sonicServer = null;
 
 function applyDirection(direction){
 	Model.gameModel.position.direction = direction;
@@ -91,6 +93,10 @@ function orientationCallBack(event){
 
 }
 
+function callBackSonic(message){
+	console.info('Recieve message : %d Mhz, %d db',message.freq, message.power);
+}
+
 // API
  
 function initListeners(){
@@ -101,6 +107,15 @@ function initListeners(){
 		window.addEventListener('devicemotion', motionCallBack, false);
 		window.addEventListener('deviceorientation', orientationCallBack, false);
 	}
+
+	if (!sonicServer){
+		sonicServer = new SonicServer({peakThreshold: -150});
+		//sonicServer.setDebug(true);
+		sonicServer.on('message', callBackSonic);
+	}
+
+	sonicServer.start();
+
 	console.log("InitListeners");
 }
 
@@ -112,6 +127,7 @@ function removeListeners(){
 		window.removeEventListener('devicemotion', motionCallBack, false);
 		window.removeEventListener('deviceorientation', orientationCallBack, false);
 	}	
+	sonicServer.stop();
 	console.log("RemoveListeners");
 }
 

@@ -87,6 +87,7 @@ function manageVisibility(){
 		// Handle page visibility change   
 		document.addEventListener(visibilityChange, function handleVisibilityChange(){
 			if (document[hidden]) {
+				localStorage['game_model'] = JSON.stringify(Model.gameModel);
 				stopEngine();
 			} else {
 				startEngine();
@@ -126,6 +127,9 @@ function stopEngine(){
 // API
 
 function start(){
+	if (localStorage["game_model"]){
+		Model.gameModel = JSON.parse(localStorage["game_model"]);
+	}
 	manageVisibility();
 	startEngine();
 }
