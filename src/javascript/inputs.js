@@ -90,15 +90,33 @@ function orientationCallBack(event){
 	orientation = event.alpha;
 
 }
- 
-document.addEventListener('keydown', keypress);
 
-if (Modernizr.devicemotion){
-	window.addEventListener('devicemotion', motionCallBack, true);
-	window.addEventListener('deviceorientation', orientationCallBack, true);
+// API
+ 
+function initListeners(){
+
+	document.addEventListener('keydown', keypress, false);
+
+	if (Modernizr.devicemotion){
+		window.addEventListener('devicemotion', motionCallBack, false);
+		window.addEventListener('deviceorientation', orientationCallBack, false);
+	}
+	console.log("InitListeners");
+}
+
+
+function removeListeners(){
+	document.removeEventListener('keydown', keypress, false);
+
+	if (Modernizr.devicemotion){
+		window.removeEventListener('devicemotion', motionCallBack, false);
+		window.removeEventListener('deviceorientation', orientationCallBack, false);
+	}	
+	console.log("RemoveListeners");
 }
 
 
 module.exports = {
-	
+	initListeners : initListeners,
+	removeListeners : removeListeners
 };

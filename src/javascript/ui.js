@@ -9,7 +9,9 @@ var contourArray = Background.initContour();
 var mursArray = Background.initMurs();;
 var herbeArray = Background.initHerbe();
 var sortiesArray = Background.initSorties();
+var standsArray = Stands.initStands();
 var stepMove = 0;
+var paintActive = false;
 
 
 function addFromArray(cel, arrayOri, row, col){	
@@ -23,6 +25,9 @@ function addFromArray(cel, arrayOri, row, col){
 	}
 }
 
+/*
+	Extrait le background correspond à la taille de l'écran
+*/
 function extractBackground(){
 	var array = [];
 	var minX = Model.gameModel.positionScreen.x;
@@ -37,6 +42,7 @@ function extractBackground(){
 			addFromArray(cel,mursArray,row, col);
 			addFromArray(cel,herbeArray,row, col);
 			addFromArray(cel,sortiesArray,row, col);
+			addFromArray(cel,standsArray,row, col);
 			arrayRow.push(cel);
 		}
 		array.push(arrayRow);
@@ -84,13 +90,6 @@ function paintBackground(){
 			}else{
 				drawPixel(rowArray[col], rowIndex|0, colIndex|0);
 			}
-			/*if (Array.isArray(arrayStands[row][col])){
-				for (var doublon in arrayStands[row][col]){
-					drawPixel(arrayStands[row][col][doublon], rowIndex, colIndex);	
-				}
-			}else{
-				drawPixel(arrayStands[row][col], rowIndex, colIndex);
-			}*/
 			colIndex++;
 		}
 		colIndex = 0;
@@ -157,14 +156,30 @@ function paintUser(){
 		);	
 }
 
-// API
-
 function paint(){	
 	paintBackground();
 	paintUser();
-	window.requestAnimationFrame(paint);
+	if (paintActive)
+		window.requestAnimationFrame(paint);
 }
 
+// API
+
+function startPaint(){
+	if (!paintActive){		
+		paintActive = true;
+		paint();
+	}
+	console.log("Start Paint");
+}
+
+function stopPaint(){
+	paintActive = false;
+	console.log("Stop Paint");
+}
+
+
 module.exports = {
-	paint : paint
+	startPaint : startPaint,
+	stopPaint : stopPaint
 };

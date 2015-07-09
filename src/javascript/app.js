@@ -93,8 +93,7 @@ function pageLoad(){
 							{title: 'magecity', url: 'assets/img/magecity_0.png'}
 						])
 	.then(function(value) {			
-		Engine.run();		
-		UI.paint();
+		Engine.start();		
 	}).catch(function(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);
 	});

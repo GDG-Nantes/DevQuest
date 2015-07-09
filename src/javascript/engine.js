@@ -1,6 +1,9 @@
 'use strict';
 var Model = require('./model.js');
+var Inputs = require('./inputs.js');
+var UI = require('./ui.js');
 var CONST = require('./const.js');
+var runActiv = false;
 
 
 function processDirection(){
@@ -43,38 +46,90 @@ function processDirection(){
 		// On applique aussi le mouvement théorique de l'écran (différent car on cherche à maximiser les moments ou le personnage est au milieu)
 		if (Model.gameModel.position.x < Model.ui.middlePoint.x){
 			positionScreenTmp.x = Math.min(0,Model.gameModel.position.x);
-		}else if (Model.gameModel.position.x >= Model.ui.screenSize.width - Model.ui.middlePoint.x){
-			positionScreenTmp.x = Math.min(Model.gameModel.position.x, CONST.SIZE_UNIT.w - Model.ui.screenSize.width);
-		}else{
-			positionScreenTmp.x = Model.gameModel.position.x - Model.ui.middlePoint.x;
+		}else {
+			positionScreenTmp.x = Math.min(Model.gameModel.position.x - Model.ui.middlePoint.x, CONST.SIZE_UNIT.w - Model.ui.screenSize.width);
 		}
+		
 		if (Model.gameModel.position.y < Model.ui.middlePoint.y){
 			positionScreenTmp.y = Math.min(0,Model.gameModel.position.y);
-		}else if (Model.gameModel.position.y >= Model.ui.screenSize.height - Model.ui.middlePoint.y){
-			positionScreenTmp.y = Math.min(Model.gameModel.position.y, CONST.SIZE_UNIT.h - Model.ui.screenSize.height);
-		}else{
-			positionScreenTmp.y = Model.gameModel.position.y - Model.ui.middlePoint.y;
+		}else {
+			positionScreenTmp.y = Math.min(Model.gameModel.position.y - Model.ui.middlePoint.y, CONST.SIZE_UNIT.h - Model.ui.screenSize.height);
 		}
 
 		// On applique la position
 		Model.gameModel.positionScreen.x = positionScreenTmp.x;
-		Model.gameModel.positionScreen.y = positionScreenTmp.y;
-		console.log("PositionUser : %s;%s",Model.gameModel.position.x,Model.gameModel.position.y);
-		console.log("PositionScreen : %s;%s",Model.gameModel.positionScreen.x,Model.gameModel.positionScreen.y);
+		Model.gameModel.positionScreen.y = positionScreenTmp.y;		
 	}
 }
 
-// API
+function manageVisibility(){
+	// Set the name of the hidden property and the change event for visibility
+	var hidden, visibilityChange; 
+	if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
+	  hidden = "hidden";
+	  visibilityChange = "visibilitychange";
+	} else if (typeof document.mozHidden !== "undefined") {
+	  hidden = "mozHidden";
+	  visibilityChange = "mozvisibilitychange";
+	} else if (typeof document.msHidden !== "undefined") {
+	  hidden = "msHidden";
+	  visibilityChange = "msvisibilitychange";
+	} else if (typeof document.webkitHidden !== "undefined") {
+	  hidden = "webkitHidden";
+	  visibilityChange = "webkitvisibilitychange";
+	}
+	
+	// Warn if the browser doesn't support addEventListener or the Page Visibility API
+	if (typeof document.addEventListener === "undefined" || 
+	  typeof document[hidden] === "undefined") {
+	  alert("This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.");
+	} else {
+		// Handle page visibility change   
+		document.addEventListener(visibilityChange, function handleVisibilityChange(){
+			if (document[hidden]) {
+				stopEngine();
+			} else {
+				startEngine();
+			}
+		}, false);
+	    
+	  
+	}
+}
 
 function run(){
 	try{
 		processDirection();
-		window.requestAnimationFrame(run);
+		if (runActiv){
+			window.requestAnimationFrame(run);
+		}
 	}catch(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);			
 	}
 }
 
+function startEngine(){
+	if (!runActiv){
+		runActiv = true;		
+		run();
+		UI.startPaint();
+		Inputs.initListeners();
+	}	
+}
+
+function stopEngine(){
+	runActiv = false;
+	UI.stopPaint();
+	Inputs.removeListeners();
+}
+
+// API
+
+function start(){
+	manageVisibility();
+	startEngine();
+}
+
 module.exports = {
-	run : run
+	start : start
 };
