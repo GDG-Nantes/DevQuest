@@ -1,8 +1,8 @@
 'use strict';
-var Model = require('./model.js');
-var Inputs = require('./inputs.js');
+var Model = require('../model/model.js');
+var Inputs = require('../triggers/inputs.js');
 var UI = require('./ui.js');
-var CONST = require('./const.js');
+var CONST = require('../model/const.js');
 var runActiv = false;
 
 

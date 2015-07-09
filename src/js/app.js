@@ -1,10 +1,10 @@
 'use strict';
-var CONST = require('./const.js');
-var Resources = require('./resources');
-var Engine = require('./engine');
-var UI = require('./ui.js');
-var Model = require('./model');
-require('./inputs.js');
+var CONST = require('./model/const.js');
+var Resources = require('./util/resources.js');
+var Engine = require('./engine/engine.js');
+var UI = require('./engine/ui.js');
+var Model = require('./model/model.js');
+require('./triggers/inputs.js');
 
 // Méthodes Internes 
 

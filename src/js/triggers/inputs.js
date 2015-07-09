@@ -1,7 +1,7 @@
 'use strict';
 
-var Model = require('./model.js');
-var CONST = require('./const.js');
+var Model = require('../model/model.js');
+var CONST = require('../model/const.js');
 var trackAcceleration = true;
 var arrayZ = [];
 var lastPick = new Date().getTime();

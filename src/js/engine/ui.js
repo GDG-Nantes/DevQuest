@@ -1,8 +1,8 @@
 'use strict';
-var Model = require('./model.js');
-var Background = require('./background.js');
-var Stands = require('./stands.js');
-var CONST = require('./const.js');
+var Model = require('../model/model.js');
+var Background = require('../assets/background.js');
+var Stands = require('../assets/stands.js');
+var CONST = require('../model/const.js');
 // On défini l'ensemble des array qui vont servir pour le dessin
 var solArray = Background.initSol();
 var contourArray = Background.initContour();

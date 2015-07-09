@@ -1,5 +1,5 @@
 'use strict';
-var Resources = require('./resources');
+var Resources = require('../util/resources');
 var CONST = require('./const.js');
 
 var ui = {

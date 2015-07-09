@@ -1,6 +1,6 @@
 'use strict';
-var CONST = require('./const.js');
-var Model = require('./model.js');
+var CONST = require('../model/const.js');
+var Model = require('../model/model.js');
 
 
 // Gestion du sol on affiche aléatoirement le sol une seul fois

@@ -1,6 +1,6 @@
 'use strict';
-var CONST = require('./const.js');
-var Model = require('./model.js');
+var CONST = require('../model/const.js');
+var Model = require('../model/model.js');
 
 var widthSilver = 5
 	,widthGold = 7
