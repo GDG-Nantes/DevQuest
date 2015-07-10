@@ -5,9 +5,13 @@ var CONST = require('../model/const.js');
 var SonicServer = require('../ultrasonic/sonic-server.js');
 var trackAcceleration = true;
 var arrayZ = [];
-var lastPick = new Date().getTime();
+var lastPick = Date.now();
 var orientation = 0;
 var sonicServer = null;
+var stateFeq={
+	frequency : 0,
+	time : 0
+};
 
 function applyDirection(direction){
 	Model.gameModel.position.direction = direction;
@@ -68,7 +72,7 @@ function motionCallBack(event){
 			if (arrayZ[1] > arrayZ[0] 
 				&& arrayZ[1] > arrayZ[2] 
 				&& arrayZ[1] > CONST.STEP_ACCELERATION){
-				var currentTime = new Date().getTime();
+				var currentTime = Date.now();
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
 				if (currentTime - lastPick > CONST.STEP_RATE){
 					lastPick = currentTime;
@@ -94,7 +98,14 @@ function orientationCallBack(event){
 }
 
 function callBackSonic(message){
-	console.info('Recieve message : %d Mhz, %d db',message.freq, message.power);
+	if (message.freq != stateFeq.frequency){
+		stateFeq.frequency = message.freq;
+		stateFeq.time = Date.now();
+	}else{
+		if (Date.now() - stateFeq.time > CONST.DELAY_STABLE){
+			console.info('Recieve message : %d Mhz, %d db',message.freq, message.power);
+		}
+	}
 }
 
 // API
@@ -109,7 +120,7 @@ function initListeners(){
 	}
 
 	if (!sonicServer){
-		sonicServer = new SonicServer({peakThreshold: -150});
+		sonicServer = new SonicServer({peakThreshold: CONST.THRESHOLD});
 		//sonicServer.setDebug(true);
 		sonicServer.on('message', callBackSonic);
 	}
