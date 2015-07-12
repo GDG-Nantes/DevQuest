@@ -89,7 +89,8 @@ function pageLoad(){
 							{title: 'warrior_f', url: 'assets/img/warrior_f.png'},
 							{title: 'warrior_m', url: 'assets/img/warrior_m.png'},
 							// Décors
-							{title: 'inside', url: 'assets/img/inside01.png'},								
+							{title: 'inside_1', url: 'assets/img/inside01.png'},								
+							{title: 'inside_2', url: 'assets/img/inside02.png'},								
 							{title: 'magecity', url: 'assets/img/magecity_0.png'}
 						])
 	.then(function(value) {			
