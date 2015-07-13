@@ -51,26 +51,54 @@ function extractBackground(){
 }
 
 
-function drawPixel(pixelToPaint, row, col){
-	if (pixelToPaint === '')
-		return;
-	var image = Model.ui.resources.images['magecity'];	
-	var regExp = /(\d\d).(\d)/;
-	var pixelValue = CONST.UNIT;
-	var drawPixelValue = CONST.UNIT;
-	var rowOri = regExp.exec(pixelToPaint)[1]|0;
-	var colOri = regExp.exec(pixelToPaint)[2]|0;
+// Fonction générique d'écriture d'un pixel
+function drawPixel(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
 
+	var image = Model.ui.resources.images[spriteToUse];	
+	var drawPixelValue = CONST.UNIT;
+	
 	Model.ui.context.drawImage(image
-		, pixelValue * colOri //sx clipping de l'image originale
-		, pixelValue * rowOri //sy clipping de l'image originale
-		, pixelValue // swidth clipping de l'image originale
-		, pixelValue // sheight clipping de l'image originale
-		, drawPixelValue * col // x Coordonnées dans le dessin du Model.ui.canvas
-		, drawPixelValue * row // y Coordonnées dans le dessin du Model.ui.canvas
+		, wOriValue * colOri //sx clipping de l'image originale
+		, hOriValue * rowOri //sy clipping de l'image originale
+		, wOriValue // swidth clipping de l'image originale
+		, hOriValue // sheight clipping de l'image originale
+		, drawPixelValue * colDest // x Coordonnées dans le dessin du Model.ui.canvas
+		, drawPixelValue * rowDest // y Coordonnées dans le dessin du Model.ui.canvas
 		, drawPixelValue // width taille du dessin
 		, drawPixelValue // height taille du dessin			
 		);
+}
+
+function drawPixelBackground(pixelToPaint, row, col){
+	if (pixelToPaint === '')
+		return;
+	var regExp = /(\d\d).(\d)/;
+	var rowOri = regExp.exec(pixelToPaint)[1]|0;
+	var colOri = regExp.exec(pixelToPaint)[2]|0;
+	drawPixel('magecity' // Sprite
+			, CONST.UNIT // wOriValue
+			, CONST.UNIT // hOriValue
+			, rowOri // rowOri
+			, colOri // colOri
+			, row // rowDest
+			, col // colDest
+		);	
+}
+
+function drawPixelInside(sprite,pixelToPaint, row, col){
+	if (pixelToPaint === '')
+		return;
+	var regExp = /(\d\d).(\d)/;
+	var rowOri = regExp.exec(pixelToPaint)[1]|0;
+	var colOri = regExp.exec(pixelToPaint)[2]|0;
+	drawPixel(sprite // Sprite
+			, CONST.UNIT // wOriValue
+			, CONST.UNIT // hOriValue
+			, rowOri // rowOri
+			, colOri // colOri
+			, row // rowDest
+			, col // colDest
+		);	
 }
 
 function paintBackground(){
@@ -85,10 +113,10 @@ function paintBackground(){
 		for (var col in rowArray){
 			if (Array.isArray(rowArray[col])){
 				for (var doublon in rowArray[col]){
-					drawPixel(rowArray[col][doublon], rowIndex|0, colIndex|0);	
+					drawPixelBackground(rowArray[col][doublon], rowIndex|0, colIndex|0);	
 				}
 			}else{
-				drawPixel(rowArray[col], rowIndex|0, colIndex|0);
+				drawPixelBackground(rowArray[col], rowIndex|0, colIndex|0);
 			}
 			colIndex++;
 		}
@@ -114,10 +142,6 @@ function paintBackground(){
 }
 
 function paintCharacter(sprite, direction, step, x, y){
-	var image = Model.ui.resources.images[sprite];	
-	var pixelColValue = CONST.UNIT;
-	var pixelRowValue = CONST.HEIGHT_CHARS;
-	var drawPixelValue = CONST.UNIT;
 	var rowOri = 0;
 	switch(direction){
 		case CONST.UP:
@@ -134,17 +158,15 @@ function paintCharacter(sprite, direction, step, x, y){
 			break;
 	}
 	var colOri = step;
-
-	Model.ui.context.drawImage(image
-		, pixelColValue * colOri //sx clipping de l'image originale
-		, pixelRowValue * rowOri //sy clipping de l'image originale
-		, pixelColValue // swidth clipping de l'image originale
-		, pixelRowValue // sheight clipping de l'image originale
-		, drawPixelValue * x // x Coordonnées dans le dessin du Model.ui.canvas
-		, drawPixelValue * y // y Coordonnées dans le dessin du Model.ui.canvas
-		, drawPixelValue // width taille du dessin
-		, drawPixelValue // height taille du dessin			
-		);	
+	drawPixel(sprite // Sprite
+			, CONST.UNIT // wOriValue
+			, CONST.HEIGHT_CHARS // hOriValue
+			, rowOri // rowOri
+			, colOri // colOri
+			, y // rowDest
+			, x // colDest
+		);
+	
 }
 
 function paintUser(){
@@ -154,6 +176,44 @@ function paintUser(){
 		Model.gameModel.position.x - Model.gameModel.positionScreen.x, // x du joueur
 		Model.gameModel.position.y - Model.gameModel.positionScreen.y // y du joueur
 		);	
+}
+
+function paintInsde(){
+	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
+	// 1m = 64px => Image de 1792x1472
+	var arrayTmp = extractBackground();
+	var rowIndex = 0;
+	var colIndex = 0;
+	for (var row in arrayTmp){
+		var rowArray = arrayTmp[row];		
+		for (var col in rowArray){
+			for (var doublon = 1; doublon < rowArray[col].length; doublon++){
+				drawPixelInside(rowArray[col][0] // Sprite
+					, rowArray[col][doublon]
+					, rowIndex|0
+					, colIndex|0);					
+			}
+			colIndex++;
+		}
+		colIndex = 0;
+		rowIndex++;
+	}
+	// Grille 
+	var grille = false;
+	if (grille){		
+		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
+			Model.ui.context.beginPath();
+			Model.ui.context.moveTo(x,0);
+			Model.ui.context.lineTo(x, Model.ui.canvas.height);
+			Model.ui.context.stroke();
+		}
+		for (var y = 0; y < Model.ui.canvas.height; y+=CONST.UNIT){
+			Model.ui.context.beginPath();
+			Model.ui.context.moveTo(0,y);
+			Model.ui.context.lineTo(Model.ui.canvas.width, y);
+			Model.ui.context.stroke();
+		}
+	}
 }
 
 function paint(){	
