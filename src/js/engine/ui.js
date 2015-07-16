@@ -2,6 +2,7 @@
 var Model = require('../model/model.js');
 var Background = require('../assets/background.js');
 var Stands = require('../assets/stands.js');
+var Inside = require('../assets/inside.js');
 var CONST = require('../model/const.js');
 // On défini l'ensemble des array qui vont servir pour le dessin
 var solArray = Background.initSol();
@@ -14,7 +15,7 @@ var stepMove = 0;
 var paintActive = false;
 
 
-function addFromArray(cel, arrayOri, row, col){	
+function addFromArray(cel, arrayOri, row, col){
 	var valueTmp = arrayOri[row][col];
 	if (Array.isArray(arrayOri[row][col])){
 		for (var doublon in valueTmp){
@@ -54,9 +55,9 @@ function extractBackground(){
 // Fonction générique d'écriture d'un pixel
 function drawPixel(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
 
-	var image = Model.ui.resources.images[spriteToUse];	
+	var image = Model.ui.resources.images[spriteToUse];
 	var drawPixelValue = CONST.UNIT;
-	
+
 	Model.ui.context.drawImage(image
 		, wOriValue * colOri //sx clipping de l'image originale
 		, hOriValue * rowOri //sy clipping de l'image originale
@@ -65,7 +66,7 @@ function drawPixel(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, c
 		, drawPixelValue * colDest // x Coordonnées dans le dessin du Model.ui.canvas
 		, drawPixelValue * rowDest // y Coordonnées dans le dessin du Model.ui.canvas
 		, drawPixelValue // width taille du dessin
-		, drawPixelValue // height taille du dessin			
+		, drawPixelValue // height taille du dessin
 		);
 }
 
@@ -82,7 +83,7 @@ function drawPixelBackground(pixelToPaint, row, col){
 			, colOri // colOri
 			, row // rowDest
 			, col // colDest
-		);	
+		);
 }
 
 function drawPixelInside(sprite,pixelToPaint, row, col){
@@ -98,22 +99,21 @@ function drawPixelInside(sprite,pixelToPaint, row, col){
 			, colOri // colOri
 			, row // rowDest
 			, col // colDest
-		);	
+		);
 }
 
 function paintBackground(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
 	var arrayTmp = extractBackground();
-	//var arrayStands = Stands.initStands();
 	var rowIndex = 0;
 	var colIndex = 0;
 	for (var row in arrayTmp){
-		var rowArray = arrayTmp[row];		
+		var rowArray = arrayTmp[row];
 		for (var col in rowArray){
 			if (Array.isArray(rowArray[col])){
 				for (var doublon in rowArray[col]){
-					drawPixelBackground(rowArray[col][doublon], rowIndex|0, colIndex|0);	
+					drawPixelBackground(rowArray[col][doublon], rowIndex|0, colIndex|0);
 				}
 			}else{
 				drawPixelBackground(rowArray[col], rowIndex|0, colIndex|0);
@@ -123,9 +123,9 @@ function paintBackground(){
 		colIndex = 0;
 		rowIndex++;
 	}
-	// Grille 
+	// Grille
 	var grille = false;
-	if (grille){		
+	if (grille){
 		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
 			Model.ui.context.beginPath();
 			Model.ui.context.moveTo(x,0);
@@ -166,7 +166,7 @@ function paintCharacter(sprite, direction, step, x, y){
 			, y // rowDest
 			, x // colDest
 		);
-	
+
 }
 
 function paintUser(){
@@ -175,32 +175,32 @@ function paintUser(){
 		Model.gameModel.position.stepCount, // état du sprite
 		Model.gameModel.position.x - Model.gameModel.positionScreen.x, // x du joueur
 		Model.gameModel.position.y - Model.gameModel.positionScreen.y // y du joueur
-		);	
+		);
 }
 
 function paintInsde(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
-	var arrayTmp = extractBackground();
+	var arrayTmp = Inside.showSilverStand();
 	var rowIndex = 0;
 	var colIndex = 0;
 	for (var row in arrayTmp){
-		var rowArray = arrayTmp[row];		
+		var rowArray = arrayTmp[row];
 		for (var col in rowArray){
 			for (var doublon = 1; doublon < rowArray[col].length; doublon++){
 				drawPixelInside(rowArray[col][0] // Sprite
 					, rowArray[col][doublon]
 					, rowIndex|0
-					, colIndex|0);					
+					, colIndex|0);
 			}
 			colIndex++;
 		}
 		colIndex = 0;
 		rowIndex++;
 	}
-	// Grille 
+	// Grille
 	var grille = false;
-	if (grille){		
+	if (grille){
 		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
 			Model.ui.context.beginPath();
 			Model.ui.context.moveTo(x,0);
@@ -216,9 +216,10 @@ function paintInsde(){
 	}
 }
 
-function paint(){	
+function paint(){
 	paintBackground();
 	paintUser();
+	//paintInsde();
 	if (paintActive)
 		window.requestAnimationFrame(paint);
 }
@@ -226,7 +227,7 @@ function paint(){
 // API
 
 function startPaint(){
-	if (!paintActive){		
+	if (!paintActive){
 		paintActive = true;
 		paint();
 	}

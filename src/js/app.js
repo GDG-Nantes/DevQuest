@@ -24,7 +24,6 @@ function checkConfig(){
 		* full screen
 		* Device motion
 		* vibration 
-	*/
 
 	console.log(Modernizr.canvas);
 	console.log(Modernizr.localstorage);
@@ -39,6 +38,7 @@ function checkConfig(){
 			|| typeof document.mozHidden != "undefined"
 			|| typeof document.msHidden != "undefined"
 			|| typeof document.webkitHidden != "undefined");
+	*/
 
 	return Modernizr.canvas 
 		&& Modernizr.localstorage
