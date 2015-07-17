@@ -221,7 +221,7 @@ function wrapText(text, x, y, maxWidth, lineHeight) {
 }
 
 function paintZoneTexte(){
-	var pos= {x: 1, y :5, w: 9, h:8};
+	var pos= {x: 1, y :5, w: 8, h:8};
 	// Coin Haut Gauche
 	drawPixel('txt-haut-gauche' // Sprite
 			, CONST.UNIT // wOriValue
@@ -276,7 +276,7 @@ function paintZoneTexte(){
 
 
 			Model.ui.context.font = "30px Visitor";
-			Model.ui.context.fillStyle = "white";
+			Model.ui.context.fillStyle = "#deeed6";
 			wrapText("Hello World"
 				, CONST.UNIT * (pos.x + 2) // X
 				, CONST.UNIT * (pos.y + 2) // Y

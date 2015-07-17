@@ -99,7 +99,93 @@ function prepareZoneText(canvas, context){
     ,{x:75,y:45,w:9,h:7
       ,xOut : 0, yOut: 0, wOut: bestSize(9), hOut : bestSize(7)
     });
+}
 
+function prepareTitleScreen(canvas, context){
+    // Début ZoneText
+    registerImage(canvas, context
+      ,'title-gauche'
+      ,{x:176, y:101, w:20, h:32
+        ,xOut: bestSize(20) - 20, yOut:0, wOut:bestSize(20), hOut:bestSize(32)
+    });
+    // Zone milieu
+    registerImage(canvas, context
+      ,'title-center'
+      ,{x:196, y:101, w:40, h:32
+        ,xOut: 0, yOut:0, wOut:40, hOut:bestSize(32)
+      }
+      ,'repeat'
+    );
+    // Fin zone
+    registerImage(canvas, context
+      ,'title-droite'
+      ,{x:252, y:100, w:44, h:33
+        ,xOut: bestSize(44) - 44, yOut:bestSize(33) - 33, wOut:bestSize(44), hOut:bestSize(33)
+    });
+    // zone repeat-x haut
+    registerImage(canvas, context
+      ,'title-repeat-x-haut'
+      ,{x:196,y:133,w:40,h:6
+        ,xOut : 0, yOut: bestSize(6) - 6,  wOut: 40, hOut : bestSize(6)
+      }
+      ,'repeat'
+    );
+    // zone repeat-x bas
+    registerImage(canvas, context
+      ,'title-repeat-x-bas'
+      ,{x:196,y:160,w:40,h:12
+        ,xOut : 0,yOut: 0, wOut: 40, hOut : bestSize(12)
+      }
+      ,'repeat'
+    );
+    // zone repeat-y gauche
+    registerImage(canvas, context
+      ,'title-repeat-y-gauche'
+      ,{x:176,y:139,w:6,h:7
+        ,xOut : bestSize(6) - 6, yOut: 0,  wOut: bestSize(6), hOut : 7
+      }
+      ,'repeat'
+    );
+    // zone repeat-y droite
+    registerImage(canvas, context
+      ,'title-repeat-y-droite'
+      ,{x:273,y:139,w:13,h:7
+        ,xOut : 0,yOut: 0, wOut: bestSize(13), hOut : 7
+      }
+      ,'repeat'
+    );
+    // zone repeat-xy centre
+    registerImage(canvas, context
+      ,'title-repeat-xy'
+      ,{x:182,y:139,w:14,h:11
+        ,xOut : 0, yOut: 0, wOut: 14, hOut : 11
+      }
+      ,'repeat'
+    );
+    // zone coin gauche haut
+    registerImage(canvas, context
+      ,'title-haut-gauche'
+      ,{x:176,y:133,w:6,h:6
+        ,xOut : bestSize(6) - 6,yOut:  bestSize(6) - 6, wOut: bestSize(6), hOut : bestSize(6)
+      });
+    // zone coin droite haut
+    registerImage(canvas, context
+      ,'title-haut-droite'
+      ,{x:273,y:133,w:13,h:6
+        ,xOut : 0, yOut: bestSize(6) - 6, wOut: bestSize(13), hOut : bestSize(6)
+      });
+    // zone coin gauche bas
+    registerImage(canvas, context
+      ,'title-bas-gauche'
+      ,{x:176,y:160,w:6,h:12
+        ,xOut : bestSize(6) - 6, yOut: 0, wOut: bestSize(6), hOut : bestSize(12)
+      });
+    // zone coin droite bas
+    registerImage(canvas, context
+      ,'title-bas-droite'
+      ,{x:273,y:160,w:13,h:12
+        ,xOut : 0, yOut: 0, wOut: bestSize(13), hOut : bestSize(12)
+      });
 }
 
 // API
@@ -114,7 +200,7 @@ function prepareUiElements(){
   // On fait la même chose avec les patterns
   Model.ui.resources.patterns = [];
   prepareZoneText(canvasTmp, contextTmp);
-
+  prepareTitleScreen(canvasTmp, contextTmp);
   canvasTmp.remove();
 }
 
