@@ -17,7 +17,7 @@ function applyDirection(direction){
 	Model.gameModel.position.direction = direction;
 	Model.gameModel.position.stepCount = (Model.gameModel.position.stepCount + 1) % 3;
 	Model.gameModel.inputArray.push(direction);
-	
+
 }
 
 function keypress(event){
@@ -69,20 +69,20 @@ function motionCallBack(event){
 		if (arrayZ.length > 3){
 			arrayZ = arrayZ.slice(1,4);
 			// On est sur un pic
-			if (arrayZ[1] > arrayZ[0] 
-				&& arrayZ[1] > arrayZ[2] 
+			if (arrayZ[1] > arrayZ[0]
+				&& arrayZ[1] > arrayZ[2]
 				&& arrayZ[1] > CONST.STEP_ACCELERATION){
 				var currentTime = Date.now();
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
 				if (currentTime - lastPick > CONST.STEP_RATE){
 					lastPick = currentTime;
 					applyDirection(transformOrientationToDirection(orientation));
-					console.log( new Date().toISOString()+" : "+ arrayZ[1]+" -> "+orientation);			
+					console.log( new Date().toISOString()+" : "+ arrayZ[1]+" -> "+orientation);
 				}
-			}	
+			}
 		}
 
-		
+
 		if (Math.abs(zValue) > CONST.STEP_ACCELERATION){
 		}
 	}
@@ -109,7 +109,7 @@ function callBackSonic(message){
 }
 
 // API
- 
+
 function initListeners(){
 
 	document.addEventListener('keydown', keypress, false);
@@ -119,13 +119,15 @@ function initListeners(){
 		window.addEventListener('deviceorientation', orientationCallBack, false);
 	}
 
-	if (!sonicServer){
+// TODO à décommenter !!!
+	/*if (!sonicServer){
 		sonicServer = new SonicServer({peakThreshold: CONST.THRESHOLD});
 		//sonicServer.setDebug(true);
 		sonicServer.on('message', callBackSonic);
 	}
 
 	sonicServer.start();
+	*/
 
 	console.log("InitListeners");
 }
@@ -137,8 +139,9 @@ function removeListeners(){
 	if (Modernizr.devicemotion){
 		window.removeEventListener('devicemotion', motionCallBack, false);
 		window.removeEventListener('deviceorientation', orientationCallBack, false);
-	}	
-	sonicServer.stop();
+	}
+	// TODO à décommenter
+	//sonicServer.stop();
 	console.log("RemoveListeners");
 }
 

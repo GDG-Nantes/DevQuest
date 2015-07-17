@@ -124,7 +124,7 @@ function paintBackground(){
 		rowIndex++;
 	}
 	// Grille
-	var grille = false;
+	var grille = true;
 	if (grille){
 		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
 			Model.ui.context.beginPath();
@@ -198,28 +198,99 @@ function paintInsde(){
 		colIndex = 0;
 		rowIndex++;
 	}
-	// Grille
-	var grille = false;
-	if (grille){
-		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
-			Model.ui.context.beginPath();
-			Model.ui.context.moveTo(x,0);
-			Model.ui.context.lineTo(x, Model.ui.canvas.height);
-			Model.ui.context.stroke();
-		}
-		for (var y = 0; y < Model.ui.canvas.height; y+=CONST.UNIT){
-			Model.ui.context.beginPath();
-			Model.ui.context.moveTo(0,y);
-			Model.ui.context.lineTo(Model.ui.canvas.width, y);
-			Model.ui.context.stroke();
-		}
-	}
+}
+
+function wrapText(text, x, y, maxWidth, lineHeight) {
+	  var words = text.split(' ');
+	  var line = '';
+
+	  for(var n = 0; n < words.length; n++) {
+	    var testLine = line + words[n] + ' ';
+	    var metrics = Model.ui.context.measureText(testLine);
+	    var testWidth = metrics.width;
+	    if (testWidth > maxWidth && n > 0) {
+	      Model.ui.context.fillText(line, x, y);
+	      line = words[n] + ' ';
+	      y += lineHeight;
+	    }
+	    else {
+	      line = testLine;
+	    }
+	  }
+	  Model.ui.context.fillText(line, x, y);
+}
+
+function paintZoneTexte(){
+	var pos= {x: 1, y :5, w: 9, h:8};
+	// Coin Haut Gauche
+	drawPixel('txt-haut-gauche' // Sprite
+			, CONST.UNIT // wOriValue
+			, CONST.UNIT // hOriValue
+			, 0 // rowOri
+			, 0 // colOri
+			, pos.y // rowDest
+			, pos.x // colDest
+		);
+		// Ligne Haute
+		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-x-haut'];
+		Model.ui.context.fillRect(CONST.UNIT * (pos.x + 1), CONST.UNIT * pos.y, CONST.UNIT * (pos.w - 2), CONST.UNIT);
+		// Coin Haut droit
+		drawPixel('txt-haut-droite' // Sprite
+				, CONST.UNIT // wOriValue
+				, CONST.UNIT // hOriValue
+				, 0 // rowOri
+				, 0 // colOri
+				, pos.y // rowDest
+				, pos.x + pos.w - 1 // colDest
+			);
+		// Côté Gauche
+		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-y-gauche'];
+		Model.ui.context.fillRect(CONST.UNIT * pos.x, CONST.UNIT * (pos.y + 1), CONST.UNIT, CONST.UNIT * (pos.h - 2));
+		// Centre
+		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-xy'];
+		Model.ui.context.fillRect(CONST.UNIT * (pos.x + 1), CONST.UNIT * (pos.y + 1), CONST.UNIT * (pos.w - 2), CONST.UNIT * (pos.h - 2));
+		// Côté Droit
+		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-y-droite'];
+		Model.ui.context.fillRect(CONST.UNIT * (pos.x + pos.w - 1), CONST.UNIT * (pos.y + 1), CONST.UNIT, CONST.UNIT * (pos.h - 2));
+		// Coin bas gauche
+		drawPixel('txt-bas-gauche' // Sprite
+				, CONST.UNIT // wOriValue
+				, CONST.UNIT // hOriValue
+				, 0 // rowOri
+				, 0 // colOri
+				, pos.y + pos.h - 1 // rowDest
+				, pos.x // colDest
+			);
+		// ligne basse
+		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-x-bas'];
+		Model.ui.context.fillRect(CONST.UNIT * (pos.x + 1), CONST.UNIT * (pos.y + pos.h  - 1), CONST.UNIT * (pos.w - 2), CONST.UNIT);
+		// Coin bas droit
+		drawPixel('txt-bas-droite' // Sprite
+				, CONST.UNIT // wOriValue
+				, CONST.UNIT // hOriValue
+				, 0 // rowOri
+				, 0 // colOri
+				, pos.y + pos.h - 1// rowDest
+				, pos.x + pos.w - 1 // colDest
+			);
+
+
+			Model.ui.context.font = "30px Visitor";
+			Model.ui.context.fillStyle = "white";
+			wrapText("Hello World"
+				, CONST.UNIT * (pos.x + 2) // X
+				, CONST.UNIT * (pos.y + 2) // Y
+				, CONST.UNIT * (pos.w - 4) // Max Width
+				, 30 // Line Height
+			);
+
 }
 
 function paint(){
 	paintBackground();
 	paintUser();
 	//paintInsde();
+	paintZoneTexte();
 	if (paintActive)
 		window.requestAnimationFrame(paint);
 }

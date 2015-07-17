@@ -13,15 +13,15 @@ Resources.prototype.loadSprite = function(sprite) {
 			this.images[sprite.title] = image;
 			resolve(sprite);
 		}.bind(this);
-		image.onerror = function() { 
+		image.onerror = function() {
 			reject(sprite);
 		};
 	}.bind(this));
-	
+
 	return p;
 };
-  
-Resources.prototype.loadSprites = function(spriteList) { 
+
+Resources.prototype.loadSprites = function(spriteList) {
 
 	var promises = [];
 	spriteList.forEach(function(element) {
