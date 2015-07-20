@@ -196,6 +196,73 @@ function prepareTitleScreen(canvas, context){
       });
 }
 
+function prepareCreux(){
+  //Haut Gauche
+  registerImage(canvas, context
+    ,'creux-haut-gauche'
+    ,{x:45,y:60,w:3,h:3
+      ,xOut : bestSize(3) - 3,yOut:  bestSize(3) - 3, wOut: bestSize(3), hOut : bestSize(3)
+    });
+  //Haut Centre
+  registerImage(canvas, context
+      ,'creux-repeat-x-haut'
+      ,{x:47,y:60,w:2,h:3
+        ,xOut : 0, yOut: bestSize(3) - 3, wOut: 2, hOut : bestSize(3)
+      }
+      ,'repeat'
+    );
+  //Haut Droit
+  registerImage(canvas, context
+    ,'creux-haut-droite'
+    ,{x:50,y:60,w:3,h:3
+      ,xOut : 0,yOut:  bestSize(3) - 3, wOut: bestSize(3), hOut : bestSize(3)
+    });
+  //Gauche
+  registerImage(canvas, context
+      ,'creux-repeat-y-gauche'
+      ,{x:45,y:62,w:3,h:2
+        ,xOut : bestSize(3) - 3, yOut: 0, wOut: bestSize(3), hOut : 2
+      }
+      ,'repeat'
+    );
+  //Centre
+  registerImage(canvas, context
+      ,'creux-repeat-xy'
+      ,{x:47,y:62,w:2,h:2
+        ,xOut : 0, yOut: 0, wOut: 2, hOut : 2
+      }
+      ,'repeat'
+    );
+  //Droite
+  registerImage(canvas, context
+      ,'creux-repeat-y-droite'
+      ,{x:50,y:62,w:3,h:2
+        ,xOut : 0, yOut: 0, wOut: bestSize(3), hOut : 2
+      }
+      ,'repeat'
+    );
+  //Bas Gauche
+  registerImage(canvas, context
+    ,'creux-bas-gauche'
+    ,{x:45,y:65,w:3,h:3
+      ,xOut : bestSize(3) - 3,yOut:  0, wOut: bestSize(3), hOut : bestSize(3)
+    });
+  //Bas Centre
+  registerImage(canvas, context
+      ,'creux-repeat-x-bas'
+      ,{x:47,y:66,w:2,h:3
+        ,xOut : 0, yOut: 0, wOut: 2, hOut : bestSize(3)
+      }
+      ,'repeat'
+    );
+  //Bas Droit
+  registerImage(canvas, context
+    ,'creux-bas-droite'
+    ,{x:50,y:65,w:3,h:3
+      ,xOut : 0,yOut:  0, wOut: bestSize(3), hOut : bestSize(3)
+    });
+}
+
 // API
 
 // Prépare toutes les ressources
@@ -210,6 +277,7 @@ function prepareUiElements(){
   Model.ui.resources.patterns = [];
   prepareZoneText(canvasTmp, contextTmp);
   prepareTitleScreen(canvasTmp, contextTmp);
+  prepareCreux(canvasTmp, contextTmp);
   canvasTmp.remove();
 }
 

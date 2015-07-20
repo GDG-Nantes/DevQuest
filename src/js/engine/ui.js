@@ -221,10 +221,8 @@ function paintGrille(){
 	}
 }
 
-function paintZoneTexte(){
-	var pos= {x: 1, y :5, w: 8, h:8};
-	var arrayInstructionZoneTexte = UiInterface.drawZoneTexte(pos);
-	//arrayInstructionZoneTexte = UiInterface.drawZoneTexteAvecTitre(pos);
+function paintZoneTexte(position, title){
+	var arrayInstructionZoneTexte = title ? UiInterface.drawZoneTexteAvecTitre(position) : UiInterface.drawZoneTexte(position);
 	for (var instructionIndex in arrayInstructionZoneTexte){
 		var instruction = arrayInstructionZoneTexte[instructionIndex];
 		if (instruction.repeat){
@@ -246,25 +244,32 @@ function paintZoneTexte(){
 			  );
 		}
 	}
-	
+}
 
+function paintHomeScreen(){
 
-	Model.ui.context.font = "30px Visitor";
+}
+
+function paintChooseUser(){
+	var pos= {x: 1, y :5, w: Model.ui.screenSize.width - 3, h:Model.ui.screenSize.height - 8};
+	paintZoneTexte(pos, true);
+
+	Model.ui.context.font = "20px Visitor";
 	Model.ui.context.fillStyle = "#deeed6";
-	wrapText("Hello World"
-		, CONST.UNIT * (pos.x + 2) // X
-		, CONST.UNIT * (pos.y + 2) // Y
-		, CONST.UNIT * (pos.w - 4) // Max Width
+	wrapText("Choississez votre joueur"
+		, CONST.UNIT * (pos.x + 1) // X
+		, CONST.UNIT * (pos.y + 1) - CONST.UNIT / 3 // Y
+		, CONST.UNIT * (pos.w - 2) // Max Width
 		, 30 // Line Height
 	);
-
 }
 
 function paint(){
 	paintBackground();
 	paintUser();
 	//paintInsde();
-	paintZoneTexte();
+	//paintZoneTexte();
+	paintChooseUser();
 	if (CONST.DEBUG){
 		paintGrille();
 	}
