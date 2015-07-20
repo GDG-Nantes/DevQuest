@@ -4,6 +4,7 @@ var Background = require('../assets/background.js');
 var Stands = require('../assets/stands.js');
 var Inside = require('../assets/inside.js');
 var CONST = require('../model/const.js');
+var UiInterface = require('../util/ui-interface.js');
 // On défini l'ensemble des array qui vont servir pour le dessin
 var solArray = Background.initSol();
 var contourArray = Background.initContour();
@@ -123,22 +124,6 @@ function paintBackground(){
 		colIndex = 0;
 		rowIndex++;
 	}
-	// Grille
-	var grille = true;
-	if (grille){
-		for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
-			Model.ui.context.beginPath();
-			Model.ui.context.moveTo(x,0);
-			Model.ui.context.lineTo(x, Model.ui.canvas.height);
-			Model.ui.context.stroke();
-		}
-		for (var y = 0; y < Model.ui.canvas.height; y+=CONST.UNIT){
-			Model.ui.context.beginPath();
-			Model.ui.context.moveTo(0,y);
-			Model.ui.context.lineTo(Model.ui.canvas.width, y);
-			Model.ui.context.stroke();
-		}
-	}
 }
 
 function paintCharacter(sprite, direction, step, x, y){
@@ -220,69 +205,58 @@ function wrapText(text, x, y, maxWidth, lineHeight) {
 	  Model.ui.context.fillText(line, x, y);
 }
 
+function paintGrille(){
+	// Grille	
+	for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
+		Model.ui.context.beginPath();
+		Model.ui.context.moveTo(x,0);
+		Model.ui.context.lineTo(x, Model.ui.canvas.height);
+		Model.ui.context.stroke();
+	}
+	for (var y = 0; y < Model.ui.canvas.height; y+=CONST.UNIT){
+		Model.ui.context.beginPath();
+		Model.ui.context.moveTo(0,y);
+		Model.ui.context.lineTo(Model.ui.canvas.width, y);
+		Model.ui.context.stroke();
+	}
+}
+
 function paintZoneTexte(){
 	var pos= {x: 1, y :5, w: 8, h:8};
-	// Coin Haut Gauche
-	drawPixel('txt-haut-gauche' // Sprite
-			, CONST.UNIT // wOriValue
-			, CONST.UNIT // hOriValue
-			, 0 // rowOri
-			, 0 // colOri
-			, pos.y // rowDest
-			, pos.x // colDest
-		);
-		// Ligne Haute
-		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-x-haut'];
-		Model.ui.context.fillRect(CONST.UNIT * (pos.x + 1), CONST.UNIT * pos.y, CONST.UNIT * (pos.w - 2), CONST.UNIT);
-		// Coin Haut droit
-		drawPixel('txt-haut-droite' // Sprite
-				, CONST.UNIT // wOriValue
-				, CONST.UNIT // hOriValue
-				, 0 // rowOri
-				, 0 // colOri
-				, pos.y // rowDest
-				, pos.x + pos.w - 1 // colDest
-			);
-		// Côté Gauche
-		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-y-gauche'];
-		Model.ui.context.fillRect(CONST.UNIT * pos.x, CONST.UNIT * (pos.y + 1), CONST.UNIT, CONST.UNIT * (pos.h - 2));
-		// Centre
-		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-xy'];
-		Model.ui.context.fillRect(CONST.UNIT * (pos.x + 1), CONST.UNIT * (pos.y + 1), CONST.UNIT * (pos.w - 2), CONST.UNIT * (pos.h - 2));
-		// Côté Droit
-		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-y-droite'];
-		Model.ui.context.fillRect(CONST.UNIT * (pos.x + pos.w - 1), CONST.UNIT * (pos.y + 1), CONST.UNIT, CONST.UNIT * (pos.h - 2));
-		// Coin bas gauche
-		drawPixel('txt-bas-gauche' // Sprite
-				, CONST.UNIT // wOriValue
-				, CONST.UNIT // hOriValue
-				, 0 // rowOri
-				, 0 // colOri
-				, pos.y + pos.h - 1 // rowDest
-				, pos.x // colDest
-			);
-		// ligne basse
-		Model.ui.context.fillStyle = Model.ui.resources.patterns['txt-repeat-x-bas'];
-		Model.ui.context.fillRect(CONST.UNIT * (pos.x + 1), CONST.UNIT * (pos.y + pos.h  - 1), CONST.UNIT * (pos.w - 2), CONST.UNIT);
-		// Coin bas droit
-		drawPixel('txt-bas-droite' // Sprite
-				, CONST.UNIT // wOriValue
-				, CONST.UNIT // hOriValue
-				, 0 // rowOri
-				, 0 // colOri
-				, pos.y + pos.h - 1// rowDest
-				, pos.x + pos.w - 1 // colDest
-			);
+	var arrayInstructionZoneTexte = UiInterface.drawZoneTexte(pos);
+	//arrayInstructionZoneTexte = UiInterface.drawZoneTexteAvecTitre(pos);
+	for (var instructionIndex in arrayInstructionZoneTexte){
+		var instruction = arrayInstructionZoneTexte[instructionIndex];
+		if (instruction.repeat){
+
+  			Model.ui.context.fillStyle = Model.ui.resources.patterns[instruction.key];
+  			Model.ui.context.fillRect(CONST.UNIT * instruction.colDest
+  					, CONST.UNIT * instruction.rowDest
+  					, CONST.UNIT * instruction.wDest
+  					, CONST.UNIT * instruction.hDest
+  				);
+		}else{
+			drawPixel(instruction.key // Sprite
+			    , instruction.wOriValue // wOriValue
+			    , instruction.hOriValue // hOriValue
+			    , instruction.rowOri // rowOri
+			    , instruction.colOri // colOri
+			    , instruction.rowDest // rowDest
+			    , instruction.colDest // colDest
+			  );
+		}
+	}
+	
 
 
-			Model.ui.context.font = "30px Visitor";
-			Model.ui.context.fillStyle = "#deeed6";
-			wrapText("Hello World"
-				, CONST.UNIT * (pos.x + 2) // X
-				, CONST.UNIT * (pos.y + 2) // Y
-				, CONST.UNIT * (pos.w - 4) // Max Width
-				, 30 // Line Height
-			);
+	Model.ui.context.font = "30px Visitor";
+	Model.ui.context.fillStyle = "#deeed6";
+	wrapText("Hello World"
+		, CONST.UNIT * (pos.x + 2) // X
+		, CONST.UNIT * (pos.y + 2) // Y
+		, CONST.UNIT * (pos.w - 4) // Max Width
+		, 30 // Line Height
+	);
 
 }
 
@@ -291,6 +265,9 @@ function paint(){
 	paintUser();
 	//paintInsde();
 	paintZoneTexte();
+	if (CONST.DEBUG){
+		paintGrille();
+	}
 	if (paintActive)
 		window.requestAnimationFrame(paint);
 }

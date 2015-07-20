@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+	DEBUG : true,
 	// Ui Const
 	UNIT : 32,
 	HEIGHT_CHARS : 36,
