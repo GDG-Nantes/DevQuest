@@ -3,8 +3,8 @@ var Model = require('../model/model.js');
 var Background = require('../assets/background.js');
 var Stands = require('../assets/stands.js');
 var Inside = require('../assets/inside.js');
+var ChooseUserScreen = require('../assets/choose-user.js');
 var CONST = require('../model/const.js');
-var UiInterface = require('../util/ui-interface.js');
 // On défini l'ensemble des array qui vont servir pour le dessin
 var solArray = Background.initSol();
 var contourArray = Background.initContour();
@@ -51,7 +51,6 @@ function extractBackground(){
 	}
 	return array;
 }
-
 
 // Fonction générique d'écriture d'un pixel
 function drawPixel(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
@@ -206,7 +205,7 @@ function wrapText(text, x, y, maxWidth, lineHeight) {
 }
 
 function paintGrille(){
-	// Grille	
+	// Grille
 	for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
 		Model.ui.context.beginPath();
 		Model.ui.context.moveTo(x,0);
@@ -221,10 +220,9 @@ function paintGrille(){
 	}
 }
 
-function paintZoneTexte(position, title){
-	var arrayInstructionZoneTexte = title ? UiInterface.drawZoneTexteAvecTitre(position) : UiInterface.drawZoneTexte(position);
-	for (var instructionIndex in arrayInstructionZoneTexte){
-		var instruction = arrayInstructionZoneTexte[instructionIndex];
+function paintInstructions(arrayInstructions){
+	for (var instructionIndex in arrayInstructions){
+		var instruction = arrayInstructions[instructionIndex];
 		if (instruction.repeat){
 
   			Model.ui.context.fillStyle = Model.ui.resources.patterns[instruction.key];
@@ -233,7 +231,29 @@ function paintZoneTexte(position, title){
   					, CONST.UNIT * instruction.wDest
   					, CONST.UNIT * instruction.hDest
   				);
-		}else{
+		}else if (instruction.drawText){
+			Model.ui.context.font = instruction.fontSize+" Visitor";
+			Model.ui.context.fillStyle = "#deeed6";
+			wrapText(instruction.text
+				, instruction.x // X
+				, instruction.y // Y
+				, instruction.w // Max Width
+				, instruction.lineHeight // Line Height
+			);
+		}else if (instruction.custom){
+			var image = Model.ui.resources.images[instruction.key];
+			Model.ui.context.drawImage(image
+				, instruction.wOriValue * instruction.colOri //sx clipping de l'image originale
+				, instruction.hOriValue * instruction.rowOri //sy clipping de l'image originale
+				, instruction.wOriValue // swidth clipping de l'image originale
+				, instruction.hOriValue // sheight clipping de l'image originale
+				, instruction.xDest // x Coordonnées dans le dessin du Model.ui.canvas
+				, instruction.yDest // y Coordonnées dans le dessin du Model.ui.canvas
+				, instruction.wDest // width taille du dessin
+				, instruction.hDest // height taille du dessin
+				);
+
+		}else {
 			drawPixel(instruction.key // Sprite
 			    , instruction.wOriValue // wOriValue
 			    , instruction.hOriValue // hOriValue
@@ -251,17 +271,7 @@ function paintHomeScreen(){
 }
 
 function paintChooseUser(){
-	var pos= {x: 1, y :5, w: Model.ui.screenSize.width - 3, h:Model.ui.screenSize.height - 8};
-	paintZoneTexte(pos, true);
-
-	Model.ui.context.font = "20px Visitor";
-	Model.ui.context.fillStyle = "#deeed6";
-	wrapText("Choississez votre joueur"
-		, CONST.UNIT * (pos.x + 1) // X
-		, CONST.UNIT * (pos.y + 1) - CONST.UNIT / 3 // Y
-		, CONST.UNIT * (pos.w - 2) // Max Width
-		, 30 // Line Height
-	);
+	paintInstructions(ChooseUserScreen.chooseUserScreen());
 }
 
 function paint(){
