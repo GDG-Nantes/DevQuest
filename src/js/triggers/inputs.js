@@ -12,6 +12,7 @@ var stateFeq={
 	frequency : 0,
 	time : 0
 };
+var hammertime = null;
 
 function applyDirection(direction){
 	Model.gameModel.position.direction = direction;
@@ -39,14 +40,26 @@ function keypress(event){
 
 function checkMouseIntersection(event){
 	if (Model.ui.mapInteraction && Model.ui.mapInteraction.length > 0){
-		var eventX = event.clientX / (window.devicePixelRatio || 1);
-		var eventY = event.clientY / (window.devicePixelRatio || 1);
+		var eventX = event.center.x / (window.devicePixelRatio || 1);//event.clientX / (window.devicePixelRatio || 1);
+		var eventY = event.center.y / (window.devicePixelRatio || 1); //event.clientY / (window.devicePixelRatio || 1);
 		if (event.type === 'touchstart' || event.type === 'touchend'){
 			eventX = event.changedTouches[0].clientX / (window.devicePixelRatio || 1);
 			eventY = event.changedTouches[0].clientY / (window.devicePixelRatio || 1);
 		}
 		for (var pointIndex in Model.ui.mapInteraction){
 			var point = Model.ui.mapInteraction[pointIndex];
+			//var touch = event.changedTouches[0];
+			//var ratio = window.devicePixelRatio || 1;
+			console.info('Point : %s;%s | %s;%s', point.x, point.y, point.x/CONST.UNIT, point.y/CONST.UNIT);
+			console.info('hammer : %s;%s',eventX, eventY);
+			/*console.info("Page : %s;%s | radius %s;%s"
+				,touch.pageX, touch.pageY
+				, touch.pageX + (touch.radiusX / 2)
+				,touch.pageY + (touch.radiusY / 2));
+			console.info("Page : %s;%s | radius %s;%s"
+				,touch.pageX / ratio, touch.pageY / ratio
+				, (touch.pageX + (touch.radiusX / 2))  / ratio
+				, (touch.pageY + (touch.radiusY / 2))  / ratio);*/
 			if (eventX > point.x
 				&& eventX < (point.x + point.w)
 				&& eventY > point.y
@@ -146,13 +159,18 @@ function callBackSonic(message){
 function initListeners(){
 
 	document.addEventListener('keydown', keypress, false);
-	if (Modernizr.touch){		
+
+	if (!hammertime){
+		hammertime = new Hammer(document.body);
+	}
+	hammertime.on('tap', checkMouseIntersection);
+	/*if (Modernizr.touch){		
 		document.addEventListener('touchstart', mouseDown, false);
 		document.addEventListener('touchend', mouseUp, false);
 	}else{
 		document.addEventListener('mousedown', mouseDown, false);
 		document.addEventListener('mouseup', mouseUp, false);
-	}
+	}*/
 
 	if (Modernizr.devicemotion){
 		window.addEventListener('devicemotion', motionCallBack, false);
@@ -175,14 +193,15 @@ function initListeners(){
 
 function removeListeners(){
 	document.removeEventListener('keydown', keypress, false);
-	if (Modernizr.touch){		
+	hammertime.stop();
+	/*if (Modernizr.touch){		
 		document.removeEventListener('touchstart', mouseDown, false);
 		document.removeEventListener('touchend', mouseUp, false);
 	}else{
 		document.removeEventListener('mousedown', mouseDown, false);
 		document.removeEventListener('mouseup', mouseUp, false);
 
-	}
+	}*/
 
 	if (Modernizr.devicemotion){
 		window.removeEventListener('devicemotion', motionCallBack, false);
