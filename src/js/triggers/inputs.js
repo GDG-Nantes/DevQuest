@@ -37,6 +37,39 @@ function keypress(event){
 	}
 }
 
+function checkMouseIntersection(event){
+	if (Model.ui.mapInteraction && Model.ui.mapInteraction.length > 0){
+		var eventX = event.clientX / (window.devicePixelRatio || 1);
+		var eventY = event.clientY / (window.devicePixelRatio || 1);
+		if (event.type === 'touchstart' || event.type === 'touchend'){
+			eventX = event.changedTouches[0].clientX / (window.devicePixelRatio || 1);
+			eventY = event.changedTouches[0].clientY / (window.devicePixelRatio || 1);
+		}
+		for (var pointIndex in Model.ui.mapInteraction){
+			var point = Model.ui.mapInteraction[pointIndex];
+			if (eventX > point.x
+				&& eventX < (point.x + point.w)
+				&& eventY > point.y
+				&& eventY < (point.y + point.h)){
+					if (CONST.DEBUG){
+						console.log("Event Click : %s on %s ", event.type, point.key);
+					}
+					Model.ui.interaction.key = point.key;
+					Model.ui.interaction.type = event.type;
+					return;
+				}
+		}
+	}
+}
+
+function mouseDown(event){
+	checkMouseIntersection(event);	
+}
+
+function mouseUp(event){
+	checkMouseIntersection(event);
+}
+
 function transformOrientationToDirection(orientation){
 	// On a une valeur qui oscille entre 0 et 360
 	// On va prendre des tranches de 90 degrés pour chaque direction
@@ -113,6 +146,13 @@ function callBackSonic(message){
 function initListeners(){
 
 	document.addEventListener('keydown', keypress, false);
+	if (Modernizr.touch){		
+		document.addEventListener('touchstart', mouseDown, false);
+		document.addEventListener('touchend', mouseUp, false);
+	}else{
+		document.addEventListener('mousedown', mouseDown, false);
+		document.addEventListener('mouseup', mouseUp, false);
+	}
 
 	if (Modernizr.devicemotion){
 		window.addEventListener('devicemotion', motionCallBack, false);
@@ -135,6 +175,14 @@ function initListeners(){
 
 function removeListeners(){
 	document.removeEventListener('keydown', keypress, false);
+	if (Modernizr.touch){		
+		document.removeEventListener('touchstart', mouseDown, false);
+		document.removeEventListener('touchend', mouseUp, false);
+	}else{
+		document.removeEventListener('mousedown', mouseDown, false);
+		document.removeEventListener('mouseup', mouseUp, false);
+
+	}
 
 	if (Modernizr.devicemotion){
 		window.removeEventListener('devicemotion', motionCallBack, false);

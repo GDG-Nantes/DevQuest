@@ -7,6 +7,11 @@ var ui = {
 	context : null,
 	mapCollision : [],
 	mapInteraction : [],
+	interaction : {
+		 key : ''
+		, type : 'mousedown' 
+	},
+	screen : '',
 	resources : new Resources(),
 	middlePoint : {
 		x : 0,

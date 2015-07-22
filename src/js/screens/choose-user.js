@@ -85,6 +85,20 @@ function chooseUserScreen(){
       , lineHeight : 30 // Line Height
   });
 
+  // Mise à jour de la map d'interaction
+  if (Model.ui.screen != 'choose-user'){
+    var interaction = [];
+    Model.ui.mapInteraction = interaction;
+    Model.ui.screen = 'choose-user';
+    interaction.push({
+        x : CONST.UNIT * positionBtnPrev.x
+      , y : CONST.UNIT * positionBtnPrev.y
+      , w : CONST.UNIT * positionBtnPrev.w
+      , h : CONST.UNIT * positionBtnPrev.h
+      , key : 'btnPrev'
+    })
+  }
+
   return arrayInstructions;
 }
 
