@@ -263,6 +263,140 @@ function prepareCreux(canvas, context){
     });
 }
 
+function prepareBtn(canvas, context){
+  //Haut Gauche
+  registerImage(canvas, context
+    ,'btn-haut-gauche'
+    ,{x:148,y:13,w:17,h:6
+      ,xOut : bestSize(17) - 17,yOut:  bestSize(6) - 6, wOut: bestSize(17), hOut : bestSize(6)
+    });
+  //Haut Centre
+  registerImage(canvas, context
+      ,'btn-repeat-x-haut'
+      ,{x:165,y:13,w:6,h:6
+        ,xOut : 0, yOut: bestSize(6) - 6, wOut: 6, hOut : bestSize(6)
+      }
+      ,'repeat'
+    );
+  //Haut Droit
+  registerImage(canvas, context
+    ,'btn-haut-droite'
+    ,{x:171,y:13,w:9,h:6
+      ,xOut : 0,yOut:  bestSize(6) - 6, wOut: bestSize(9), hOut : bestSize(6)
+    });
+  //Gauche
+  registerImage(canvas, context
+      ,'btn-repeat-y-gauche'
+      ,{x:148,y:19,w:17,h:4
+        ,xOut : bestSize(17) - 17, yOut: 0, wOut: bestSize(17), hOut : 4
+      }
+      ,'repeat'
+    );
+  //Centre
+  registerImage(canvas, context
+      ,'btn-repeat-xy'
+      ,{x:165,y:19,w:6,h:4
+        ,xOut : 0, yOut: 0, wOut: 6, hOut : 4
+      }
+      ,'repeat'
+    );
+  //Droite
+  registerImage(canvas, context
+      ,'btn-repeat-y-droite'
+      ,{x:171,y:19,w:9,h:4
+        ,xOut : 0, yOut: 0, wOut: bestSize(9), hOut : 4
+      }
+      ,'repeat'
+    );
+  //Bas Gauche
+  registerImage(canvas, context
+    ,'btn-bas-gauche'
+    ,{x:148,y:23,w:17,h:6
+      ,xOut : bestSize(17) - 17,yOut:  0, wOut: bestSize(17), hOut : bestSize(6)
+    });
+  //Bas Centre
+  registerImage(canvas, context
+      ,'btn-repeat-x-bas'
+      ,{x:165,y:23,w:6,h:6
+        ,xOut : 0, yOut: 0, wOut: 6, hOut : bestSize(6)
+      }
+      ,'repeat'
+    );
+  //Bas Droit
+  registerImage(canvas, context
+    ,'btn-bas-droite'
+    ,{x:171,y:23,w:9,h:6
+      ,xOut : 0,yOut:  0, wOut: bestSize(9), hOut : bestSize(6)
+    });
+}
+
+function prepareBtnPressed(canvas, context){
+  //Haut Gauche
+  registerImage(canvas, context
+    ,'btnpressed-haut-gauche'
+    ,{x:148,y:47,w:5,h:5
+      ,xOut : bestSize(5) - 5,yOut:  bestSize(5) - 5, wOut: bestSize(5), hOut : bestSize(5)
+    });
+  //Haut Centre
+  registerImage(canvas, context
+      ,'btnpressed-repeat-x-haut'
+      ,{x:153,y:47,w:7,h:5
+        ,xOut : 0, yOut: bestSize(5) - 5, wOut: 7, hOut : bestSize(5)
+      }
+      ,'repeat'
+    );
+  //Haut Droit
+  registerImage(canvas, context
+    ,'btnpressed-haut-droite'
+    ,{x:160,y:47,w:20,h:5
+      ,xOut : 0,yOut:  bestSize(5) - 5, wOut: bestSize(20), hOut : bestSize(5)
+    });
+  //Gauche
+  registerImage(canvas, context
+      ,'btnpressed-repeat-y-gauche'
+      ,{x:148,y:52,w:5,h:6
+        ,xOut : bestSize(5) - 5, yOut: 0, wOut: bestSize(5), hOut : 5
+      }
+      ,'repeat'
+    );
+  //Centre
+  registerImage(canvas, context
+      ,'btnpressed-repeat-xy'
+      ,{x:153,y:52,w:7,h:6
+        ,xOut : 0, yOut: 0, wOut: 7, hOut : 6
+      }
+      ,'repeat'
+    );
+  //Droite
+  registerImage(canvas, context
+      ,'btnpressed-repeat-y-droite'
+      ,{x:160,y:52,w:20,h:6
+        ,xOut : 0, yOut: 0, wOut: bestSize(20), hOut : 6
+      }
+      ,'repeat'
+    );
+  //Bas Gauche
+  registerImage(canvas, context
+    ,'btnpressed-bas-gauche'
+    ,{x:148,y:58,w:5,h:5
+      ,xOut : bestSize(5) - 5,yOut:  0, wOut: bestSize(5), hOut : bestSize(5)
+    });
+  //Bas Centre
+  registerImage(canvas, context
+      ,'btnpressed-repeat-x-bas'
+      ,{x:153,y:58,w:7,h:5
+        ,xOut : 0, yOut: 0, wOut: 7, hOut : bestSize(5)
+      }
+      ,'repeat'
+    );
+  //Bas Droit
+  registerImage(canvas, context
+    ,'btnpressed-bas-droite'
+    ,{x:160,y:58,w:20,h:5
+      ,xOut : 0,yOut:  0, wOut: bestSize(20), hOut : bestSize(5)
+    });
+}
+
 // API
 
 // Prépare toutes les ressources
@@ -278,6 +412,8 @@ function prepareUiElements(){
   prepareZoneText(canvasTmp, contextTmp);
   prepareTitleScreen(canvasTmp, contextTmp);
   prepareCreux(canvasTmp, contextTmp);
+  prepareBtn(canvasTmp, contextTmp);
+  prepareBtnPressed(canvasTmp, contextTmp);
   canvasTmp.remove();
 }
 

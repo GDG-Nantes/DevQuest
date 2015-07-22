@@ -3,7 +3,7 @@ var Model = require('../model/model.js');
 var Background = require('../assets/background.js');
 var Stands = require('../assets/stands.js');
 var Inside = require('../assets/inside.js');
-var ChooseUserScreen = require('../assets/choose-user.js');
+var ScreenChooseUser = require('../screens/choose-user.js');
 var CONST = require('../model/const.js');
 // On défini l'ensemble des array qui vont servir pour le dessin
 var solArray = Background.initSol();
@@ -271,7 +271,7 @@ function paintHomeScreen(){
 }
 
 function paintChooseUser(){
-	paintInstructions(ChooseUserScreen.chooseUserScreen());
+	paintInstructions(ScreenChooseUser.chooseUserScreen());
 }
 
 function paint(){

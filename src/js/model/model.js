@@ -6,6 +6,7 @@ var ui = {
 	canvas : null,
 	context : null,
 	mapCollision : [],
+	mapInteraction : [],
 	resources : new Resources(),
 	middlePoint : {
 		x : 0,

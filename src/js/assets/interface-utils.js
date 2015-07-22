@@ -102,6 +102,38 @@ function drawCreux(position){
   }, position);
 }
 
+// Affichage d'un bouton
+function drawBtn(position){
+  return drawCarreTexte({
+      hautGauche : 'btn-haut-gauche'
+    , haut : 'btn-repeat-x-haut'
+    , hautDroite : 'btn-haut-droite'
+    , gauche : 'btn-repeat-y-gauche'
+    , centre : 'btn-repeat-xy'
+    , droite : 'btn-repeat-y-droite'
+    , basGauche : 'btn-bas-gauche'
+    , bas : 'btn-repeat-x-bas'
+    , basDroite : 'btn-bas-droite'
+  }, position);
+}
+
+// Affichage d'un bouton pressé
+function drawBtnPressed(position){
+  return drawCarreTexte({
+      hautGauche : 'btnpressed-haut-gauche'
+    , haut : 'btnpressed-repeat-x-haut'
+    , hautDroite : 'btnpressed-haut-droite'
+    , gauche : 'btnpressed-repeat-y-gauche'
+    , centre : 'btnpressed-repeat-xy'
+    , droite : 'btnpressed-repeat-y-droite'
+    , basGauche : 'btnpressed-bas-gauche'
+    , bas : 'btnpressed-repeat-x-bas'
+    , basDroite : 'btnpressed-bas-droite'
+  }, position);
+}
+
+
+
 // Affichage d'une zone de texte en fonction de sa position dans l'écran
 function drawZoneTexte(position){
   return drawCarreTexte({
@@ -236,5 +268,7 @@ function drawZoneTexteAvecTitre(position){
 module.exports = {
     drawZoneTexte : drawZoneTexte,
     drawZoneTexteAvecTitre : drawZoneTexteAvecTitre,
-    drawCreux : drawCreux
+    drawCreux : drawCreux,
+    drawBtn : drawBtn,
+    drawBtnPressed : drawBtnPressed
 }
