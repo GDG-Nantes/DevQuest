@@ -5,6 +5,7 @@ var CONST = require('./const.js');
 var ui = {
 	canvas : null,
 	context : null,
+	ratio : 1,
 	mapCollision : [],
 	mapInteraction : [],
 	interaction : {

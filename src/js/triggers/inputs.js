@@ -41,7 +41,7 @@ function keypress(event){
 function checkMouseIntersection(event){
 	if (Model.ui.mapInteraction && Model.ui.mapInteraction.length > 0){
 		var eventX = event.center.x / (window.devicePixelRatio || 1);//event.clientX / (window.devicePixelRatio || 1);
-		var eventY = event.center.y / (window.devicePixelRatio || 1); //event.clientY / (window.devicePixelRatio || 1);
+		var eventY = (event.center.y  - Model.ui.canvas.offsetTop) / (window.devicePixelRatio || 1); //event.clientY / (window.devicePixelRatio || 1);
 		if (event.type === 'touchstart' || event.type === 'touchend'){
 			eventX = event.changedTouches[0].clientX / (window.devicePixelRatio || 1);
 			eventY = event.changedTouches[0].clientY / (window.devicePixelRatio || 1);
@@ -161,7 +161,7 @@ function initListeners(){
 	document.addEventListener('keydown', keypress, false);
 
 	if (!hammertime){
-		hammertime = new Hammer(document.body);
+		hammertime = new Hammer(document.querySelector('canvas#game'));
 	}
 	hammertime.on('tap', checkMouseIntersection);
 	/*if (Modernizr.touch){		

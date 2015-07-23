@@ -66,6 +66,7 @@ function pageLoad(){
 	Model.ui.canvas.width  = window.innerWidth;
 	Model.ui.canvas.height = window.innerHeight;
 	Model.ui.context = Model.ui.canvas.getContext('2d');
+	Model.ui.ratio = window.devicePixelRatio || 1;
 	Model.ui.context.scale(window.devicePixelRatio || 1 , window.devicePixelRatio || 1);
 	var widthRatio = Model.ui.canvas.width / window.devicePixelRatio / CONST.UNIT;
 	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.UNIT;
@@ -73,6 +74,10 @@ function pageLoad(){
 	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
 	Model.ui.middlePoint.x = Math.floor(Model.ui.screenSize.width/2);
 	Model.ui.middlePoint.y = Math.floor(Model.ui.screenSize.height/2);
+
+	if (CONST.DEBUG){
+
+	}
 
 	// On précharge toutes les ressources nécessaires
 	Model.ui.resources.loadSprites([
