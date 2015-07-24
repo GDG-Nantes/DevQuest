@@ -14,6 +14,7 @@ function checkConfig(){
 	/*
 	On doit vérifier :
 	OBLIGATOIRE
+		* Promise
 		* Canvas
 		* HTML5 Audio
 		* WebSockets
@@ -25,23 +26,29 @@ function checkConfig(){
 		* full screen
 		* Device motion
 		* vibration
-
-	console.log(Modernizr.canvas);
-	console.log(Modernizr.localstorage);
-	console.log(Modernizr.websockets);
-	console.log(Modernizr.touch);
-	console.log(Modernizr.vibrate);
-	console.log(Modernizr.devicemotion);
-	console.log(Modernizr.fullscreen);
-	console.log(Modernizr.getusermedia);
-	console.log((window.AudioContext || window.webkitAudioContext));
-	console.log(typeof document.hidden != "undefined"
-			|| typeof document.mozHidden != "undefined"
-			|| typeof document.msHidden != "undefined"
-			|| typeof document.webkitHidden != "undefined");
 	*/
 
-	return Modernizr.canvas
+	if (CONST.DEBUG){
+		console.debug("============CHECK CONFIG==========");
+		console.debug("==================================");
+		console.debug("Promise : %s", window.Promise);
+		console.debug("Canvas : %s", Modernizr.canvas);
+		console.debug("LocalStorage : %s", Modernizr.localstorage);
+		console.debug("WebSockets : %s", Modernizr.websockets);
+		console.debug("TouchEvents : %s", Modernizr.touch);
+		console.debug("Vibrate : %s", Modernizr.vibrate);
+		console.debug("DeviceMotion : %s", Modernizr.devicemotion);
+		console.debug("FullScreen : %s", Modernizr.fullscreen);
+		console.debug("UserMedia : %s", Modernizr.getusermedia);
+		console.debug("AudioContext : %s", (window.AudioContext || window.webkitAudioContext));
+		console.debug("Page Visibility : %s", typeof document.hidden != "undefined"
+				|| typeof document.mozHidden != "undefined"
+				|| typeof document.msHidden != "undefined"
+				|| typeof document.webkitHidden != "undefined");
+	}
+	
+	return window.Promise
+		&& Modernizr.canvas
 		&& Modernizr.localstorage
 		&& Modernizr.websockets
 		&& Modernizr.getusermedia
@@ -70,12 +77,24 @@ function pageLoad(){
 	Model.ui.context.scale(window.devicePixelRatio || 1 , window.devicePixelRatio || 1);
 	var widthRatio = Model.ui.canvas.width / window.devicePixelRatio / CONST.UNIT;
 	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.UNIT;
+	Model.ui.ratioScreen = document.body.scrollHeight / (heightRatio * CONST.UNIT);
+	Model.ui.ratio = Model.ui.ratioScreen;
 	Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
 	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
 	Model.ui.middlePoint.x = Math.floor(Model.ui.screenSize.width/2);
 	Model.ui.middlePoint.y = Math.floor(Model.ui.screenSize.height/2);
 
 	if (CONST.DEBUG){
+		console.debug("============SCREEN SIZES==========");
+		console.debug("==================================");
+		console.debug("Ratio : %s",Model.ui.ratio);
+		console.debug("RatioScreen : %s",Model.ui.ratioScreen);
+		console.debug("Screen Size in px : {%s/%s} ratio : %s",screen.width, screen.height, screen.width / screen.height);
+		console.debug("Body Size in px : {%s/%s} ratio : %s",document.body.scrollWidth, document.body.scrollHeight, document.body.scrollWidth / document.body.scrollHeight);
+		console.debug("Canvas Size : {%s/%s} ratio : %s",Model.ui.canvas.width, Model.ui.canvas.height, Model.ui.canvas.width / Model.ui.canvas.height);
+		console.debug("Screen Size according to unit: {%s/%s} ratio : %s",widthRatio, heightRatio, widthRatio / heightRatio);
+		console.debug("Screen Size in pix: {%s/%s}",widthRatio * CONST.UNIT, heightRatio * CONST.UNIT);
+		console.debug("Screen Size in Unit : {%s/%s}",Model.ui.screenSize.width, Model.ui.screenSize.height);
 
 	}
 
@@ -102,9 +121,12 @@ function pageLoad(){
 							{title: 'ui', url: 'assets/img/ui_split.png'}
 						])
 	.then(function(value) {
-		UiInterface.prepareUiElements();
+		return new UiInterface().prepareUiElements();
+	})
+	.then(function(){
 		Engine.start();
-	}).catch(function(err){
+	})
+	.catch(function(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);
 	});
 
