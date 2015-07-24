@@ -60,7 +60,8 @@ function checkMouseIntersection_(event){
 						console.debug("Event Click : %s on %s ", event.type, point.key);
 					}
 					Model.ui.interaction.key = point.key;
-					Model.ui.interaction.type = event.type;
+					Model.ui.interaction.type = event.type === 'touchstart' ? CONST.directions.DOWN : 
+										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP);
 					return;
 				}
 		}

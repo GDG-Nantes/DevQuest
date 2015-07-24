@@ -1,4 +1,5 @@
 'use strict';
+var Characters = require('./charaters-cst.js');
 
 module.exports = {
 	DEBUG : true,
@@ -23,7 +24,12 @@ module.exports = {
 	},
 	// Screen Const
 	screens : {
-		HOME : 'home'
+		HOME : 'home',
+		CHOOSE_USER : 'choose-user',
+		GAME : 'game',
+		INSIDE_SILVER : 'inside-silver',
+		INSIDE_GOLD : 'inside-gold',
+		INSIDE_PLATINIUM : 'inside-platinium'
 	},
 	// Direction Const
 	directions : {		
@@ -31,5 +37,13 @@ module.exports = {
 		LEFT : 2,
 		RIGHT : 3,
 		DOWN : 4
+	},
+	// Personnages
+	characters : Characters,
+	// Ui elements clickable
+	uiElements : {
+		BTN_LEFT : 'btn-left',
+		BTN_RIGHT : 'btn-right',
+		BTN_CHOISIR : 'btn-choose'
 	}
 };

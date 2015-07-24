@@ -13,12 +13,12 @@ var ui = {
 	ratio : 1,
 	ratioScreen : 1,
 	mapCollision : [],
-	mapInteraction : [],
+	mapInteraction : [],	
 	interaction : {
 		 key : ''
 		, type : 'mousedown' 
 	},
-	screen : '',
+	screen : CONST.screens.HOME,
 	middlePoint : {
 		x : 0,
 		y : 0
@@ -27,9 +27,10 @@ var ui = {
 			width : 0
 			, height : 0
 	}
-};
+}; 
 
 var gameModel = {		
+		indexUser : 0,
 		inputArray : [],
 		positionScreen: {
 			x:0,

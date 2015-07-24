@@ -155,7 +155,7 @@ function paintCharacter_(sprite, direction, step, x, y){
 }
 
 function paintUser_(){
-	paintCharacter_('healer_f',// sprite à utiliser
+	paintCharacter_(CONST.characters[Model.gameModel.indexUser].key,// sprite à utiliser
 		Model.gameModel.position.direction, // Orientation du joeur
 		Model.gameModel.position.stepCount, // état du sprite
 		Model.gameModel.position.x - Model.gameModel.positionScreen.x, // x du joueur
@@ -278,12 +278,20 @@ function paintChooseUser_(){
 function paint_(){
 	paintBackground_();
 
-	if (Model.ui.screen === 'choose-user'){
-		paintChooseUser_();
-		
-	}else if (Model.ui.screen === 'game'){
+	if (Model.ui.screen === CONST.screens.HOME){
+		paintChooseUser_();		
+				
+	}else if (Model.ui.screen === CONST.screens.CHOOSE_USER){
+		paintChooseUser_();		
+	}else if (Model.ui.screen === CONST.screens.GAME){
 		paintUser_();
-	}else if (Model.ui.screen)
+	}else if (Model.ui.screen === CONST.screens.INSIDE_SILVER){
+		paintInsde_();	
+	}else if (Model.ui.screen === CONST.screens.INSIDE_GOLD){
+		paintInsde_();	
+	}else if (Model.ui.screen === CONST.screens.INSIDE_PLATINIUM){
+		paintInsde_();	
+	}
 	//paintInsde_();
 	//paintZoneTexte_();
 	if (CONST.DEBUG){

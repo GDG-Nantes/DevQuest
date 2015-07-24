@@ -265,10 +265,29 @@ function drawZoneTexteAvecTitre(position){
   return arrayInstructions;
 }
 
+function drawAlphaBackground(){
+  var array = [];
+  for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
+    var arrayRow = [];
+    for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
+      array.push({key : 'inside_1' // Sprite
+        , wOriValue : CONST.ui.UNIT // wOriValue
+        , hOriValue : CONST.ui.UNIT // hOriValue
+        , rowOri :  8 // rowOri
+        , colOri : 1 // colOri
+        , rowDest :  row// rowDest
+        , colDest :  col // colDest
+        });
+    }
+  }
+  return array;
+}
+
 module.exports = {
     drawZoneTexte : drawZoneTexte,
     drawZoneTexteAvecTitre : drawZoneTexteAvecTitre,
     drawCreux : drawCreux,
     drawBtn : drawBtn,
-    drawBtnPressed : drawBtnPressed
+    drawBtnPressed : drawBtnPressed,
+    drawAlphaBackground : drawAlphaBackground
 }
