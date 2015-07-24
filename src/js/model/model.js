@@ -1,6 +1,11 @@
 'use strict';
-var Resources = require('../util/resources');
 var CONST = require('./const.js');
+
+var resources = {
+	images : [],
+	sizes : [],
+	patterns : []
+};
 
 var ui = {
 	canvas : null,
@@ -14,7 +19,6 @@ var ui = {
 		, type : 'mousedown' 
 	},
 	screen : '',
-	resources : new Resources(),
 	middlePoint : {
 		x : 0,
 		y : 0
@@ -51,6 +55,7 @@ for (var row = 0; row < CONST.SIZE_UNIT.h; row++){
 
 
 module.exports = {
+	resources : resources,
 	ui : ui,
 	gameModel : gameModel
 };

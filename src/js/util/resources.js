@@ -1,16 +1,17 @@
 'use strict';
+var Model = require('../model/model.js');
 
 function Resources() {
 	this.images = [];
 }
 
-Resources.prototype.loadSprite = function(sprite) {
+function loadSprite(sprite) {
 
 	var p = new Promise(function(resolve, reject) {
 		var image = new Image();
 		image.src = sprite.url;
 		image.onload = function() {
-			this.images[sprite.title] = image;
+			Model.resources.images[sprite.title] = image;
 			resolve(sprite);
 		}.bind(this);
 		image.onerror = function() {
@@ -21,13 +22,15 @@ Resources.prototype.loadSprite = function(sprite) {
 	return p;
 };
 
-Resources.prototype.loadSprites = function(spriteList) {
+function loadSprites(spriteList) {
 
 	var promises = [];
 	spriteList.forEach(function(element) {
-		promises.push(this.loadSprite(element));
+		promises.push(loadSprite(element));
 	}.bind(this));
 	return Promise.all(promises);
 };
 
-module.exports = Resources;
+module.exports = {
+	loadSprites : loadSprites
+};

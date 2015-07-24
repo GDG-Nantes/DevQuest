@@ -99,29 +99,29 @@ function pageLoad(){
 	}
 
 	// On précharge toutes les ressources nécessaires
-	Model.ui.resources.loadSprites([
-							// Personnages
-							{title: 'healer_f', url: 'assets/img/healer_f.png'},
-							{title: 'healer_m', url: 'assets/img/healer_m.png'},
-							{title: 'mage_f', url: 'assets/img/mage_f.png'},
-							{title: 'mage_m', url: 'assets/img/mage_m.png'},
-							{title: 'ninja_f', url: 'assets/img/ninja_f.png'},
-							{title: 'ninja_m', url: 'assets/img/ninja_m.png'},
-							{title: 'ranger_f', url: 'assets/img/ranger_f.png'},
-							{title: 'ranger_m', url: 'assets/img/ranger_m.png'},
-							{title: 'townfolk1_f', url: 'assets/img/townfolk1_f.png'},
-							{title: 'townfolk1_m', url: 'assets/img/townfolk1_m.png'},
-							{title: 'warrior_f', url: 'assets/img/warrior_f.png'},
-							{title: 'warrior_m', url: 'assets/img/warrior_m.png'},
-							// Décors
-							{title: 'inside_1', url: 'assets/img/inside01.png'},
-							{title: 'inside_2', url: 'assets/img/inside02.png'},
-							{title: 'magecity', url: 'assets/img/magecity_0.png'},
-							// Eléments Ui
-							{title: 'ui', url: 'assets/img/ui_split.png'}
-						])
+	Resources.loadSprites([
+				// Personnages
+				{title: 'healer_f', url: 'assets/img/healer_f.png'},
+				{title: 'healer_m', url: 'assets/img/healer_m.png'},
+				{title: 'mage_f', url: 'assets/img/mage_f.png'},
+				{title: 'mage_m', url: 'assets/img/mage_m.png'},
+				{title: 'ninja_f', url: 'assets/img/ninja_f.png'},
+				{title: 'ninja_m', url: 'assets/img/ninja_m.png'},
+				{title: 'ranger_f', url: 'assets/img/ranger_f.png'},
+				{title: 'ranger_m', url: 'assets/img/ranger_m.png'},
+				{title: 'townfolk1_f', url: 'assets/img/townfolk1_f.png'},
+				{title: 'townfolk1_m', url: 'assets/img/townfolk1_m.png'},
+				{title: 'warrior_f', url: 'assets/img/warrior_f.png'},
+				{title: 'warrior_m', url: 'assets/img/warrior_m.png'},
+				// Décors
+				{title: 'inside_1', url: 'assets/img/inside01.png'},
+				{title: 'inside_2', url: 'assets/img/inside02.png'},
+				{title: 'magecity', url: 'assets/img/magecity_0.png'},
+				// Eléments Ui
+				{title: 'ui', url: 'assets/img/ui_split.png'}
+			])
 	.then(function(value) {
-		return new UiInterface().prepareUiElements();
+		return UiInterface.prepareUiElements();
 	})
 	.then(function(){
 		Engine.start();

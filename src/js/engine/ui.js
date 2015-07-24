@@ -56,7 +56,7 @@ function extractBackground_(){
 // Fonction générique d'écriture d'un pixel
 function drawPixel_(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
 
-	var image = Model.ui.resources.images[spriteToUse];
+	var image = Model.resources.images[spriteToUse];
 	var drawPixelValue = CONST.UNIT;
 
 	Model.ui.context.drawImage(image
@@ -226,7 +226,7 @@ function paintInstructions_(arrayInstructions){
 		var instruction = arrayInstructions[instructionIndex];
 		if (instruction.repeat){
 
-  			Model.ui.context.fillStyle = Model.ui.resources.patterns[instruction.key];
+  			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
   			Model.ui.context.fillRect(CONST.UNIT * instruction.colDest
   					, CONST.UNIT * instruction.rowDest
   					, CONST.UNIT * instruction.wDest
@@ -242,7 +242,7 @@ function paintInstructions_(arrayInstructions){
 				, instruction.lineHeight // Line Height
 			);
 		}else if (instruction.custom){
-			var image = Model.ui.resources.images[instruction.key];
+			var image = Model.resources.images[instruction.key];
 			Model.ui.context.drawImage(image
 				, instruction.wOriValue * instruction.colOri //sx clipping de l'image originale
 				, instruction.hOriValue * instruction.rowOri //sy clipping de l'image originale

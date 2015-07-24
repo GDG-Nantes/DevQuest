@@ -15,7 +15,7 @@ function extractImage(canvas, context, x, y, w, h, xCanvas, yCanvas, wCanvas, hC
   canvas.width = wCanvas;
   canvas.height = hCanvas;
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(Model.ui.resources.images['ui'],
+  context.drawImage(Model.resources.images['ui'],
     x, y, w, h, // Extraction originale
     xCanvas, yCanvas, w, h// Postionement dans le canvas
   );
@@ -25,18 +25,18 @@ function extractImage(canvas, context, x, y, w, h, xCanvas, yCanvas, wCanvas, hC
 }
 
 function registerImage(canvas, context, key, sizes, pattern){
-  Model.ui.resources.images[key] = extractImage(canvas, context,
+  Model.resources.images[key] = extractImage(canvas, context,
               sizes.x, sizes.y, sizes.w, sizes.h, // Données d'origine
               sizes.xOut, sizes.yOut, sizes.wOut, sizes.hOut  // Données sortie
               );
-  Model.ui.resources.sizes[key] = sizes;
+  Model.resources.sizes[key] = sizes;
   if (pattern) {
-    Model.ui.resources.patterns[key] = context.createPattern(Model.ui.resources.images[key], pattern);
+    Model.resources.patterns[key] = context.createPattern(Model.resources.images[key], pattern);
   }
 
   if (CONST.DEBUG){
     console.debug("Img : key : %s", key);
-    var img = Model.ui.resources.images[key];
+    var img = Model.resources.images[key];
     document.body.appendChild(img);
     img.style.display = 'none';
     console.debug(img);
@@ -426,20 +426,18 @@ return promise;
 }
 // API
 
-function UiElements(){  
-}
 
 // Prépare toutes les ressources
-UiElements.prototype.prepareUiElements = function(){
+function prepareUiElements(){
   var promise = new Promise(function promisePrepareUiElements(resolve, reject){
     // On va devoir feinter pour préparer l'ui avec des élements spéciaux
     var canvasTmp = document.createElement("canvas");
     canvasTmp.id = "toDelete";
     var contextTmp = canvasTmp.getContext('2d');
     // On initialise une map de tailles histoire de connaitre les tailles d'affichage
-    Model.ui.resources.sizes = [];
+    Model.resources.sizes = [];
     // On fait la même chose avec les patterns
-    Model.ui.resources.patterns = [];
+    Model.resources.patterns = [];
     // On prépare toutes les promesses de chargement
     var promises = [prepareZoneText(canvasTmp, contextTmp)
             , prepareTitleScreen(canvasTmp, contextTmp)
@@ -459,4 +457,6 @@ UiElements.prototype.prepareUiElements = function(){
 }
 
 
-module.exports = UiElements;
+module.exports = {
+  prepareUiElements : prepareUiElements
+};
