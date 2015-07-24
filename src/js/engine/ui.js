@@ -277,6 +277,12 @@ function paintChooseUser_(){
 
 function paint_(){
 	paintBackground_();
+	if (Model.ui.changeScreen 
+		&& Model.ui.changeScreen != Model.ui.screen){
+		Model.ui.screen = Model.ui.changeScreen;
+	}else{
+		Model.ui.changeScreen = '';
+	}
 
 	if (Model.ui.screen === CONST.screens.HOME){
 		paintChooseUser_();		
@@ -297,6 +303,8 @@ function paint_(){
 	if (CONST.DEBUG){
 		paintGrille_();
 	}
+
+	
 	if (paintActive)
 		window.requestAnimationFrame(paint_);
 }

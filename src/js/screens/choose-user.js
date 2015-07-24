@@ -27,6 +27,9 @@ function checkInteractions(){
           Model.gameModel.indexUser = CONST.characters.length - 1;
         }
         break;
+      case CONST.uiElements.BTN_CHOISIR :                 
+        Model.ui.changeScreen = CONST.screens.GAME;        
+        break;
       default:
     }
     Model.ui.interaction.type = '';
@@ -160,7 +163,7 @@ function chooseUserScreen(){
   });
 
   // Mise à jour de la map d'interaction
-  if (Model.ui.screen != CONST.screens.CHOOSE_USER){
+  if (Model.ui.changeScreen != CONST.screens.CHOOSE_USER){
     var interaction = [];
     Model.ui.mapInteraction = interaction;
     Model.ui.screen = CONST.screens.CHOOSE_USER;

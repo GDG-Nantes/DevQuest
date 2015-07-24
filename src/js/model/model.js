@@ -18,6 +18,7 @@ var ui = {
 		 key : ''
 		, type : 'mousedown' 
 	},
+	changeScreen : '',
 	screen : CONST.screens.HOME,
 	middlePoint : {
 		x : 0,
