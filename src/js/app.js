@@ -75,9 +75,9 @@ function pageLoad(){
 	Model.ui.context = Model.ui.canvas.getContext('2d');
 	Model.ui.ratio = window.devicePixelRatio || 1;
 	Model.ui.context.scale(window.devicePixelRatio || 1 , window.devicePixelRatio || 1);
-	var widthRatio = Model.ui.canvas.width / window.devicePixelRatio / CONST.UNIT;
-	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.UNIT;
-	Model.ui.ratioScreen = document.body.scrollHeight / (heightRatio * CONST.UNIT);
+	var widthRatio = Model.ui.canvas.width / window.devicePixelRatio / CONST.ui.UNIT;
+	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.ui.UNIT;
+	Model.ui.ratioScreen = document.body.scrollHeight / (heightRatio * CONST.ui.UNIT);
 	Model.ui.ratio = Model.ui.ratioScreen;
 	Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
 	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
@@ -93,7 +93,7 @@ function pageLoad(){
 		console.debug("Body Size in px : {%s/%s} ratio : %s",document.body.scrollWidth, document.body.scrollHeight, document.body.scrollWidth / document.body.scrollHeight);
 		console.debug("Canvas Size : {%s/%s} ratio : %s",Model.ui.canvas.width, Model.ui.canvas.height, Model.ui.canvas.width / Model.ui.canvas.height);
 		console.debug("Screen Size according to unit: {%s/%s} ratio : %s",widthRatio, heightRatio, widthRatio / heightRatio);
-		console.debug("Screen Size in pix: {%s/%s}",widthRatio * CONST.UNIT, heightRatio * CONST.UNIT);
+		console.debug("Screen Size in pix: {%s/%s}",widthRatio * CONST.ui.UNIT, heightRatio * CONST.ui.UNIT);
 		console.debug("Screen Size in Unit : {%s/%s}",Model.ui.screenSize.width, Model.ui.screenSize.height);
 
 	}

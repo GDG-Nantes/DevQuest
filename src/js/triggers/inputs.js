@@ -23,17 +23,17 @@ function applyDirection_(direction){
 
 function keypress_(event){
 	switch (event.keyCode){
-		case 37: //CONST.LEFT
-			applyDirection_(CONST.LEFT);
+		case 37: //LEFT
+			applyDirection_(CONST.directions.LEFT);
 			break;
 		case 38: //UP
-			applyDirection_(CONST.UP);
+			applyDirection_(CONST.directions.UP);
 			break;
-		case 39: //CONST.RIGHT
-			applyDirection_(CONST.RIGHT);
+		case 39: //RIGHT
+			applyDirection_(CONST.directions.RIGHT);
 			break;
-		case 40: //CONST.DOWN
-			applyDirection_(CONST.DOWN);
+		case 40: //DOWN
+			applyDirection_(CONST.directions.DOWN);
 			break;
 	}
 }
@@ -49,7 +49,7 @@ function checkMouseIntersection_(event){
 		for (var pointIndex in Model.ui.mapInteraction){
 			var point = Model.ui.mapInteraction[pointIndex];
 			if (CONST.DEBUG){				
-				console.debug('Point : %s;%s | %s;%s', point.x, point.y, point.x/CONST.UNIT, point.y/CONST.UNIT);
+				console.debug('Point : %s;%s | %s;%s', point.x, point.y, point.x/CONST.ui.UNIT, point.y/CONST.ui.UNIT);
 				console.debug('hammer : %s;%s',eventX, eventY);
 			}
 			if (eventX > point.x
@@ -84,15 +84,15 @@ function transformOrientationToDirection_(orientation){
 		Bas => >= 135 && < 225
 		Droite=> >= 225 && < 315
 	*/
-	var directionStep = CONST.RIGHT;
+	var directionStep = CONST.directions.RIGHT;
 	if (orientation < 45 || orientation >= 315){
-		directionStep = CONST.UP;
+		directionStep = CONST.directions.UP;
 	}else if (orientation >= 45 && orientation < 135){
-		directionStep = CONST.LEFT;
+		directionStep = CONST.directions.LEFT;
 	}else if (orientation >= 135 && orientation < 225){
-		directionStep = CONST.DOWN;
+		directionStep = CONST.directions.DOWN;
 	}else{
-		directionStep = CONST.RIGHT;
+		directionStep = CONST.directions.RIGHT;
 	}
 
 	return directionStep;
@@ -101,7 +101,7 @@ function transformOrientationToDirection_(orientation){
 function motionCallBack_(event){
 	if (trackAcceleration &&  event.accelerationIncludingGravity){
 		//console.log("x: %s | y: %s | z: %s",event.accelerationIncludingGravity.x, event.accelerationIncludingGravity.y,event.accelerationIncludingGravity.z);
-		var zValue = event.accelerationIncludingGravity.z - CONST.GRAVITY;
+		var zValue = event.accelerationIncludingGravity.z - CONST.motion.GRAVITY;
 		// Initialisation
 		arrayZ.push(zValue);
 		if (arrayZ.length > 3){
@@ -109,10 +109,10 @@ function motionCallBack_(event){
 			// On est sur un pic
 			if (arrayZ[1] > arrayZ[0]
 				&& arrayZ[1] > arrayZ[2]
-				&& arrayZ[1] > CONST.STEP_ACCELERATION){
+				&& arrayZ[1] > CONST.motion.STEP_ACCELERATION){
 				var currentTime = Date.now();
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
-				if (currentTime - lastPick > CONST.STEP_RATE){
+				if (currentTime - lastPick > CONST.motion.STEP_RATE){
 					lastPick = currentTime;
 					applyDirection_(transformOrientationToDirection_(orientation));
 					console.log( new Date().toISOString()+" : "+ arrayZ[1]+" -> "+orientation);
@@ -121,7 +121,7 @@ function motionCallBack_(event){
 		}
 
 
-		if (Math.abs(zValue) > CONST.STEP_ACCELERATION){
+		if (Math.abs(zValue) > CONST.motion.STEP_ACCELERATION){
 		}
 	}
 }
@@ -129,8 +129,8 @@ function motionCallBack_(event){
 function orientationCallBack_(event){
 	// On ne tien comptes des pas que si le téléphone est à plat => abs(gamma) < 20 && abs(beta) < 20
 	// Le alpha représente la bousolle et nous permet de savoir où l'on est dirigé
-	trackAcceleration = Math.abs(event.beta) < CONST.LIMIT_ORIENTATION
-		&& Math.abs(event.gamma) < CONST.LIMIT_ORIENTATION;
+	trackAcceleration = Math.abs(event.beta) < CONST.motion.LIMIT_ORIENTATION
+		&& Math.abs(event.gamma) < CONST.motion.LIMIT_ORIENTATION;
 	orientation = event.alpha;
 
 }
@@ -140,7 +140,7 @@ function callBackSonic_(message){
 		stateFeq.frequency = message.freq;
 		stateFeq.time = Date.now();
 	}else{
-		if (Date.now() - stateFeq.time > CONST.DELAY_STABLE){
+		if (Date.now() - stateFeq.time > CONST.audio.DELAY_STABLE){
 			console.info('Recieve message : %d Mhz, %d db',message.freq, message.power);
 		}
 	}
@@ -167,7 +167,7 @@ function initListeners(){
 
 // TODO à décommenter !!!
 	/*if (!sonicServer){
-		sonicServer = new SonicServer({peakThreshold: CONST.THRESHOLD});
+		sonicServer = new SonicServer({peakThreshold: CONST.audio.THRESHOLD});
 		//sonicServer.setDebug(true);
 		sonicServer.on('message', callBackSonic);
 	}

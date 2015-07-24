@@ -243,9 +243,9 @@ function standPlatinium(){
 // Initialise la map vide des Stands
 function initMap(){
 	var array = [];
-	for (var row = 0; row < CONST.SIZE_UNIT.h; row++){
+	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 		var arrayRow = [];
-		for (var col =0; col < CONST.SIZE_UNIT.w; col++){
+		for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
 			arrayRow.push('');
 		}
 		array.push(arrayRow);
@@ -258,8 +258,8 @@ function initMap(){
 function placeStand(type, rowIndex, colIndex, map){
 	var standArray = type === TYPE_SILVER ? arraySilver : 
 				(type === TYPE_GOLD ? arrayGold : arrayPlatinium);
-	for (var row = 0; row < CONST.SIZE_UNIT.h; row++){
-		for (var col =0; col < CONST.SIZE_UNIT.w; col++){
+	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
+		for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
 			// Si on trouve notre place, alors, on positionne un stand à cette place
 			if (row === rowIndex && col === colIndex){
 				for (var rowStand = 0; rowStand < standArray.length; rowStand++){

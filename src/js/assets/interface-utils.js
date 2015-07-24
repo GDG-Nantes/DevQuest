@@ -7,8 +7,8 @@ function drawCarreTexte(keys, position){
   var arrayInstructions = [];
   // Coin Haut Gauche
   arrayInstructions.push({key : keys.hautGauche // Sprite
-    , wOriValue : CONST.UNIT // wOriValue
-    , hOriValue : CONST.UNIT // hOriValue
+    , wOriValue : CONST.ui.UNIT // wOriValue
+    , hOriValue : CONST.ui.UNIT // hOriValue
     , rowOri : 0 // rowOri
     , colOri : 0 // colOri
     , rowDest : position.y // rowDest
@@ -24,8 +24,8 @@ function drawCarreTexte(keys, position){
   });
   // Coin Haut droit
   arrayInstructions.push({key : keys.hautDroite // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri : 0 // rowOri
       , colOri : 0 // colOri
       , rowDest : position.y // rowDest
@@ -57,8 +57,8 @@ function drawCarreTexte(keys, position){
   });
   // Coin bas gauche
   arrayInstructions.push({key : keys.basGauche // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri : 0 // rowOri
       , colOri : 0 // colOri
       , rowDest : position.y + position.h - 1 // rowDest
@@ -74,8 +74,8 @@ function drawCarreTexte(keys, position){
   });
   // Coin bas droit
   arrayInstructions.push({key : keys.basDroite // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri : 0 // rowOri
       , colOri : 0 // colOri
       , rowDest : position.y + position.h - 1// rowDest
@@ -155,8 +155,8 @@ function drawZoneTexteAvecTitre(position){
   var arrayInstructions = [];
   // Zone de titre
   arrayInstructions.push({key : 'title-gauche' // Sprite
-    , wOriValue : CONST.UNIT // wOriValue
-    , hOriValue : CONST.UNIT // hOriValue
+    , wOriValue : CONST.ui.UNIT // wOriValue
+    , hOriValue : CONST.ui.UNIT // hOriValue
     , rowOri :  0 // rowOri
     , colOri : 0 // colOri
     , rowDest :  position.y // rowDest
@@ -170,16 +170,16 @@ function drawZoneTexteAvecTitre(position){
       , hDest : 1
     });
   arrayInstructions.push({key : 'title-droite' // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
       , rowDest :  position.y  // rowDest
       , colDest :  position.x + position.w - 1// colDest
     });
   arrayInstructions.push({key : 'title-droite' // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 1 // colOri
       , rowDest :  position.y  // rowDest
@@ -187,8 +187,8 @@ function drawZoneTexteAvecTitre(position){
     });
   // Coin Haut Gauche
   arrayInstructions.push({key : 'title-haut-gauche' // Sprite
-    , wOriValue : CONST.UNIT // wOriValue
-    , hOriValue : CONST.UNIT // hOriValue
+    , wOriValue : CONST.ui.UNIT // wOriValue
+    , hOriValue : CONST.ui.UNIT // hOriValue
     , rowOri :  0 // rowOri
     , colOri : 0 // colOri
     , rowDest :  position.y + 1 // rowDest
@@ -204,8 +204,8 @@ function drawZoneTexteAvecTitre(position){
     });
   // Coin Haut droit
   arrayInstructions.push({key : 'title-haut-droite' // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
       , rowDest :  position.y + 1 // rowDest
@@ -237,8 +237,8 @@ function drawZoneTexteAvecTitre(position){
     });
   // Coin bas gauche
   arrayInstructions.push({key : 'title-bas-gauche' // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
       , rowDest :  position.y + position.h // rowDest
@@ -254,8 +254,8 @@ function drawZoneTexteAvecTitre(position){
     });
   // Coin bas droit
   arrayInstructions.push({key : 'title-bas-droite' // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.UNIT // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
       , rowDest :  position.y + position.h// rowDest

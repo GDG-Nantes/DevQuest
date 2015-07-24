@@ -57,7 +57,7 @@ function extractBackground_(){
 function drawPixel_(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
 
 	var image = Model.resources.images[spriteToUse];
-	var drawPixelValue = CONST.UNIT;
+	var drawPixelValue = CONST.ui.UNIT;
 
 	Model.ui.context.drawImage(image
 		, wOriValue * colOri //sx clipping de l'image originale
@@ -78,8 +78,8 @@ function drawPixelBackground_(pixelToPaint, row, col){
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2]|0;
 	drawPixel_('magecity' // Sprite
-			, CONST.UNIT // wOriValue
-			, CONST.UNIT // hOriValue
+			, CONST.ui.UNIT // wOriValue
+			, CONST.ui.UNIT // hOriValue
 			, rowOri // rowOri
 			, colOri // colOri
 			, row // rowDest
@@ -94,8 +94,8 @@ function drawPixelInside_(sprite,pixelToPaint, row, col){
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2]|0;
 	drawPixel_(sprite // Sprite
-			, CONST.UNIT // wOriValue
-			, CONST.UNIT // hOriValue
+			, CONST.ui.UNIT // wOriValue
+			, CONST.ui.UNIT // hOriValue
 			, rowOri // rowOri
 			, colOri // colOri
 			, row // rowDest
@@ -129,23 +129,23 @@ function paintBackground_(){
 function paintCharacter_(sprite, direction, step, x, y){
 	var rowOri = 0;
 	switch(direction){
-		case CONST.UP:
+		case CONST.directions.UP:
 			rowOri = 0;
 			break;
-		case CONST.RIGHT:
+		case CONST.directions.RIGHT:
 			rowOri = 1;
 			break;
-		case CONST.DOWN:
+		case CONST.directions.DOWN:
 			rowOri = 2;
 			break;
-		case CONST.LEFT:
+		case CONST.directions.LEFT:
 			rowOri = 3;
 			break;
 	}
 	var colOri = step;
 	drawPixel_(sprite // Sprite
-			, CONST.UNIT // wOriValue
-			, CONST.HEIGHT_CHARS // hOriValue
+			, CONST.ui.UNIT // wOriValue
+			, CONST.ui.HEIGHT_CHARS // hOriValue
 			, rowOri // rowOri
 			, colOri // colOri
 			, y // rowDest
@@ -207,13 +207,13 @@ function wrapText_(text, x, y, maxWidth, lineHeight) {
 
 function paintGrille_(){
 	// Grille
-	for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
+	for (var x = 0; x < Model.ui.canvas.width; x+=CONST.ui.UNIT){
 		Model.ui.context.beginPath();
 		Model.ui.context.moveTo(x,0);
 		Model.ui.context.lineTo(x, Model.ui.canvas.height);
 		Model.ui.context.stroke();
 	}
-	for (var y = 0; y < Model.ui.canvas.height; y+=CONST.UNIT){
+	for (var y = 0; y < Model.ui.canvas.height; y+=CONST.ui.UNIT){
 		Model.ui.context.beginPath();
 		Model.ui.context.moveTo(0,y);
 		Model.ui.context.lineTo(Model.ui.canvas.width, y);
@@ -227,10 +227,10 @@ function paintInstructions_(arrayInstructions){
 		if (instruction.repeat){
 
   			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
-  			Model.ui.context.fillRect(CONST.UNIT * instruction.colDest
-  					, CONST.UNIT * instruction.rowDest
-  					, CONST.UNIT * instruction.wDest
-  					, CONST.UNIT * instruction.hDest
+  			Model.ui.context.fillRect(CONST.ui.UNIT * instruction.colDest
+  					, CONST.ui.UNIT * instruction.rowDest
+  					, CONST.ui.UNIT * instruction.wDest
+  					, CONST.ui.UNIT * instruction.hDest
   				);
 		}else if (instruction.drawText){
 			Model.ui.context.font = instruction.fontSize+" Visitor";
@@ -277,10 +277,15 @@ function paintChooseUser_(){
 
 function paint_(){
 	paintBackground_();
-	paintUser_();
+
+	if (Model.ui.screen === 'choose-user'){
+		paintChooseUser_();
+		
+	}else if (Model.ui.screen === 'game'){
+		paintUser_();
+	}else if (Model.ui.screen)
 	//paintInsde_();
 	//paintZoneTexte_();
-	paintChooseUser_();
 	if (CONST.DEBUG){
 		paintGrille_();
 	}

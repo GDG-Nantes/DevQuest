@@ -23,17 +23,17 @@ function processDirection_(){
 		}
 		// On va appliquer le mouvement théorique du personnage
 		switch (Model.gameModel.position.direction){
-			case CONST.LEFT:
+			case CONST.directions.LEFT:
 				positionTmp.x = Math.max(0, Model.gameModel.position.x - 1);
 				break;
-			case CONST.UP:
+			case CONST.directions.UP:
 				positionTmp.y = Math.max(0, Model.gameModel.position.y - 1);
 				break;
-			case CONST.RIGHT:
-				positionTmp.x = Math.min(CONST.SIZE_UNIT.w, Model.gameModel.position.x + 1);
+			case CONST.directions.RIGHT:
+				positionTmp.x = Math.min(CONST.ui.SIZE_UNIT.w, Model.gameModel.position.x + 1);
 				break;
-			case CONST.DOWN:
-				positionTmp.y = Math.min(CONST.SIZE_UNIT.h, Model.gameModel.position.y + 1);
+			case CONST.directions.DOWN:
+				positionTmp.y = Math.min(CONST.ui.SIZE_UNIT.h, Model.gameModel.position.y + 1);
 				break;
 
 		}
@@ -49,13 +49,13 @@ function processDirection_(){
 		if (Model.gameModel.position.x < Model.ui.middlePoint.x){
 			positionScreenTmp.x = Math.min(0,Model.gameModel.position.x);
 		}else {
-			positionScreenTmp.x = Math.min(Model.gameModel.position.x - Model.ui.middlePoint.x, CONST.SIZE_UNIT.w - Model.ui.screenSize.width);
+			positionScreenTmp.x = Math.min(Model.gameModel.position.x - Model.ui.middlePoint.x, CONST.ui.SIZE_UNIT.w - Model.ui.screenSize.width);
 		}
 		
 		if (Model.gameModel.position.y < Model.ui.middlePoint.y){
 			positionScreenTmp.y = Math.min(0,Model.gameModel.position.y);
 		}else {
-			positionScreenTmp.y = Math.min(Model.gameModel.position.y - Model.ui.middlePoint.y, CONST.SIZE_UNIT.h - Model.ui.screenSize.height);
+			positionScreenTmp.y = Math.min(Model.gameModel.position.y - Model.ui.middlePoint.y, CONST.ui.SIZE_UNIT.h - Model.ui.screenSize.height);
 		}
 
 		// On applique la position

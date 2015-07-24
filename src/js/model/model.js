@@ -38,16 +38,16 @@ var gameModel = {
 		position: {
 			x:10, 
 			y:10, 
-			direction : CONST.UP,
+			direction : CONST.directions.UP,
 			stepCount : 0
 		}
 };
 
 
 // On initialise la map des collisions qui va déterminer le déplacement possible de notre personnage dans la map
-for (var row = 0; row < CONST.SIZE_UNIT.h; row++){
+for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 	var arrayRow = [];
-	for (var col =0; col < CONST.SIZE_UNIT.w; col++){
+	for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
 		arrayRow.push(false);
 	}
 	ui.mapCollision.push(arrayRow);

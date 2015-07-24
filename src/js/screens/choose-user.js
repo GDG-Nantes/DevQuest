@@ -27,9 +27,9 @@ function chooseUserScreen(){
   arrayInstructions.push({drawText : true
       , text : "Choississez votre joueur"
       , fontSize : '20px'
-      , x :  CONST.UNIT * (position.x + 1) // X
-  		, y : CONST.UNIT * (position.y + 1) - CONST.UNIT / 3 // Y
-  		, w : CONST.UNIT * (position.w - 2) // Max Width
+      , x :  CONST.ui.UNIT * (position.x + 1) // X
+  		, y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
+  		, w : CONST.ui.UNIT * (position.w - 2) // Max Width
   		, lineHeight : 30 // Line Height
   });
   var positionCreux = {
@@ -43,14 +43,14 @@ function chooseUserScreen(){
   arrayInstructions.push({
       custom : true
       , key : 'healer_f' // Sprite
-      , wOriValue : CONST.UNIT // wOriValue
-      , hOriValue : CONST.HEIGHT_CHARS // hOriValue
+      , wOriValue : CONST.ui.UNIT // wOriValue
+      , hOriValue : CONST.ui.HEIGHT_CHARS // hOriValue
       , rowOri :  rowIndex // rowOri
       , colOri : colIndex // colOri
-      , yDest :  CONST.UNIT  * (positionCreux.y + 1.5) // rowDest
-      , xDest :  CONST.UNIT * (positionCreux.x + 1.5) // colDest
-      , hDest :  CONST.UNIT  * 3 // hDest
-      , wDest :  CONST.UNIT * 3 // wDest
+      , yDest :  CONST.ui.UNIT  * (positionCreux.y + 1.5) // rowDest
+      , xDest :  CONST.ui.UNIT * (positionCreux.x + 1.5) // colDest
+      , hDest :  CONST.ui.UNIT  * 3 // hDest
+      , wDest :  CONST.ui.UNIT * 3 // wDest
     });
 
   var positionBtnPrev = {
@@ -63,9 +63,9 @@ function chooseUserScreen(){
   arrayInstructions.push({drawText : true
       , text : "<<"
       , fontSize : '30px'
-      , x :  CONST.UNIT * (positionBtnPrev.x + 1) // X
-      , y : CONST.UNIT * (positionBtnPrev.y + 2) - CONST.UNIT / 3 // Y
-      , w : CONST.UNIT * (positionBtnPrev.w - 2) // Max Width
+      , x :  CONST.ui.UNIT * (positionBtnPrev.x + 1) // X
+      , y : CONST.ui.UNIT * (positionBtnPrev.y + 2) - CONST.ui.UNIT / 3 // Y
+      , w : CONST.ui.UNIT * (positionBtnPrev.w - 2) // Max Width
       , lineHeight : 30 // Line Height
   });
 
@@ -79,9 +79,9 @@ function chooseUserScreen(){
   arrayInstructions.push({drawText : true
       , text : ">>"
       , fontSize : '30px'
-      , x :  CONST.UNIT * (positionBtnNext.x + 1) // X
-      , y : CONST.UNIT * (positionBtnNext.y + 2) - CONST.UNIT / 3 // Y
-      , w : CONST.UNIT * (positionBtnNext.w - 2) // Max Width
+      , x :  CONST.ui.UNIT * (positionBtnNext.x + 1) // X
+      , y : CONST.ui.UNIT * (positionBtnNext.y + 2) - CONST.ui.UNIT / 3 // Y
+      , w : CONST.ui.UNIT * (positionBtnNext.w - 2) // Max Width
       , lineHeight : 30 // Line Height
   });
 
@@ -91,17 +91,17 @@ function chooseUserScreen(){
     Model.ui.mapInteraction = interaction;
     Model.ui.screen = 'choose-user';
     interaction.push({
-        x : CONST.UNIT * positionBtnPrev.x
-      , y : CONST.UNIT * positionBtnPrev.y
-      , w : CONST.UNIT * positionBtnPrev.w
-      , h : CONST.UNIT * positionBtnPrev.h
+        x : CONST.ui.UNIT * positionBtnPrev.x
+      , y : CONST.ui.UNIT * positionBtnPrev.y
+      , w : CONST.ui.UNIT * positionBtnPrev.w
+      , h : CONST.ui.UNIT * positionBtnPrev.h
       , key : 'btnPrev'
     });
     interaction.push({
-        x : CONST.UNIT * positionBtnNext.x
-      , y : CONST.UNIT * positionBtnNext.y
-      , w : CONST.UNIT * positionBtnNext.w
-      , h : CONST.UNIT * positionBtnNext.h
+        x : CONST.ui.UNIT * positionBtnNext.x
+      , y : CONST.ui.UNIT * positionBtnNext.y
+      , w : CONST.ui.UNIT * positionBtnNext.w
+      , h : CONST.ui.UNIT * positionBtnNext.h
       , key : 'btnNext'
     })
   }

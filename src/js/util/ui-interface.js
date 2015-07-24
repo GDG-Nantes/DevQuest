@@ -5,7 +5,7 @@ var CONST = require('../model/const.js');
 // Helper Methodes
 
 function bestSize(size){
-  return Math.ceil(size / CONST.UNIT) * CONST.UNIT;
+  return Math.ceil(size / CONST.ui.UNIT) * CONST.ui.UNIT;
 }
 
 function extractImage(canvas, context, x, y, w, h, xCanvas, yCanvas, wCanvas, hCanvas){
