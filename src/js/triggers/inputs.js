@@ -3,6 +3,7 @@
 var Model = require('../model/model.js');
 var CONST = require('../model/const.js');
 var SonicServer = require('../ultrasonic/sonic-server.js');
+
 var trackAcceleration = true;
 var arrayZ = [];
 var lastPick = Date.now();
@@ -12,33 +13,32 @@ var stateFeq={
 	frequency : 0,
 	time : 0
 };
-var hammertime = null;
 
-function applyDirection(direction){
+function applyDirection_(direction){
 	Model.gameModel.position.direction = direction;
 	Model.gameModel.position.stepCount = (Model.gameModel.position.stepCount + 1) % 3;
 	Model.gameModel.inputArray.push(direction);
 
 }
 
-function keypress(event){
+function keypress_(event){
 	switch (event.keyCode){
 		case 37: //CONST.LEFT
-			applyDirection(CONST.LEFT);
+			applyDirection_(CONST.LEFT);
 			break;
 		case 38: //UP
-			applyDirection(CONST.UP);
+			applyDirection_(CONST.UP);
 			break;
 		case 39: //CONST.RIGHT
-			applyDirection(CONST.RIGHT);
+			applyDirection_(CONST.RIGHT);
 			break;
 		case 40: //CONST.DOWN
-			applyDirection(CONST.DOWN);
+			applyDirection_(CONST.DOWN);
 			break;
 	}
 }
 
-function checkMouseIntersection(event){
+function checkMouseIntersection_(event){
 	if (Model.ui.mapInteraction && Model.ui.mapInteraction.length > 0){
 		var eventX = event.clientX / Model.ui.ratio;
 		var eventY = event.clientY / Model.ui.ratio;
@@ -67,15 +67,15 @@ function checkMouseIntersection(event){
 	}
 }
 
-function mouseDown(event){
-	checkMouseIntersection(event);	
+function mouseDown_(event){
+	checkMouseIntersection_(event);	
 }
 
-function mouseUp(event){
-	checkMouseIntersection(event);
+function mouseUp_(event){
+	checkMouseIntersection_(event);
 }
 
-function transformOrientationToDirection(orientation){
+function transformOrientationToDirection_(orientation){
 	// On a une valeur qui oscille entre 0 et 360
 	// On va prendre des tranches de 90 degrés pour chaque direction
 	/*
@@ -98,7 +98,7 @@ function transformOrientationToDirection(orientation){
 	return directionStep;
 }
 
-function motionCallBack(event){
+function motionCallBack_(event){
 	if (trackAcceleration &&  event.accelerationIncludingGravity){
 		//console.log("x: %s | y: %s | z: %s",event.accelerationIncludingGravity.x, event.accelerationIncludingGravity.y,event.accelerationIncludingGravity.z);
 		var zValue = event.accelerationIncludingGravity.z - CONST.GRAVITY;
@@ -114,7 +114,7 @@ function motionCallBack(event){
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
 				if (currentTime - lastPick > CONST.STEP_RATE){
 					lastPick = currentTime;
-					applyDirection(transformOrientationToDirection(orientation));
+					applyDirection_(transformOrientationToDirection_(orientation));
 					console.log( new Date().toISOString()+" : "+ arrayZ[1]+" -> "+orientation);
 				}
 			}
@@ -126,7 +126,7 @@ function motionCallBack(event){
 	}
 }
 
-function orientationCallBack(event){
+function orientationCallBack_(event){
 	// On ne tien comptes des pas que si le téléphone est à plat => abs(gamma) < 20 && abs(beta) < 20
 	// Le alpha représente la bousolle et nous permet de savoir où l'on est dirigé
 	trackAcceleration = Math.abs(event.beta) < CONST.LIMIT_ORIENTATION
@@ -135,7 +135,7 @@ function orientationCallBack(event){
 
 }
 
-function callBackSonic(message){
+function callBackSonic_(message){
 	if (message.freq != stateFeq.frequency){
 		stateFeq.frequency = message.freq;
 		stateFeq.time = Date.now();
@@ -150,19 +150,19 @@ function callBackSonic(message){
 
 function initListeners(){
 
-	document.addEventListener('keydown', keypress, false);
+	document.addEventListener('keydown', keypress_, false);
 
 	if (Modernizr.touch){		
-		document.addEventListener('touchstart', mouseDown, false);
-		document.addEventListener('touchend', mouseUp, false);
+		document.addEventListener('touchstart', mouseDown_, false);
+		document.addEventListener('touchend', mouseUp_, false);
 	}else{
-		document.addEventListener('mousedown', mouseDown, false);
-		document.addEventListener('mouseup', mouseUp, false);
+		document.addEventListener('mousedown', mouseDown_, false);
+		document.addEventListener('mouseup', mouseUp_, false);
 	}
 
 	if (Modernizr.devicemotion){
-		window.addEventListener('devicemotion', motionCallBack, false);
-		window.addEventListener('deviceorientation', orientationCallBack, false);
+		window.addEventListener('devicemotion', motionCallBack_, false);
+		window.addEventListener('deviceorientation', orientationCallBack_, false);
 	}
 
 // TODO à décommenter !!!
@@ -180,19 +180,19 @@ function initListeners(){
 
 
 function removeListeners(){
-	document.removeEventListener('keydown', keypress, false);
+	document.removeEventListener('keydown', keypress_, false);
 	if (Modernizr.touch){		
-		document.removeEventListener('touchstart', mouseDown, false);
-		document.removeEventListener('touchend', mouseUp, false);
+		document.removeEventListener('touchstart', mouseDown_, false);
+		document.removeEventListener('touchend', mouseUp_, false);
 	}else{
-		document.removeEventListener('mousedown', mouseDown, false);
-		document.removeEventListener('mouseup', mouseUp, false);
+		document.removeEventListener('mousedown', mouseDown_, false);
+		document.removeEventListener('mouseup', mouseUp_, false);
 
 	}
 
 	if (Modernizr.devicemotion){
-		window.removeEventListener('devicemotion', motionCallBack, false);
-		window.removeEventListener('deviceorientation', orientationCallBack, false);
+		window.removeEventListener('devicemotion', motionCallBack_, false);
+		window.removeEventListener('deviceorientation', orientationCallBack_, false);
 	}
 	// TODO à décommenter
 	//sonicServer.stop();
@@ -201,6 +201,6 @@ function removeListeners(){
 
 
 module.exports = {
-	initListeners : initListeners,
-	removeListeners : removeListeners
+	  removeListeners : removeListeners
+	, initListeners : initListeners
 };

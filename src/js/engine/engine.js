@@ -3,10 +3,12 @@ var Model = require('../model/model.js');
 var Inputs = require('../triggers/inputs.js');
 var UI = require('./ui.js');
 var CONST = require('../model/const.js');
-var runActiv = false;
+
+var runActiv = false;	
 
 
-function processDirection(){
+
+function processDirection_(){
 	if (Model.gameModel.inputArray.length > 0){
 		// On va traiter les mouvements présents dans la queue
 		var directionTmp = Model.gameModel.inputArray[0];
@@ -62,7 +64,7 @@ function processDirection(){
 	}
 }
 
-function manageVisibility(){
+function manageVisibility_(){
 	// Set the name of the hidden property and the change event for visibility
 	var hidden, visibilityChange; 
 	if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
@@ -88,9 +90,9 @@ function manageVisibility(){
 		document.addEventListener(visibilityChange, function handleVisibilityChange(){
 			if (document[hidden]) {
 				localStorage['game_model'] = JSON.stringify(Model.gameModel);
-				stopEngine();
+				stopEngine_();
 			} else {
-				startEngine();
+				startEngine_();
 			}
 		}, false);
 	    
@@ -98,27 +100,27 @@ function manageVisibility(){
 	}
 }
 
-function run(){
+function run_(){
 	try{
-		processDirection();
+		processDirection_();
 		if (runActiv){
-			window.requestAnimationFrame(run);
+			window.requestAnimationFrame(run_);
 		}
 	}catch(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);			
 	}
 }
 
-function startEngine(){
+function startEngine_(){
 	if (!runActiv){
 		runActiv = true;		
-		run();
+		run_();
 		UI.startPaint();
 		Inputs.initListeners();
 	}	
 }
 
-function stopEngine(){
+function stopEngine_(){
 	runActiv = false;
 	UI.stopPaint();
 	Inputs.removeListeners();
@@ -130,8 +132,8 @@ function start(){
 	if (localStorage["game_model"]){
 		Model.gameModel = JSON.parse(localStorage["game_model"]);
 	}
-	manageVisibility();
-	startEngine();
+	manageVisibility_();
+	startEngine_();
 }
 
 module.exports = {

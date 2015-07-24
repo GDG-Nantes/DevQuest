@@ -5,6 +5,7 @@ var Stands = require('../assets/stands.js');
 var Inside = require('../assets/inside.js');
 var ScreenChooseUser = require('../screens/choose-user.js');
 var CONST = require('../model/const.js');
+
 // On défini l'ensemble des array qui vont servir pour le dessin
 var solArray = Background.initSol();
 var contourArray = Background.initContour();
@@ -16,7 +17,7 @@ var stepMove = 0;
 var paintActive = false;
 
 
-function addFromArray(cel, arrayOri, row, col){
+function addFromArray_(cel, arrayOri, row, col){
 	var valueTmp = arrayOri[row][col];
 	if (Array.isArray(arrayOri[row][col])){
 		for (var doublon in valueTmp){
@@ -30,7 +31,7 @@ function addFromArray(cel, arrayOri, row, col){
 /*
 	Extrait le background correspond à la taille de l'écran
 */
-function extractBackground(){
+function extractBackground_(){
 	var array = [];
 	var minX = Model.gameModel.positionScreen.x;
 	var minY = Model.gameModel.positionScreen.y;
@@ -39,12 +40,12 @@ function extractBackground(){
 		var arrayRow = [];
 		for (var col =minX; col < minX + Model.ui.screenSize.width; col++){
 			var cel = [];
-			addFromArray(cel,solArray,row, col);
-			addFromArray(cel,contourArray,row, col);
-			addFromArray(cel,mursArray,row, col);
-			addFromArray(cel,herbeArray,row, col);
-			addFromArray(cel,sortiesArray,row, col);
-			addFromArray(cel,standsArray,row, col);
+			addFromArray_(cel,solArray,row, col);
+			addFromArray_(cel,contourArray,row, col);
+			addFromArray_(cel,mursArray,row, col);
+			addFromArray_(cel,herbeArray,row, col);
+			addFromArray_(cel,sortiesArray,row, col);
+			addFromArray_(cel,standsArray,row, col);
 			arrayRow.push(cel);
 		}
 		array.push(arrayRow);
@@ -53,7 +54,7 @@ function extractBackground(){
 }
 
 // Fonction générique d'écriture d'un pixel
-function drawPixel(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
+function drawPixel_(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
 
 	var image = Model.ui.resources.images[spriteToUse];
 	var drawPixelValue = CONST.UNIT;
@@ -70,13 +71,13 @@ function drawPixel(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, c
 		);
 }
 
-function drawPixelBackground(pixelToPaint, row, col){
+function drawPixelBackground_(pixelToPaint, row, col){
 	if (pixelToPaint === '')
 		return;
 	var regExp = /(\d\d).(\d)/;
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2]|0;
-	drawPixel('magecity' // Sprite
+	drawPixel_('magecity' // Sprite
 			, CONST.UNIT // wOriValue
 			, CONST.UNIT // hOriValue
 			, rowOri // rowOri
@@ -86,13 +87,13 @@ function drawPixelBackground(pixelToPaint, row, col){
 		);
 }
 
-function drawPixelInside(sprite,pixelToPaint, row, col){
+function drawPixelInside_(sprite,pixelToPaint, row, col){
 	if (pixelToPaint === '')
 		return;
 	var regExp = /(\d\d).(\d)/;
 	var rowOri = regExp.exec(pixelToPaint)[1]|0;
 	var colOri = regExp.exec(pixelToPaint)[2]|0;
-	drawPixel(sprite // Sprite
+	drawPixel_(sprite // Sprite
 			, CONST.UNIT // wOriValue
 			, CONST.UNIT // hOriValue
 			, rowOri // rowOri
@@ -102,10 +103,10 @@ function drawPixelInside(sprite,pixelToPaint, row, col){
 		);
 }
 
-function paintBackground(){
+function paintBackground_(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
-	var arrayTmp = extractBackground();
+	var arrayTmp = extractBackground_();
 	var rowIndex = 0;
 	var colIndex = 0;
 	for (var row in arrayTmp){
@@ -113,10 +114,10 @@ function paintBackground(){
 		for (var col in rowArray){
 			if (Array.isArray(rowArray[col])){
 				for (var doublon in rowArray[col]){
-					drawPixelBackground(rowArray[col][doublon], rowIndex|0, colIndex|0);
+					drawPixelBackground_(rowArray[col][doublon], rowIndex|0, colIndex|0);
 				}
 			}else{
-				drawPixelBackground(rowArray[col], rowIndex|0, colIndex|0);
+				drawPixelBackground_(rowArray[col], rowIndex|0, colIndex|0);
 			}
 			colIndex++;
 		}
@@ -125,7 +126,7 @@ function paintBackground(){
 	}
 }
 
-function paintCharacter(sprite, direction, step, x, y){
+function paintCharacter_(sprite, direction, step, x, y){
 	var rowOri = 0;
 	switch(direction){
 		case CONST.UP:
@@ -142,7 +143,7 @@ function paintCharacter(sprite, direction, step, x, y){
 			break;
 	}
 	var colOri = step;
-	drawPixel(sprite // Sprite
+	drawPixel_(sprite // Sprite
 			, CONST.UNIT // wOriValue
 			, CONST.HEIGHT_CHARS // hOriValue
 			, rowOri // rowOri
@@ -153,8 +154,8 @@ function paintCharacter(sprite, direction, step, x, y){
 
 }
 
-function paintUser(){
-	paintCharacter('healer_f',// sprite à utiliser
+function paintUser_(){
+	paintCharacter_('healer_f',// sprite à utiliser
 		Model.gameModel.position.direction, // Orientation du joeur
 		Model.gameModel.position.stepCount, // état du sprite
 		Model.gameModel.position.x - Model.gameModel.positionScreen.x, // x du joueur
@@ -162,7 +163,7 @@ function paintUser(){
 		);
 }
 
-function paintInsde(){
+function paintInsde_(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
 	var arrayTmp = Inside.showSilverStand();
@@ -172,7 +173,7 @@ function paintInsde(){
 		var rowArray = arrayTmp[row];
 		for (var col in rowArray){
 			for (var doublon = 1; doublon < rowArray[col].length; doublon++){
-				drawPixelInside(rowArray[col][0] // Sprite
+				drawPixelInside_(rowArray[col][0] // Sprite
 					, rowArray[col][doublon]
 					, rowIndex|0
 					, colIndex|0);
@@ -184,7 +185,7 @@ function paintInsde(){
 	}
 }
 
-function wrapText(text, x, y, maxWidth, lineHeight) {
+function wrapText_(text, x, y, maxWidth, lineHeight) {
 	  var words = text.split(' ');
 	  var line = '';
 
@@ -204,7 +205,7 @@ function wrapText(text, x, y, maxWidth, lineHeight) {
 	  Model.ui.context.fillText(line, x, y);
 }
 
-function paintGrille(){
+function paintGrille_(){
 	// Grille
 	for (var x = 0; x < Model.ui.canvas.width; x+=CONST.UNIT){
 		Model.ui.context.beginPath();
@@ -220,7 +221,7 @@ function paintGrille(){
 	}
 }
 
-function paintInstructions(arrayInstructions){
+function paintInstructions_(arrayInstructions){
 	for (var instructionIndex in arrayInstructions){
 		var instruction = arrayInstructions[instructionIndex];
 		if (instruction.repeat){
@@ -234,7 +235,7 @@ function paintInstructions(arrayInstructions){
 		}else if (instruction.drawText){
 			Model.ui.context.font = instruction.fontSize+" Visitor";
 			Model.ui.context.fillStyle = "#deeed6";
-			wrapText(instruction.text
+			wrapText_(instruction.text
 				, instruction.x // X
 				, instruction.y // Y
 				, instruction.w // Max Width
@@ -254,7 +255,7 @@ function paintInstructions(arrayInstructions){
 				);
 
 		}else {
-			drawPixel(instruction.key // Sprite
+			drawPixel_(instruction.key // Sprite
 			    , instruction.wOriValue // wOriValue
 			    , instruction.hOriValue // hOriValue
 			    , instruction.rowOri // rowOri
@@ -270,29 +271,30 @@ function paintHomeScreen(){
 
 }
 
-function paintChooseUser(){
-	paintInstructions(ScreenChooseUser.chooseUserScreen());
+function paintChooseUser_(){
+	paintInstructions_(ScreenChooseUser.chooseUserScreen());
 }
 
-function paint(){
-	paintBackground();
-	paintUser();
-	//paintInsde();
-	//paintZoneTexte();
-	paintChooseUser();
+function paint_(){
+	paintBackground_();
+	paintUser_();
+	//paintInsde_();
+	//paintZoneTexte_();
+	paintChooseUser_();
 	if (CONST.DEBUG){
-		paintGrille();
+		paintGrille_();
 	}
 	if (paintActive)
-		window.requestAnimationFrame(paint);
+		window.requestAnimationFrame(paint_);
 }
 
 // API
 
+
 function startPaint(){
 	if (!paintActive){
 		paintActive = true;
-		paint();
+		paint_();
 	}
 	console.log("Start Paint");
 }
@@ -302,8 +304,7 @@ function stopPaint(){
 	console.log("Stop Paint");
 }
 
-
 module.exports = {
-	startPaint : startPaint,
-	stopPaint : stopPaint
+	  startPaint : startPaint
+	, stopPaint : stopPaint
 };
