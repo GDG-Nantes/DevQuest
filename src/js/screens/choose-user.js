@@ -96,6 +96,13 @@ function chooseUserScreen(){
       , w : CONST.UNIT * positionBtnPrev.w
       , h : CONST.UNIT * positionBtnPrev.h
       , key : 'btnPrev'
+    });
+    interaction.push({
+        x : CONST.UNIT * positionBtnNext.x
+      , y : CONST.UNIT * positionBtnNext.y
+      , w : CONST.UNIT * positionBtnNext.w
+      , h : CONST.UNIT * positionBtnNext.h
+      , key : 'btnNext'
     })
   }
 
