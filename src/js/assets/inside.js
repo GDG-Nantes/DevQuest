@@ -309,7 +309,9 @@ function placeStand(type, map){
 	var heightStand = 8;
 	var rowIndex = Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
 	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
-	console.log("R:%s, C:%s",rowIndex, colIndex);
+	if (CONST.debug){
+		console.debug("R:%s, C:%s",rowIndex, colIndex);
+	}
 	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 		for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
 			// Si on trouve notre place, alors, on positionne un stand à cette place

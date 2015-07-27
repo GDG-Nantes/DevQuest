@@ -2,7 +2,7 @@
 var Model = require('../model/model.js');
 var Background = require('../assets/background.js');
 var Stands = require('../assets/stands.js');
-var Inside = require('../assets/inside.js');
+var ScreenInside = require('../screens/inside-question.js');
 var ScreenChooseUser = require('../screens/choose-user.js');
 var CONST = require('../model/const.js');
 
@@ -87,22 +87,6 @@ function drawPixelBackground_(pixelToPaint, row, col){
 		);
 }
 
-function drawPixelInside_(sprite,pixelToPaint, row, col){
-	if (pixelToPaint === '')
-		return;
-	var regExp = /(\d\d).(\d)/;
-	var rowOri = regExp.exec(pixelToPaint)[1]|0;
-	var colOri = regExp.exec(pixelToPaint)[2]|0;
-	drawPixel_(sprite // Sprite
-			, CONST.ui.UNIT // wOriValue
-			, CONST.ui.UNIT // hOriValue
-			, rowOri // rowOri
-			, colOri // colOri
-			, row // rowDest
-			, col // colDest
-		);
-}
-
 function paintBackground_(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
@@ -163,26 +147,8 @@ function paintUser_(){
 		);
 }
 
-function paintInsde_(){
-	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
-	// 1m = 64px => Image de 1792x1472
-	var arrayTmp = Inside.showSilverStand();
-	var rowIndex = 0;
-	var colIndex = 0;
-	for (var row in arrayTmp){
-		var rowArray = arrayTmp[row];
-		for (var col in rowArray){
-			for (var doublon = 1; doublon < rowArray[col].length; doublon++){
-				drawPixelInside_(rowArray[col][0] // Sprite
-					, rowArray[col][doublon]
-					, rowIndex|0
-					, colIndex|0);
-			}
-			colIndex++;
-		}
-		colIndex = 0;
-		rowIndex++;
-	}
+function paintInside_(){
+	paintInstructions_(ScreenInside.insideQuestion());	
 }
 
 function wrapText_(text, x, y, maxWidth, lineHeight) {
@@ -291,14 +257,12 @@ function paint_(){
 		paintChooseUser_();		
 	}else if (Model.ui.screen === CONST.screens.GAME){
 		paintUser_();
-	}else if (Model.ui.screen === CONST.screens.INSIDE_SILVER){
-		paintInsde_();	
-	}else if (Model.ui.screen === CONST.screens.INSIDE_GOLD){
-		paintInsde_();	
-	}else if (Model.ui.screen === CONST.screens.INSIDE_PLATINIUM){
-		paintInsde_();	
+	}else if (Model.ui.screen === CONST.screens.INSIDE_SILVER
+		|| Model.ui.screen === CONST.screens.INSIDE_GOLD
+		|| Model.ui.screen === CONST.screens.INSIDE_PLATINIUM){		
+		paintInside_();	
 	}
-	//paintInsde_();
+	
 	//paintZoneTexte_();
 	if (CONST.DEBUG){
 		paintGrille_();
