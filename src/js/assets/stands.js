@@ -256,7 +256,7 @@ function initMap(){
 
 // Fonction qui positionne un stand  en fonction d'un point de départ
 // La map complète est générée afin de placer correctement le stand
-function placeStand(type, rowIndex, colIndex, map){
+function placeStand(type, idStand, rowIndex, colIndex, map){
 	var standArray = type === TYPE_SILVER ? arraySilver : 
 				(type === TYPE_GOLD ? arrayGold : arrayPlatinium);
 	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
@@ -281,6 +281,7 @@ function placeStand(type, rowIndex, colIndex, map){
 									      , w : CONST.ui.UNIT * 1
 									      , h : CONST.ui.UNIT * 2
 									      , key : CONST.screens.INSIDE_SILVER
+									      , id : idStand
 									    });
 									}
 								}
@@ -299,6 +300,7 @@ function placeStand(type, rowIndex, colIndex, map){
 									      , w : CONST.ui.UNIT * 1
 									      , h : CONST.ui.UNIT * 2
 									      , key : CONST.screens.INSIDE_GOLD
+									      , id : idStand
 									    });
 									}
 								}
@@ -318,6 +320,7 @@ function placeStand(type, rowIndex, colIndex, map){
 									      , w : CONST.ui.UNIT * 1
 									      , h : CONST.ui.UNIT * 2
 									      , key : CONST.screens.INSIDE_PLATINIUM
+									      , id : idStand
 									    });
 									}
 								}
@@ -338,9 +341,9 @@ function placeStand(type, rowIndex, colIndex, map){
 
 function initStands(){
 	var map = initMap();
-	placeStand(TYPE_SILVER, 10,5,map);
-	placeStand(TYPE_GOLD, 10,15,map);
-	placeStand(TYPE_PLATINIUM, 10,25,map);
+	placeStand(TYPE_SILVER, 'stand1', 10,5,map);
+	placeStand(TYPE_GOLD, 'stand2', 10,15,map);
+	placeStand(TYPE_PLATINIUM, 'stand3', 10,25,map);
 	return map;
 }
 

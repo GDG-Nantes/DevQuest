@@ -17,8 +17,10 @@ var ui = {
 	interaction : {
 		 key : ''
 		, type : 'mousedown' 
+		, id : ''
 	},
 	changeScreen : '',
+
 	screen : CONST.screens.HOME,
 	middlePoint : {
 		x : 0,
@@ -33,6 +35,7 @@ var ui = {
 var gameModel = {		
 		indexUser : 0,
 		inputArray : [],
+		standId : '',
 		positionScreen: {
 			x:0,
 			y:0

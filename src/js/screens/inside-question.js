@@ -3,6 +3,7 @@
 var CONST = require('../model/const.js');
 var Model = require('../model/model.js');
 var Inside = require('../assets/inside.js');
+var Questions = require('../model/questions.js');
 
 function insideQuestion(){
 	var arrayInstructions = [];
@@ -31,23 +32,34 @@ function insideQuestion(){
 				var colOri = regExp.exec(pixelToPaint)[2]|0;
 				
 				arrayInstructions.push({
-			      custom : true
-			      , key : colArray[0] // Sprite
+			      key : colArray[0] // Sprite
 			      , wOriValue : CONST.ui.UNIT // wOriValue
 			      , hOriValue : CONST.ui.UNIT // hOriValue
 			      , rowOri :  rowOri // rowOri
 			      , colOri : colOri // colOri
-			      , yDest :  rowIndex|0 // rowDest
-			      , xDest :  colIndex|0 // colDest
-			      , hDest :  CONST.ui.UNIT // hDest
-			      , wDest :  CONST.ui.UNIT // wDest
+			      , rowDest :  rowIndex|0 // rowDest
+			      , colDest :  colIndex|0 // colDest
 			    });				
 			}
 		});
 	});
 	
 
-	// On ajout la question
+	// On ajoute la question
+	var question = Questions.filter(function(questionTmp){
+		return questionTmp.id === Model.gameModel.standId;
+	})[0];
+	 arrayInstructions.push({drawText : true
+      , text : question.question
+      , fontSize : '20px'
+      , x :  CONST.ui.UNIT * 1 // X
+      , y : CONST.ui.UNIT * 3 // Y
+      , w : CONST.ui.UNIT * 10 // Max Width
+      , lineHeight : 30 // Line Height
+  });
+
+
+	return arrayInstructions;
 }
 
 module.exports = {

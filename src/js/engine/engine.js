@@ -25,11 +25,13 @@ function processInteraction_(){
 		    case CONST.screens.INSIDE_SILVER :    
 		    case CONST.screens.INSIDE_GOLD :    
 		    case CONST.screens.INSIDE_PLATINIUM :    
-		    	Model.ui.changeScreen = Model.ui.interaction.type;        
+		    	Model.ui.changeScreen = Model.ui.interaction.key;        
+		    	Model.gameModel.standId = Model.ui.interaction.id;
 		    default:
 		}
     	Model.ui.interaction.type = '';
     	Model.ui.interaction.key = '';		
+    	Model.ui.interaction.id = '';		
 	}
 }
 
