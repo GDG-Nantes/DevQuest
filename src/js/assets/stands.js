@@ -10,7 +10,8 @@ var widthSilver = 5
 	, TYPE_PLATINIUM = 3
 	, arraySilver = []
 	, arrayGold = []
-	, arrayPlatinium = [];
+	, arrayPlatinium = []
+	, arrayInteraction = [];
 
 
 // Stand silver tout seul
@@ -272,6 +273,16 @@ function placeStand(type, rowIndex, colIndex, map){
 									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
 								}else{
 									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+									// On gère l'interaction (entrée dans un stand)
+									if (colStand === 2 && rowStand === 4){
+										arrayInteraction.push({
+									        x : CONST.ui.UNIT * (col + 2)
+									      , y : CONST.ui.UNIT * (row + 4)
+									      , w : CONST.ui.UNIT * 1
+									      , h : CONST.ui.UNIT * 2
+									      , key : CONST.screens.INSIDE_SILVER
+									    });
+									}
 								}
 							break;
 							case TYPE_GOLD:
@@ -280,6 +291,16 @@ function placeStand(type, rowIndex, colIndex, map){
 									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
 								}else{
 									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+									// On gère l'interaction (entrée dans un stand)
+									if (colStand === 3 && rowStand === 4){
+										arrayInteraction.push({
+									        x : CONST.ui.UNIT * (col + 3)
+									      , y : CONST.ui.UNIT * (row + 4)
+									      , w : CONST.ui.UNIT * 1
+									      , h : CONST.ui.UNIT * 2
+									      , key : CONST.screens.INSIDE_GOLD
+									    });
+									}
 								}
 							break;
 							case TYPE_PLATINIUM:
@@ -289,6 +310,16 @@ function placeStand(type, rowIndex, colIndex, map){
 									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
 								}else{
 									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+									// On gère l'interaction (entrée dans un stand)
+									if (colStand === 4 && rowStand === 4){
+										arrayInteraction.push({
+									        x : CONST.ui.UNIT * (col + 4)
+									      , y : CONST.ui.UNIT * (row + 4)
+									      , w : CONST.ui.UNIT * 1
+									      , h : CONST.ui.UNIT * 2
+									      , key : CONST.screens.INSIDE_PLATINIUM
+									    });
+									}
 								}
 							break;
 						}						
@@ -320,5 +351,6 @@ arrayGold = standGold();
 arrayPlatinium = standPlatinium();
 
 module.exports = {
-	initStands : initStands
+	initStands : initStands,
+	arrayInteraction : arrayInteraction
 };

@@ -21,6 +21,7 @@ function checkConfig(){
 		* localStorage
 		* getusermedia
 		* page visibility
+		* ForEach ES6
 	OPTIONNELS
 		* Touch Events
 		* full screen
@@ -39,6 +40,7 @@ function checkConfig(){
 		console.debug("Vibrate : %s", Modernizr.vibrate);
 		console.debug("DeviceMotion : %s", Modernizr.devicemotion);
 		console.debug("FullScreen : %s", Modernizr.fullscreen);
+		console.debug("ForEach : %s", Array.prototype.forEach);
 		console.debug("UserMedia : %s", Modernizr.getusermedia);
 		console.debug("AudioContext : %s", (window.AudioContext || window.webkitAudioContext));
 		console.debug("Page Visibility : %s", typeof document.hidden != "undefined"
@@ -52,6 +54,7 @@ function checkConfig(){
 		&& Modernizr.localstorage
 		&& Modernizr.websockets
 		&& Modernizr.getusermedia
+		&& Array.prototype.forEach
 		&& (window.AudioContext || window.webkitAudioContext)
 		&& (typeof document.hidden != "undefined"
 			|| typeof document.mozHidden != "undefined"
@@ -73,11 +76,11 @@ function pageLoad(){
 	Model.ui.canvas.width  = window.innerWidth;
 	Model.ui.canvas.height = window.innerHeight;
 	Model.ui.context = Model.ui.canvas.getContext('2d');
-	Model.ui.ratio = window.devicePixelRatio || 1;
-	Model.ui.context.scale(window.devicePixelRatio || 1 , window.devicePixelRatio || 1);
-	var widthRatio = Model.ui.canvas.width / window.devicePixelRatio / CONST.ui.UNIT;
-	var heightRatio = Model.ui.canvas.height / window.devicePixelRatio / CONST.ui.UNIT;
-	Model.ui.ratioScreen = document.body.scrollHeight / (heightRatio * CONST.ui.UNIT);
+	Model.ui.ratio = 1;//window.devicePixelRatio || 1;
+	Model.ui.context.scale(Model.ui.ratio, Model.ui.ratio);
+	var widthRatio = Model.ui.canvas.width / Model.ui.ratio / CONST.ui.UNIT;
+	var heightRatio = Model.ui.canvas.height / Model.ui.ratio / CONST.ui.UNIT;
+	Model.ui.ratioScreen = 1;//document.body.scrollHeight / (heightRatio * CONST.ui.UNIT);
 	Model.ui.ratio = Model.ui.ratioScreen;
 	Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
 	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;

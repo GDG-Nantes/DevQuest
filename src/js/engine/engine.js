@@ -6,7 +6,32 @@ var CONST = require('../model/const.js');
 
 var runActiv = false;	
 
-
+function processInteraction_(){
+	if (Model.ui.interaction.type && 
+		Model.ui.interaction.type  === CONST.directions.UP){		
+		switch(Model.ui.interaction.key){
+			case CONST.uiElements.BTN_RIGHT : 
+		        Model.gameModel.indexUser = (Model.gameModel.indexUser + 1) % CONST.characters.length;
+		        break;
+		    case CONST.uiElements.BTN_LEFT :                 
+		        Model.gameModel.indexUser = (Model.gameModel.indexUser - 1);
+		        if (Model.gameModel.indexUser < 0){
+		          Model.gameModel.indexUser = CONST.characters.length - 1;
+		        }
+		        break;
+		    case CONST.uiElements.BTN_CHOISIR :                 
+		        Model.ui.changeScreen = CONST.screens.GAME;        
+		        break;
+		    case CONST.screens.INSIDE_SILVER :    
+		    case CONST.screens.INSIDE_GOLD :    
+		    case CONST.screens.INSIDE_PLATINIUM :    
+		    	Model.ui.changeScreen = Model.ui.interaction.type;        
+		    default:
+		}
+    	Model.ui.interaction.type = '';
+    	Model.ui.interaction.key = '';		
+	}
+}
 
 function processDirection_(){
 	if (Model.gameModel.inputArray.length > 0){
@@ -103,6 +128,7 @@ function manageVisibility_(){
 function run_(){
 	try{
 		processDirection_();
+		processInteraction_();
 		if (runActiv){
 			window.requestAnimationFrame(run_);
 		}

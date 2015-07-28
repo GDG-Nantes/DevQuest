@@ -49,8 +49,11 @@ function checkMouseIntersection_(event){
 		for (var pointIndex in Model.ui.mapInteraction){
 			var point = Model.ui.mapInteraction[pointIndex];
 			if (CONST.DEBUG){				
-				console.debug('Point : %s;%s | %s;%s', point.x, point.y, point.x/CONST.ui.UNIT, point.y/CONST.ui.UNIT);
-				console.debug('hammer : %s;%s',eventX, eventY);
+				console.debug('Point %s : %s;%s{%s;%s} | %s;%s', point.key, point.x, point.y
+						, point.w, point.h
+						, point.x/CONST.ui.UNIT, point.y/CONST.ui.UNIT);
+				console.debug('hammer : %s;%s | %s;%S',eventX, eventY
+						, eventX / CONST.ui.UNIT, eventY / CONST.ui.UNIT);
 			}
 			if (eventX > point.x
 				&& eventX < (point.x + point.w)

@@ -14,42 +14,17 @@ setInterval(function intervalRow(){
   rowIndex = (rowIndex+1) % 4;
 },1000);
 
-function checkInteractions(){
-  // On a un click avéré
-  if (Model.ui.interaction.type === CONST.directions.UP){
-    switch (Model.ui.interaction.key){
-      case CONST.uiElements.BTN_RIGHT : 
-        Model.gameModel.indexUser = (Model.gameModel.indexUser + 1) % CONST.characters.length;
-        break;
-      case CONST.uiElements.BTN_LEFT :                 
-        Model.gameModel.indexUser = (Model.gameModel.indexUser - 1);
-        if (Model.gameModel.indexUser < 0){
-          Model.gameModel.indexUser = CONST.characters.length - 1;
-        }
-        break;
-      case CONST.uiElements.BTN_CHOISIR :                 
-        Model.ui.changeScreen = CONST.screens.GAME;        
-        break;
-      default:
-    }
-    Model.ui.interaction.type = '';
-    Model.ui.interaction.key = '';
-  }
-}
-
 // API :
 
 function chooseUserScreen(){
-  checkInteractions();
-
   var user = CONST.characters[Model.gameModel.indexUser];
 
   // Zone autour du personnage
   var position = {
         x: 1
       , y :5
-      , w: Model.ui.screenSize.width - 3
-      , h:Model.ui.screenSize.height - 15}
+      , w: 10
+      , h: 12}
   var arrayInstructions = InterfaceUtil.drawAlphaBackground();
   Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
   // Titre
