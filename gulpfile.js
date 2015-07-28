@@ -35,6 +35,10 @@ gulp.task('sass',function(){
 gulp.task('browserify',function(){
   return browserify(['./src/js/app.js'], {debug:true})
     .bundle()
+    .on('error', function(err){
+      console.log(err.stack);
+      this.emit('end');
+    })    
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./'));  
 });
