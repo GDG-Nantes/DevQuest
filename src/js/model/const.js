@@ -44,6 +44,11 @@ module.exports = {
 	uiElements : {
 		BTN_LEFT : 'btn-left',
 		BTN_RIGHT : 'btn-right',
-		BTN_CHOISIR : 'btn-choose'
+		BTN_CHOISIR : 'btn-choose',
+		DOOR : 'door',
+		BTN_REP_A : 'reponse-a',
+		BTN_REP_B : 'reponse-b',
+		BTN_REP_C : 'reponse-c',
+		BTN_REP_D : 'reponse-d'
 	}
 };

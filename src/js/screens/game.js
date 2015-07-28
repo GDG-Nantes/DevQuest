@@ -11,7 +11,8 @@ var lastPoint = {
 
 function checkInteractions_(){
   if (lastPoint.x !=  Model.gameModel.positionScreen.x
-  	|| lastPoint.y != Model.gameModel.positionScreen.y){  	
+  	|| lastPoint.y != Model.gameModel.positionScreen.y
+  	|| Model.ui.changeScreen != CONST.screens.GAME){  	
 	  // On met à jour la map d'interaction
 	  Model.ui.mapInteraction = [];
 	  Stands.arrayInteraction.forEach(function(point){
@@ -23,6 +24,7 @@ function checkInteractions_(){
 	  				, y : point.y - (Model.gameModel.positionScreen.y * CONST.ui.UNIT)
 	  				, w : point.w
 	  				, h : point.h
+	  				, id : point.id
 	  			});
 	  	}
 	  });

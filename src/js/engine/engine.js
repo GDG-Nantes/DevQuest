@@ -20,13 +20,14 @@ function processInteraction_(){
 		        }
 		        break;
 		    case CONST.uiElements.BTN_CHOISIR :                 
+		    case CONST.uiElements.DOOR :                 
 		        Model.ui.changeScreen = CONST.screens.GAME;        
 		        break;
 		    case CONST.screens.INSIDE_SILVER :    
 		    case CONST.screens.INSIDE_GOLD :    
 		    case CONST.screens.INSIDE_PLATINIUM :    
-		    	Model.ui.changeScreen = Model.ui.interaction.key;        
 		    	Model.gameModel.standId = Model.ui.interaction.id;
+		    	Model.ui.changeScreen = Model.ui.interaction.key;        
 		    default:
 		}
     	Model.ui.interaction.type = '';
