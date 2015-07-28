@@ -46,8 +46,7 @@ function checkMouseIntersection_(event){
 			eventX = event.changedTouches[0].pageX / Model.ui.ratioScreen;
 			eventY = event.changedTouches[0].pageY / Model.ui.ratioScreen;
 		}
-		for (var pointIndex in Model.ui.mapInteraction){
-			var point = Model.ui.mapInteraction[pointIndex];
+		Model.ui.mapInteraction.every(function(point){
 			if (CONST.DEBUG){				
 				console.debug('Point %s : %s;%s{%s;%s} | %s;%s', point.key, point.x, point.y
 						, point.w, point.h
@@ -65,9 +64,11 @@ function checkMouseIntersection_(event){
 					Model.ui.interaction.key = point.key;
 					Model.ui.interaction.type = event.type === 'touchstart' ? CONST.directions.DOWN : 
 										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP);
-					return;
-				}
-		}
+					return false;
+			}
+			return true;
+		});
+		
 	}
 }
 

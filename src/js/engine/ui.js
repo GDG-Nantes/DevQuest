@@ -91,24 +91,18 @@ function drawPixelBackground_(pixelToPaint, row, col){
 function paintBackground_(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
-	var arrayTmp = extractBackground_();
-	var rowIndex = 0;
-	var colIndex = 0;
-	for (var row in arrayTmp){
-		var rowArray = arrayTmp[row];
-		for (var col in rowArray){
-			if (Array.isArray(rowArray[col])){
-				for (var doublon in rowArray[col]){
-					drawPixelBackground_(rowArray[col][doublon], rowIndex|0, colIndex|0);
-				}
+
+	extractBackground_().forEach(function(rowArray, rowIndex){
+		rowArray.forEach(function(colValue, colIndex){
+			if (Array.isArray(colValue)){
+				colValue.forEach(function(doublon){
+					drawPixelBackground_(doublon, rowIndex, colIndex);
+				});
 			}else{
-				drawPixelBackground_(rowArray[col], rowIndex|0, colIndex|0);
+				drawPixelBackground_(colValue, rowIndex, colIndex);
 			}
-			colIndex++;
-		}
-		colIndex = 0;
-		rowIndex++;
-	}
+		});
+	});	
 }
 
 
@@ -154,11 +148,9 @@ function paintGrille_(){
 }
 
 function paintInstructions_(arrayInstructions){
-	for (var instructionIndex in arrayInstructions){
-		var instruction = arrayInstructions[instructionIndex];
+	arrayInstructions.forEach(function(instruction){
 		if (instruction.repeat){
-
-  			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
+			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
   			Model.ui.context.fillRect(CONST.ui.UNIT * instruction.colDest
   					, CONST.ui.UNIT * instruction.rowDest
   					, CONST.ui.UNIT * instruction.wDest
@@ -196,7 +188,8 @@ function paintInstructions_(arrayInstructions){
 			    , instruction.colDest // colDest
 			  );
 		}
-	}
+
+	});
 }
 
 function paintHomeScreen(){

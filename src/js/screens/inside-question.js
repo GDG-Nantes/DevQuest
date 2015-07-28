@@ -22,20 +22,17 @@ function insideQuestion(){
 	}
 
 	// On convertit les informations en instructions de dessin
-	var rowIndex = 0;
-	var colIndex = 0;
 	var regExp = /(\d\d).(\d)/;
-	for (var row in arrayInside){
-		var rowArray = arrayInside[row];
-		for (var col in rowArray){
-			for (var doublon = 1; doublon < rowArray[col].length; doublon++){
-				var pixelToPaint = rowArray[col][doublon];
+	arrayInside.forEach(function(rowArray, rowIndex){
+		rowArray.forEach(function(colArray, colIndex){			
+			for (var doublon = 1; doublon < colArray.length; doublon++){
+				var pixelToPaint = colArray[doublon];
 				var rowOri = regExp.exec(pixelToPaint)[1]|0;
 				var colOri = regExp.exec(pixelToPaint)[2]|0;
 				
 				arrayInstructions.push({
 			      custom : true
-			      , key : rowArray[col][0] // Sprite
+			      , key : colArray[0] // Sprite
 			      , wOriValue : CONST.ui.UNIT // wOriValue
 			      , hOriValue : CONST.ui.UNIT // hOriValue
 			      , rowOri :  rowOri // rowOri
@@ -46,12 +43,9 @@ function insideQuestion(){
 			      , wDest :  CONST.ui.UNIT // wDest
 			    });				
 			}
-			colIndex++;
-		}
-		colIndex = 0;
-		rowIndex++;
-	}
-
+		});
+	});
+	
 
 	// On ajout la question
 }
