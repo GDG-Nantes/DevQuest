@@ -58,7 +58,7 @@ function insideQuestion(){
       , text : question.question
       , fontSize : '20px'
       , x :  CONST.ui.UNIT * 1 // X
-      , y : CONST.ui.UNIT * 3 // Y
+      , y : CONST.ui.UNIT * 2 // Y
       , w : CONST.ui.UNIT * 10 // Max Width
       , lineHeight : 30 // Line Height
   	});
