@@ -122,7 +122,8 @@ function pageLoad(){
 				{title: 'inside_2', url: 'assets/img/inside02.png'},
 				{title: 'magecity', url: 'assets/img/magecity_0.png'},
 				// Eléments Ui
-				{title: 'ui', url: 'assets/img/ui_split.png'}
+				{title: 'ui', url: 'assets/img/ui_split.png'},
+				{title: 'socials', url: 'assets/img/socials.png'}
 			])
 	.then(function(value) {
 		return UiInterface.prepareUiElements();

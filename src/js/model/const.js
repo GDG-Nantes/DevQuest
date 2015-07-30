@@ -49,6 +49,10 @@ module.exports = {
 		BTN_REP_A : 'reponse-a',
 		BTN_REP_B : 'reponse-b',
 		BTN_REP_C : 'reponse-c',
-		BTN_REP_D : 'reponse-d'
+		BTN_REP_D : 'reponse-d',
+		BTN_G_PLUS : 'google-plus',
+		BTN_TWITTER : 'twitter',
+		BTN_GITHUB : 'github',
+		BTN_CUSTO : 'custo'
 	}
 };

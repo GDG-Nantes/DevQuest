@@ -1,6 +1,36 @@
 'use strict'
-
+var CONST = require('../model/const.js');
 var Credentials = require('../model/credentials.js')
+
+
+// API
+
+
+function login(type){
+	var network = '';
+	switch (type){
+		case CONST.BTN_G_PLUS :
+		network = 'google';
+		break;
+		case CONST.BTN_TWITTER :
+		network = 'twitter';
+		break;
+		case CONST.BTN_GITHUB :
+		network = 'github';
+		break;
+		case CONST.BTN_CUSTO :
+		// TODO 
+		return;
+	}
+	hello(network).login(network, {}, function(auth){
+		console.log('Logged');
+		console.log('try to reach /me for : %s',auth.network);
+		console.log(auth);
+		hello(auth.network).api('/me').then(function(r) {
+			// TODO 
+			console.info(r);
+	});
+}
 
 function initSocialsLogins(){
 
@@ -22,18 +52,9 @@ function initSocialsLogins(){
 	hello.init(creds, config); 
 
 	
-	document.getElementById('googleBtn').addEventListener('click', function socialGoogle(){
-		hello('github').login('github', {}, function(auth){
-			console.log('Logged');
-			console.log('try to reach /me for : %s',auth.network);
-			console.log(auth);
-			hello(auth.network).api('/me').then(function(r) {
-				console.info(r);
-		});
-		});
-	}, false);
 }
 
 module.exports = {
-	initSocialsLogins : initSocialsLogins
+	initSocialsLogins : initSocialsLogins,
+	login : login
 }

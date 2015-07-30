@@ -3,6 +3,7 @@ var Model = require('../model/model.js');
 var Inputs = require('../triggers/inputs.js');
 var UI = require('./ui.js');
 var CONST = require('../model/const.js');
+var Socials = require('../triggers/socials.js');
 
 var runActiv = false;	
 
@@ -19,6 +20,12 @@ function processInteraction_(){
 		          Model.gameModel.indexUser = CONST.characters.length - 1;
 		        }
 		        break;
+		    case CONST.uiElements.BTN_G_PLUS :       
+		    case CONST.uiElements.BTN_TWITTER :       
+		    case CONST.uiElements.BTN_GITHUB :       
+		    case CONST.uiElements.BTN_CUSTO :       
+		    	Socials.login(Model.ui.interaction.key);
+		    break;
 		    case CONST.uiElements.BTN_CHOISIR :                 
 		    case CONST.uiElements.DOOR :                 
 		        Model.ui.changeScreen = CONST.screens.GAME;        
