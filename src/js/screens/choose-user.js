@@ -17,12 +17,15 @@ setInterval(function intervalRow(){
 // API :
 
 function chooseUserScreen(){
+  if (Model.gameModel.indexUser === -1){
+    Model.gameModel.indexUser = 0;
+  }
   var user = CONST.characters[Model.gameModel.indexUser];
 
   // Zone autour du personnage
   var position = {
-        x: 1
-      , y :5
+        x: 0
+      , y :3
       , w: 10
       , h: 12}
   var arrayInstructions = InterfaceUtil.drawAlphaBackground();

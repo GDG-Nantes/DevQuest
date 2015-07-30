@@ -13,6 +13,33 @@ var stateFeq={
 	frequency : 0,
 	time : 0
 };
+var fullscreen = false;
+
+function toggleFullScreen_() {
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
+
 
 function applyDirection_(direction){
 	Model.gameModel.position.direction = direction;
@@ -65,11 +92,20 @@ function checkMouseIntersection_(event){
 					Model.ui.interaction.type = event.type === 'touchstart' ? CONST.directions.DOWN : 
 										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP);
 					Model.ui.interaction.id = point.id;
+
 					return false;
 			}
 			return true;
 		});
-		
+
+		// Cas particulier du bouton démarer car on passe en fullScreen
+		/*
+		TODO à décomenter
+		if (!fullscreen){
+			toggleFullScreen_();
+				fullscreen = true
+		}
+		*/
 	}
 }
 

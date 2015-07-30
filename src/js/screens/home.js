@@ -4,108 +4,41 @@ var CONST = require('../model/const.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
 
 
+
 // API :
 
 function homeScreen(){
   var arrayInstructions = InterfaceUtil.drawAlphaBackground();
 
-  var positionGooglePlus = {
-  	  x: 5
-  	, y : 10
-  }
-  arrayInstructions.push({
-      key : 'socials' // Sprite
-      , wOriValue : CONST.ui.UNIT // wOriValue
-      , hOriValue : CONST.ui.UNIT // hOriValue
-      , rowOri :  0 // rowOri
-      , colOri : 1 // colOri
-      , yDest :  CONST.ui.UNIT  * (positionGooglePlus.y) // rowDest
-      , xDest :  CONST.ui.UNIT * (positionGooglePlus.x) // colDest
-      , hDest :  CONST.ui.UNIT // hDest
-      , wDest :  CONST.ui.UNIT // wDest
-    });
-
-  var positionTwitter = {
-  	  x: 7
-  	, y : 10
-  }
-  arrayInstructions.push({
-      key : 'socials' // Sprite
-      , wOriValue : CONST.ui.UNIT // wOriValue
-      , hOriValue : CONST.ui.UNIT // hOriValue
-      , rowOri :  1 // rowOri
-      , colOri : 1 // colOri
-      , yDest :  CONST.ui.UNIT  * (positionTwitter.y) // rowDest
-      , xDest :  CONST.ui.UNIT * (positionTwitter.x) // colDest
-      , hDest :  CONST.ui.UNIT // hDest
-      , wDest :  CONST.ui.UNIT // wDest
-    });
-
-  var positionGithub = {
-  	  x: 5
-  	, y : 12
-  }
-  arrayInstructions.push({
-      key : 'socials' // Sprite
-      , wOriValue : CONST.ui.UNIT // wOriValue
-      , hOriValue : CONST.ui.UNIT // hOriValue
-      , rowOri :  0 // rowOri
-      , colOri : 0 // colOri
-      , yDest :  CONST.ui.UNIT  * (positionGithub.y) // rowDest
-      , xDest :  CONST.ui.UNIT * (positionGithub.x) // colDest
-      , hDest :  CONST.ui.UNIT // hDest
-      , wDest :  CONST.ui.UNIT // wDest
-    });
-
-  var positionCusto = {
-  	  x: 7
-  	, y : 12 
-  }
-  arrayInstructions.push({
-      key : 'socials' // Sprite
-      , wOriValue : CONST.ui.UNIT // wOriValue
-      , hOriValue : CONST.ui.UNIT // hOriValue
-      , rowOri :  1 // rowOri
-      , colOri : 0 // colOri
-      , yDest :  CONST.ui.UNIT  * (positionCusto.y) // rowDest
-      , xDest :  CONST.ui.UNIT * (positionCusto.x) // colDest
-      , hDest :  CONST.ui.UNIT // hDest
-      , wDest :  CONST.ui.UNIT // wDest
-    });
+  var positionBtnDemarer = {
+      x : Math.floor(Model.ui.screenSize.width / 2) - 3
+    , y : Model.ui.screenSize.height - 5
+    , w : 5
+    , h : 3
+  };
+  Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnDemarer));
+  arrayInstructions.push({drawText : true
+      , text : "Démarer"
+      , fontSize : '20px'
+      , x :  CONST.ui.UNIT * (positionBtnDemarer.x + 1) // X
+      , y : CONST.ui.UNIT * (positionBtnDemarer.y + 2) - CONST.ui.UNIT / 3 // Y
+      , w : CONST.ui.UNIT * (positionBtnDemarer.w - 2) // Max Width
+      , lineHeight : 30 // Line Height
+  });
 
   // Mise à jour de la map d'interaction
-  if (Model.ui.changeScreen != CONST.screens.HOME){
+  //if (Model.ui.changeScreen != CONST.screens.HOME){
     var interaction = [];
-    Model.ui.mapInteraction = interaction;    
+    Model.ui.mapInteraction = interaction;
     interaction.push({
-        x : CONST.ui.UNIT * positionGooglePlus.x
-      , y : CONST.ui.UNIT * positionGooglePlus.y
-      , w : CONST.ui.UNIT * positionGooglePlus.w
-      , h : CONST.ui.UNIT * positionGooglePlus.h
-      , key : CONST.uiElements.BTN_G_PLUS
+        x : CONST.ui.UNIT * positionBtnDemarer.x
+      , y : CONST.ui.UNIT * positionBtnDemarer.y
+      , w : CONST.ui.UNIT * positionBtnDemarer.w
+      , h : CONST.ui.UNIT * positionBtnDemarer.h
+      , key : CONST.uiElements.BTN_DEMARER
     });
-    interaction.push({
-        x : CONST.ui.UNIT * positionTwitter.x
-      , y : CONST.ui.UNIT * positionTwitter.y
-      , w : CONST.ui.UNIT * positionTwitter.w
-      , h : CONST.ui.UNIT * positionTwitter.h
-      , key : CONST.uiElements.BTN_TWITTER
-    });
-    interaction.push({
-        x : CONST.ui.UNIT * positionGithub.x
-      , y : CONST.ui.UNIT * positionGithub.y
-      , w : CONST.ui.UNIT * positionGithub.w
-      , h : CONST.ui.UNIT * positionGithub.h
-      , key : CONST.uiElements.BTN_GITHUB
-    });
-    interaction.push({
-        x : CONST.ui.UNIT * positionCusto.x
-      , y : CONST.ui.UNIT * positionCusto.y 
-      , w : CONST.ui.UNIT * positionCusto.w
-      , h : CONST.ui.UNIT * positionCusto.h
-      , key : CONST.uiElements.BTN_CUSTO
-    });
-  }
+  //}
+  
 
   return arrayInstructions;
 }

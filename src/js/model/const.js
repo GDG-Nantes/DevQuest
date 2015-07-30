@@ -25,6 +25,7 @@ module.exports = {
 	// Screen Const
 	screens : {
 		HOME : 'home',
+		LOGIN : 'login',
 		CHOOSE_USER : 'choose-user',
 		GAME : 'game',
 		INSIDE_SILVER : 'inside-silver',
@@ -45,6 +46,7 @@ module.exports = {
 		BTN_LEFT : 'btn-left',
 		BTN_RIGHT : 'btn-right',
 		BTN_CHOISIR : 'btn-choose',
+		BTN_DEMARER : 'btn-demarer',
 		DOOR : 'door',
 		BTN_REP_A : 'reponse-a',
 		BTN_REP_B : 'reponse-b',

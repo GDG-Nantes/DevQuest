@@ -1,5 +1,6 @@
 'use strict'
 var CONST = require('../model/const.js');
+var Model = require('../model/model.js');
 var Credentials = require('../model/credentials.js')
 
 
@@ -9,26 +10,34 @@ var Credentials = require('../model/credentials.js')
 function login(type){
 	var network = '';
 	switch (type){
-		case CONST.BTN_G_PLUS :
+		case CONST.uiElements.BTN_G_PLUS :
 		network = 'google';
 		break;
-		case CONST.BTN_TWITTER :
+		case CONST.uiElements.BTN_TWITTER :
 		network = 'twitter';
 		break;
-		case CONST.BTN_GITHUB :
+		case CONST.uiElements.BTN_GITHUB :
 		network = 'github';
 		break;
-		case CONST.BTN_CUSTO :
+		case CONST.uiElements.BTN_CUSTO :
 		// TODO 
 		return;
 	}
+	if (CONST.DEBUG){
+		console.debug('try to log %s',network);
+	}
 	hello(network).login(network, {}, function(auth){
-		console.log('Logged');
-		console.log('try to reach /me for : %s',auth.network);
-		console.log(auth);
+		if (CONST.DEBUG){			
+			console.debug('Logged !try to reach /me for : %s',auth.network);
+			console.debug(auth);
+		}
 		hello(auth.network).api('/me').then(function(r) {
-			// TODO 
-			console.info(r);
+			Model.gameModel.user = r;
+			Model.ui.changeScreen = CONST.screens.CHOOSE_USER;
+			if (CONST.DEBUG){
+				console.debug(r);
+			}
+		});
 	});
 }
 

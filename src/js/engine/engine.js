@@ -11,6 +11,22 @@ function processInteraction_(){
 	if (Model.ui.interaction.type && 
 		Model.ui.interaction.type  === CONST.directions.UP){		
 		switch(Model.ui.interaction.key){
+		    case CONST.uiElements.BTN_DEMARER :       
+		    	// On regarde si on a déjà un user de stocké sinon, on passe l'écran suivant 
+		    	if (!Model.gameModel.user){
+		    		Model.ui.changeScreen = CONST.screens.LOGIN;        
+		    	}else if (Model.gameModel.indexUser === -1){
+		    		Model.ui.changeScreen = CONST.screens.CHOOSE_USER;        
+		    	}else{
+		    		Model.ui.changeScreen = CONST.screens.GAME;
+		    	}
+		    break;
+		    case CONST.uiElements.BTN_G_PLUS :       
+		    case CONST.uiElements.BTN_TWITTER :       
+		    case CONST.uiElements.BTN_GITHUB :       
+		    case CONST.uiElements.BTN_CUSTO :       
+		    	Socials.login(Model.ui.interaction.key);
+		    break;
 			case CONST.uiElements.BTN_RIGHT : 
 		        Model.gameModel.indexUser = (Model.gameModel.indexUser + 1) % CONST.characters.length;
 		        break;
@@ -20,12 +36,6 @@ function processInteraction_(){
 		          Model.gameModel.indexUser = CONST.characters.length - 1;
 		        }
 		        break;
-		    case CONST.uiElements.BTN_G_PLUS :       
-		    case CONST.uiElements.BTN_TWITTER :       
-		    case CONST.uiElements.BTN_GITHUB :       
-		    case CONST.uiElements.BTN_CUSTO :       
-		    	Socials.login(Model.ui.interaction.key);
-		    break;
 		    case CONST.uiElements.BTN_CHOISIR :                 
 		    case CONST.uiElements.DOOR :                 
 		        Model.ui.changeScreen = CONST.screens.GAME;        

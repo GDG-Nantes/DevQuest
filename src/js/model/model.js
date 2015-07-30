@@ -33,19 +33,20 @@ var ui = {
 }; 
 
 var gameModel = {		
-		indexUser : 0,
-		inputArray : [],
-		standId : '',
-		positionScreen: {
-			x:0,
-			y:0
-		},
-		position: {
-			x:10, 
-			y:10, 
-			direction : CONST.directions.UP,
-			stepCount : 0
-		}
+	user : null,	
+	indexUser : -1,
+	inputArray : [],
+	standId : '',
+	positionScreen: {
+		x:0,
+		y:0
+	},
+	position: {
+		x:10, 
+		y:10, 
+		direction : CONST.directions.UP,
+		stepCount : 0
+	}
 };
 
 
