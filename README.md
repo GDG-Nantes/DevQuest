@@ -21,4 +21,5 @@ Les images utilisées pour le fond viennent de OpenGameArt : http://www.lorestro
 ## Credentials 
 Pour Google aller voir https://console.developers.google.com projet DevQuest pour récupérer l'identifiant client
 Pour Twitter : https://apps.twitter.com/
+Pour Github : https://github.com/settings/applications
 

@@ -33,4 +33,4 @@ build/Release
 node_modules
 
 # Credentials
-src/js/model.credentials.js
+src/js/model/credentials.js
