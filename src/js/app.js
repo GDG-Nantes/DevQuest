@@ -5,6 +5,7 @@ var UiInterface = require('./util/ui-interface.js');
 var Engine = require('./engine/engine.js');
 var UI = require('./engine/ui.js');
 var Model = require('./model/model.js');
+var Socials = require('./triggers/socials.js');
 require('./triggers/inputs.js');
 
 // Méthodes Internes
@@ -128,6 +129,7 @@ function pageLoad(){
 	})
 	.then(function(){
 		Engine.start();
+		Socials.initSocialsLogins();
 	})
 	.catch(function(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);

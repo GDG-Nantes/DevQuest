@@ -18,3 +18,7 @@ http://opengameart.org/content/sara-wizard
 Les images utilisées pour le fond viennent de OpenGameArt : http://www.lorestrome.com/pixel_archive/main.htm
 
 
+## Credentials 
+Pour Google aller voir https://console.developers.google.com projet DevQuest pour récupérer l'identifiant client
+Pour Twitter : https://apps.twitter.com/
+
