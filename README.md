@@ -22,10 +22,13 @@ Les images utilisées pour le fond viennent de OpenGameArt : http://www.lorestro
 Pour Google aller voir https://console.developers.google.com projet DevQuest pour récupérer l'identifiant client
 Pour Twitter : https://apps.twitter.com/
 Pour Github : https://github.com/settings/applications
-* git update-index pour ignorer les commits du fichier
 
-This will tell git you want to start ignoring the changes to the file
-```git update-index --skip-worktree path/to/file```
-
-When you want to start keeping track again
-```git update-index --no-assume-unchanged path/to/file```
+Les crédentials sont à placer dans un fichier credentials.json à la racine du projet et respectant cette hérarchie : 
+```javascript
+{
+    "GOOGLE_CLIENT" : "<GOOGLE_CLIENT>",
+    "TWITTER_CLIENT" : "<TWITTER_CLIENT>",
+    "TWITTER_CLIENT_SECRET" : "<TWITTER_CLIENT_SECRET>",
+    "GITHUB_CLIENT" : "<GITHUB_CLIENT>",
+    "GITHUB_CLIENT_SECRET" : "<GITHUB_CLIENT_SECRET>"
+}

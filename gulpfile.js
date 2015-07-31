@@ -8,7 +8,16 @@ var sass = require('gulp-sass');
 var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var rename = require("gulp-rename");
+var replace = require("gulp-replace");
 var reload = browserSync.reload;
+var credentials = require('./credentials.json');
+if (!credentials){
+  credentials['GOOGLE_CLIENT'] = "xxxxxxx.apps.googleusercontent.com";
+  credentials['TWITTER_CLIENT'] = "xxxxxxx";
+  credentials['TWITTER_CLIENT_SECRET'] = "xxxxxxx";
+  credentials['GITHUB_CLIENT'] = "xxxxxxx";
+  credentials['GITHUB_CLIENT_SECRET'] = "xxxxxxx";
+}
 
 gulp.task('serve',  ['browserify','sass'], function(){
   browserSync.init({
@@ -34,12 +43,18 @@ gulp.task('sass',function(){
 
 gulp.task('browserify',function(){
   return browserify(['./src/js/app.js'], {debug:true})
-    .bundle()
+    .bundle()    
     .on('error', function(err){
       console.log(err.stack);
       this.emit('end');
     })    
     .pipe(source('bundle.js'))
+    .pipe(gulp.dest('./'))
+    .pipe(replace('<GOOGLE_CLIENT>', credentials['GOOGLE_CLIENT']))
+    .pipe(replace('<TWITTER_CLIENT>', credentials['TWITTER_CLIENT']))
+    .pipe(replace('<TWITTER_CLIENT_SECRET>', credentials['TWITTER_CLIENT_SECRET']))
+    .pipe(replace('<GITHUB_CLIENT>', credentials['GITHUB_CLIENT']))
+    .pipe(replace('<GITHUB_CLIENT_SECRET>', credentials['GITHUB_CLIENT_SECRET']))
     .pipe(gulp.dest('./'));  
 });
 

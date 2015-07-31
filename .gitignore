@@ -6,10 +6,12 @@ logs
 css/
 
 # credentials
-src/js/model/credentials.js
+credentials.json
 
 #browserify
 bundle.js
+
+
 
 # Runtime data
 pids
