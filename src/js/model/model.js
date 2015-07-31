@@ -16,11 +16,10 @@ var ui = {
 	mapInteraction : [],	
 	interaction : {
 		 key : ''
-		, type : 'mousedown' 
+		, type : '' 
 		, id : ''
 	},
 	changeScreen : '',
-
 	screen : CONST.screens.HOME,
 	middlePoint : {
 		x : 0,
@@ -33,6 +32,7 @@ var ui = {
 }; 
 
 var gameModel = {		
+	version : '2',
 	user : null,	
 	indexUser : -1,
 	inputArray : [],

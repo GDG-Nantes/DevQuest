@@ -15,15 +15,23 @@ function insideQuestion(){
 
 	// On récupère le bon type de stand
 	var arrayInside = [];
+	var npc = '';
+	var npc_face = '';
 	switch(Model.ui.screen){
 		case CONST.screens.INSIDE_SILVER : 
 			arrayInside = Inside.showSilverStand();
+			npc = 'npc_silver';
+			npc_face = 'npc_face_silver';
 			break;
 		case CONST.screens.INSIDE_GOLD : 
 			arrayInside = Inside.showGoldStand();
+			npc = 'npc_gold';
+			npc_face = 'npc_face_gold';
 			break;
 		case CONST.screens.INSIDE_PLATINIUM : 
 			arrayInside = Inside.showPlatiniumStand();
+			npc = 'npc_platinium';
+			npc_face = 'npc_face_platinium';
 			break;
 	}
 
@@ -68,6 +76,33 @@ function insideQuestion(){
 	var heightStand = 8;
 	var rowIndex = Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
 	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
+
+	// Ajout du NPC
+	arrayInstructions.push({
+      custom : true
+      , key : npc // Sprite
+      , wOriValue : CONST.ui.WIDTH_NPC // wOriValue
+      , hOriValue : CONST.ui.UNIT // hOriValue
+      , rowOri :  2 // rowOri
+      , colOri : 1 // colOri
+      , yDest :  CONST.ui.UNIT * (rowIndex + 4) // rowDest
+      , xDest :  CONST.ui.UNIT * (colIndex  + Math.floor(widthStand / 2)) // colDest
+      , hDest :  CONST.ui.UNIT // hDest
+      , wDest :  CONST.ui.WIDTH_NPC // wDest
+    });
+	// Face du NPC
+    arrayInstructions.push({
+      custom : true
+      , key : npc_face // Sprite
+      , wOriValue : CONST.ui.NPC_HEAD_W // wOriValue
+      , hOriValue : CONST.ui.NPC_HEAD_H // hOriValue
+      , rowOri :  0 // rowOri
+      , colOri : 0 // colOri
+      , yDest :  CONST.ui.UNIT * 6 //(rowIndex + 4) // rowDest
+      , xDest :  CONST.ui.UNIT * (colIndex  + Math.floor(widthStand / 2)) // colDest
+      , hDest :  CONST.ui.NPC_HEAD_W // hDest
+      , wDest :  CONST.ui.NPC_HEAD_H // wDest
+    });
 
     // Ajout des boutons
     var widthBtn = Math.floor(Model.ui.screenSize.width / 2) - 1;

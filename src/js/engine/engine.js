@@ -175,9 +175,7 @@ function stopEngine_(){
 // API
 
 function start(){
-	if (localStorage["game_model"]){
-		Model.gameModel = JSON.parse(localStorage["game_model"]);
-	}
+	
 	manageVisibility_();
 	startEngine_();
 }

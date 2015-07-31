@@ -2,6 +2,7 @@
 var CONST = require('./model/const.js');
 var Resources = require('./util/resources.js');
 var UiInterface = require('./util/ui-interface.js');
+var LocalStorageCheck = require('./util/localstorage.js');
 var Engine = require('./engine/engine.js');
 var UI = require('./engine/ui.js');
 var Model = require('./model/model.js');
@@ -117,6 +118,10 @@ function pageLoad(){
 				{title: 'townfolk1_m', url: 'assets/img/townfolk1_m.png'},
 				{title: 'warrior_f', url: 'assets/img/warrior_f.png'},
 				{title: 'warrior_m', url: 'assets/img/warrior_m.png'},
+				// NPC
+				{title: 'npc_silver', url: 'assets/img/Townfolk-Adult-F-002.png'},
+				{title: 'npc_gold', url: 'assets/img/Aristocrate-F-01.png'},
+				{title: 'npc_platinium', url: 'assets/img/Princess-01.png'},
 				// Décors
 				{title: 'inside_1', url: 'assets/img/inside01.png'},
 				{title: 'inside_2', url: 'assets/img/inside02.png'},
@@ -129,8 +134,11 @@ function pageLoad(){
 		return UiInterface.prepareUiElements();
 	})
 	.then(function(){
-		Engine.start();
 		Socials.initSocialsLogins();
+		return LocalStorageCheck.checkLocalStorage();
+	}).then(function(){
+		Engine.start();
+
 	})
 	.catch(function(err){
 		console.error("Error  : %s \n %s",err.message, err.stack);

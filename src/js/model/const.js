@@ -7,8 +7,13 @@ module.exports = {
 	ui : {		
 		UNIT : 32,
 		HEIGHT_CHARS : 36,
+		WIDTH_NPC : 24,
 		SIZE_PX : {w : 1792, h : 1472},
-		SIZE_UNIT : {w : 56, h : 46}
+		SIZE_UNIT : {w : 56, h : 46},
+		NPC_HEAD_W : 60,
+		NPC_HEAD_H : 71,
+		NPC_HEAD_X : 82,
+		NPC_HEAD_Y : 3
 	},
 	// Motion Const
 	motion : {		
