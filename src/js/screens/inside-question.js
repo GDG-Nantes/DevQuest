@@ -14,22 +14,27 @@ function insideQuestion(){
 	var arrayInstructions = [];
 
 	// On récupère le bon type de stand
+    var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? widthSilver :
+				(Model.ui.screen === CONST.screens.INSIDE_GOLD ? widthGold : widthPlatinium);				
+	var heightStand = 8;
+	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
+	var rowIndex = 4;//Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
 	var arrayInside = [];
 	var npc = '';
 	var npc_face = '';
 	switch(Model.ui.screen){
 		case CONST.screens.INSIDE_SILVER : 
-			arrayInside = Inside.showSilverStand();
+			arrayInside = Inside.showSilverStand(rowIndex);
 			npc = 'npc_silver';
 			npc_face = 'npc_face_silver';
 			break;
 		case CONST.screens.INSIDE_GOLD : 
-			arrayInside = Inside.showGoldStand();
+			arrayInside = Inside.showGoldStand(rowIndex);
 			npc = 'npc_gold';
 			npc_face = 'npc_face_gold';
 			break;
 		case CONST.screens.INSIDE_PLATINIUM : 
-			arrayInside = Inside.showPlatiniumStand();
+			arrayInside = Inside.showPlatiniumStand(rowIndex);
 			npc = 'npc_platinium';
 			npc_face = 'npc_face_platinium';
 			break;
@@ -64,18 +69,13 @@ function insideQuestion(){
 	})[0];
 	 arrayInstructions.push({drawText : true
       , text : question.question
-      , fontSize : '20px'
-      , x :  CONST.ui.UNIT * 1 // X
-      , y : CONST.ui.UNIT * 2 // Y
+      , fontSize : '15px'
+      , x :  CONST.ui.UNIT * 2.5 // X
+      , y : CONST.ui.UNIT * 1.5 // Y
       , w : CONST.ui.UNIT * 10 // Max Width
       , lineHeight : 30 // Line Height
   	});
 
-    var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? widthSilver :
-				(Model.ui.screen === CONST.screens.INSIDE_GOLD ? widthGold : widthPlatinium);				
-	var heightStand = 8;
-	var rowIndex = Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
-	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
 
 	// Ajout du NPC
 	arrayInstructions.push({
@@ -98,18 +98,18 @@ function insideQuestion(){
       , hOriValue : CONST.ui.NPC_HEAD_H // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
-      , yDest :  CONST.ui.UNIT * 6 //(rowIndex + 4) // rowDest
-      , xDest :  CONST.ui.UNIT * (colIndex  + Math.floor(widthStand / 2)) // colDest
-      , hDest :  CONST.ui.NPC_HEAD_W // hDest
-      , wDest :  CONST.ui.NPC_HEAD_H // wDest
+      , yDest :  CONST.ui.UNIT * 1 //(rowIndex + 4) // rowDest
+      , xDest :  CONST.ui.UNIT * 0.5 // colDest
+      , hDest :  CONST.ui.NPC_HEAD_W * 0.75 // hDest
+      , wDest :  CONST.ui.NPC_HEAD_H * 0.75// wDest
     });
 
     // Ajout des boutons
-    var widthBtn = Math.floor(Model.ui.screenSize.width / 2) - 1;
-    var heightBtn = 4;
-    var fontSize = '15px';
+    var widthBtn = Model.ui.screenSize.width - 1; //Math.floor(Model.ui.screenSize.width / 2) - 1;
+    var heightBtn = 3;
+    var fontSize = '12px';
     var positionBtnRepA = {
-		  x : 1
+		  x : 0
 		, y : rowIndex + heightStand - 1
 		, w : widthBtn
 		, h : heightBtn
@@ -124,14 +124,14 @@ function insideQuestion(){
 	  , lineHeight : 30 // Line Height
 	});
 	var positionBtnRepB = {
-		  x : positionBtnRepA.x + widthBtn
-		, y : positionBtnRepA.y
+		  x : positionBtnRepA.x// + widthBtn
+		, y : positionBtnRepA.y + heightBtn - 1
 		, w : widthBtn
 		, h : heightBtn
 	};
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepB));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseA
+	  , text : question.reponseB
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepB.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepB.y + 2) - CONST.ui.UNIT / 3 // Y
@@ -140,13 +140,13 @@ function insideQuestion(){
 	});
 	var positionBtnRepC = {
 		  x : positionBtnRepA.x
-		, y : positionBtnRepA.y + heightBtn - 1
+		, y : positionBtnRepB.y + heightBtn - 1
 		, w : widthBtn
 		, h : heightBtn
 	};
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepC));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseA
+	  , text : question.reponseC
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepC.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepC.y + 2) - CONST.ui.UNIT / 3 // Y
@@ -155,13 +155,13 @@ function insideQuestion(){
 	});
 	var positionBtnRepD = {
 		  x : positionBtnRepB.x
-		, y : positionBtnRepC.y
+		, y : positionBtnRepC.y + heightBtn - 1
 		, w : widthBtn
 		, h : heightBtn
 	};
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepD));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseA
+	  , text : question.reponseD
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepD.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepD.y + 2) - CONST.ui.UNIT / 3 // Y

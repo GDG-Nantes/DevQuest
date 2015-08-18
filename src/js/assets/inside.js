@@ -301,13 +301,13 @@ function initMap(){
 
 // Fonction qui positionne un stand  en fonction d'un point de départ
 // La map complète est générée afin de placer correctement le stand
-function placeStand(type, map){
+function placeStand(type, map, rowIndex){
 	var standArray = type === TYPE_SILVER ? arraySilver :
 				(type === TYPE_GOLD ? arrayGold : arrayPlatinium);
 	var widthStand = type === TYPE_SILVER ? widthSilver :
 				(type === TYPE_GOLD ? widthGold : widthPlatinium);
 	var heightStand = 8;
-	var rowIndex = Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
+	//var rowIndex = Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
 	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
 	if (CONST.debug){
 		console.debug("R:%s, C:%s",rowIndex, colIndex);
@@ -339,23 +339,23 @@ arrayPlatinium = standPlatinium();
 //////API
 /////////////////////////////////
 
-function showSilverStand(){
+function showSilverStand(rowIndex){
 	if (!screenSilver){
-		screenSilver = placeStand(TYPE_SILVER, initMap());
+		screenSilver = placeStand(TYPE_SILVER, initMap(), rowIndex);
 	}
 	return screenSilver;
 }
 
-function showGoldStand(){
+function showGoldStand(rowIndex){
 	if (!screenGold){
-		screenGold = placeStand(TYPE_GOLD, initMap());
+		screenGold = placeStand(TYPE_GOLD, initMap(), rowIndex);
 	}
 	return screenGold;
 }
 
-function showPlatiniumStand(){
+function showPlatiniumStand(rowIndex){
 	if (!screenPlatinium){
-		screenPlatinium = placeStand(TYPE_PLATINIUM, initMap());
+		screenPlatinium = placeStand(TYPE_PLATINIUM, initMap(), rowIndex);
 	}
 	return screenPlatinium;
 }

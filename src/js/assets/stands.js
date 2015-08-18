@@ -103,7 +103,7 @@ function standGold(){
 				}				
 			}else if (row === 3
 				|| row === 4){
-				if (col === 2 && row === 4){					
+				if (col === 3 && row === 4){					
 					arrayRow.push('40.6');
 				}else if (col === 0){
 					arrayRow.push('04.0');
@@ -113,7 +113,7 @@ function standGold(){
 					arrayRow.push('04.1');
 				}
 			}else if (row === 5){
-				if (col === 2 && row === 5){					
+				if (col === 3 && row === 5){					
 					arrayRow.push('41.6');
 				}else if (col === 0){
 					arrayRow.push('05.0');
@@ -186,7 +186,7 @@ function standPlatinium(){
 					arrayRow.push('26.5');
 				}
 			}else if (row === 4){
-				if (col === 2){					
+				if (col === 4){					
 					arrayRow.push('40.6');
 				}else if (col === 0){
 					arrayRow.push('27.4');
@@ -196,7 +196,7 @@ function standPlatinium(){
 					arrayRow.push('27.5');
 				}
 			}else if (row === 5){
-				if (col === 2){					
+				if (col === 4){					
 					arrayRow.push('41.6');
 				}else if (col === 0){
 					arrayRow.push('28.4');
