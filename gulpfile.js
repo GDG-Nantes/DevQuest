@@ -41,6 +41,7 @@ gulp.task('sass',function(){
     .pipe(reload({stream:true}));
 });
 
+
 gulp.task('browserify',function(){
   return browserify(['./src/js/app.js'], {debug:true})
     .bundle()    
@@ -49,13 +50,12 @@ gulp.task('browserify',function(){
       this.emit('end');
     })    
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./'))
     .pipe(replace('<GOOGLE_CLIENT>', credentials['GOOGLE_CLIENT']))
     .pipe(replace('<TWITTER_CLIENT>', credentials['TWITTER_CLIENT']))
     .pipe(replace('<TWITTER_CLIENT_SECRET>', credentials['TWITTER_CLIENT_SECRET']))
     .pipe(replace('<GITHUB_CLIENT>', credentials['GITHUB_CLIENT']))
     .pipe(replace('<GITHUB_CLIENT_SECRET>', credentials['GITHUB_CLIENT_SECRET']))
-    .pipe(gulp.dest('./'));  
+    .pipe(gulp.dest('./'));
 });
 
 /* Default task */
