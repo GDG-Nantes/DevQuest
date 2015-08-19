@@ -10,8 +10,37 @@ var widthSilver = 7
 	,widthGold = 9
 	, widthPlatinium = 11;
 
+function checkInteractions_(){
+  var drawFunctions = {
+  	drawA : InterfaceUtil.drawBtn
+  	, drawB : InterfaceUtil.drawBtn
+  	, drawC : InterfaceUtil.drawBtn
+  	, drawD : InterfaceUtil.drawBtn
+  };
+  if (Model.ui.interaction.type && 
+		Model.ui.interaction.type  === CONST.directions.DOWN){		
+		switch(Model.ui.interaction.key){
+		    case CONST.uiElements.BTN_REP_A :   
+		    	drawFunctions.drawA = InterfaceUtil.drawBtnPressed;
+		    	break;
+		    case CONST.uiElements.BTN_REP_B :   
+		    	drawFunctions.drawB = InterfaceUtil.drawBtnPressed;
+		    	break;
+		    case CONST.uiElements.BTN_REP_C :   
+		    	drawFunctions.drawC = InterfaceUtil.drawBtnPressed;
+		    	break;
+		    case CONST.uiElements.BTN_REP_D :   
+		    	drawFunctions.drawD = InterfaceUtil.drawBtnPressed;
+		    	break;
+		}
+	}
+	return drawFunctions;
+}
+
+
 function insideQuestion(){
 	var arrayInstructions = [];
+	var drawFuntions = checkInteractions_();
 
 	// On récupère le bon type de stand
     var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? widthSilver :
@@ -114,7 +143,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepA));
+	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawA(positionBtnRepA));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseA
 	  , fontSize : fontSize
@@ -129,7 +158,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepB));
+	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawB(positionBtnRepB));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseB
 	  , fontSize : fontSize
@@ -144,7 +173,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepC));
+	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawC(positionBtnRepC));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseC
 	  , fontSize : fontSize
@@ -159,7 +188,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnRepD));
+	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawD(positionBtnRepD));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseD
 	  , fontSize : fontSize

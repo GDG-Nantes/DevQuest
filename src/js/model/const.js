@@ -2,7 +2,7 @@
 var Characters = require('./charaters-cst.js');
 
 module.exports = {
-	DEBUG : true,
+	DEBUG : false,
 	// Ui Const
 	ui : {		
 		UNIT : 32,
