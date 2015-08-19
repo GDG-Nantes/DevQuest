@@ -3,6 +3,7 @@
 var CONST = require('../model/const.js');
 var Model = require('../model/model.js');
 var Inside = require('../assets/inside.js');
+var Inputs = require('../triggers/inputs.js');
 var Questions = require('../model/questions.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
 
@@ -10,16 +11,41 @@ var widthSilver = 7
 	,widthGold = 9
 	, widthPlatinium = 11;
 
-function checkInteractions_(){
-  var drawFunctions = {
+var addInteractions = false;
+var drawFunctions = {
   	drawA : InterfaceUtil.drawBtn
   	, drawB : InterfaceUtil.drawBtn
   	, drawC : InterfaceUtil.drawBtn
   	, drawD : InterfaceUtil.drawBtn
   };
-  if (Model.ui.interaction.type && 
-		Model.ui.interaction.type  === CONST.directions.DOWN){		
-		switch(Model.ui.interaction.key){
+
+function registerInteractions_(){
+	Inputs.registerInteraction({
+		type : CONST.directions.DOWN
+		, key : [
+			CONST.uiElements.BTN_REP_A
+			, CONST.uiElements.BTN_REP_B
+			, CONST.uiElements.BTN_REP_C
+			, CONST.uiElements.BTN_REP_D
+		]
+		, callback : checkInteractions_
+	});
+	Inputs.registerInteraction({
+		type : CONST.directions.UP
+		, key : [
+			CONST.uiElements.BTN_REP_A
+			, CONST.uiElements.BTN_REP_B
+			, CONST.uiElements.BTN_REP_C
+			, CONST.uiElements.BTN_REP_D
+		]
+		, callback : checkInteractions_
+	});
+}
+
+function checkInteractions_(event){
+  if (event.type && 
+		event.type  === CONST.directions.DOWN){		
+		switch(event.key){
 		    case CONST.uiElements.BTN_REP_A :   
 		    	drawFunctions.drawA = InterfaceUtil.drawBtnPressed;
 		    	break;
@@ -33,14 +59,33 @@ function checkInteractions_(){
 		    	drawFunctions.drawD = InterfaceUtil.drawBtnPressed;
 		    	break;
 		}
+	}else if (event.type && 
+		event.type  === CONST.directions.UP){		
+		switch(event.key){
+		    case CONST.uiElements.BTN_REP_A :   
+		    	drawFunctions.drawA = InterfaceUtil.drawBtn;
+		    	break;
+		    case CONST.uiElements.BTN_REP_B :   
+		    	drawFunctions.drawB = InterfaceUtil.drawBtn;
+		    	break;
+		    case CONST.uiElements.BTN_REP_C :   
+		    	drawFunctions.drawC = InterfaceUtil.drawBtn;
+		    	break;
+		    case CONST.uiElements.BTN_REP_D :   
+		    	drawFunctions.drawD = InterfaceUtil.drawBtn;		    	
+		    	break;
+		}
 	}
 	return drawFunctions;
 }
 
 
 function insideQuestion(){
+	if (!addInteractions){
+		registerInteractions_();
+		addInteractions = true;
+	}
 	var arrayInstructions = [];
-	var drawFuntions = checkInteractions_();
 
 	// On récupère le bon type de stand
     var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? widthSilver :
@@ -143,7 +188,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawA(positionBtnRepA));
+	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawA(positionBtnRepA));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseA
 	  , fontSize : fontSize
@@ -158,7 +203,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawB(positionBtnRepB));
+	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawB(positionBtnRepB));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseB
 	  , fontSize : fontSize
@@ -173,7 +218,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawC(positionBtnRepC));
+	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawC(positionBtnRepC));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseC
 	  , fontSize : fontSize
@@ -188,7 +233,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFuntions.drawD(positionBtnRepD));
+	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawD(positionBtnRepD));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseD
 	  , fontSize : fontSize

@@ -7,10 +7,30 @@ var Socials = require('../triggers/socials.js');
 
 var runActiv = false;	
 
-function processInteraction_(){
-	if (Model.ui.interaction.type && 
-		Model.ui.interaction.type  === CONST.directions.UP){		
-		switch(Model.ui.interaction.key){
+function registerInteractions_(){
+	Inputs.registerInteraction({
+		type : CONST.directions.UP
+		, key : [
+			CONST.uiElements.BTN_DEMARER
+			, CONST.uiElements.BTN_G_PLUS
+			, CONST.uiElements.BTN_TWITTER
+			, CONST.uiElements.BTN_GITHUB
+			, CONST.uiElements.BTN_RIGHT
+			, CONST.uiElements.BTN_LEFT
+			, CONST.uiElements.BTN_CHOISIR
+			, CONST.uiElements.DOOR
+			, CONST.screens.INSIDE_SILVER
+			, CONST.screens.INSIDE_GOLD
+			, CONST.screens.INSIDE_PLATINIUM
+			]
+		, callback : processInteraction_
+	});	
+}
+
+function processInteraction_(event){
+
+	if (event.type  === CONST.directions.UP){		
+		switch(event.key){
 		    case CONST.uiElements.BTN_DEMARER :       
 		    	// On regarde si on a déjà un user de stocké sinon, on passe l'écran suivant 
 		    	if (!Model.gameModel.user){
@@ -25,7 +45,7 @@ function processInteraction_(){
 		    case CONST.uiElements.BTN_TWITTER :       
 		    case CONST.uiElements.BTN_GITHUB :       
 		    case CONST.uiElements.BTN_CUSTO :       
-		    	Socials.login(Model.ui.interaction.key);
+		    	Socials.login(event.key);
 		    break;
 			case CONST.uiElements.BTN_RIGHT : 
 		        Model.gameModel.indexUser = (Model.gameModel.indexUser + 1) % CONST.characters.length;
@@ -43,13 +63,10 @@ function processInteraction_(){
 		    case CONST.screens.INSIDE_SILVER :    
 		    case CONST.screens.INSIDE_GOLD :    
 		    case CONST.screens.INSIDE_PLATINIUM :    
-		    	Model.gameModel.standId = Model.ui.interaction.id;
-		    	Model.ui.changeScreen = Model.ui.interaction.key;        
+		    	Model.gameModel.standId = event.id;
+		    	Model.ui.changeScreen = event.key;        
 		    default:
 		}
-    	Model.ui.interaction.type = '';
-    	Model.ui.interaction.key = '';		
-    	Model.ui.interaction.id = '';		
 	}
 }
 
@@ -175,7 +192,7 @@ function stopEngine_(){
 // API
 
 function start(){
-	
+	registerInteractions_();	
 	manageVisibility_();
 	startEngine_();
 }

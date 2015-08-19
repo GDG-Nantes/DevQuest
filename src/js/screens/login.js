@@ -2,11 +2,30 @@
 var Model = require('../model/model.js');
 var CONST = require('../model/const.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
+var Inputs = require('../triggers/inputs.js');
 
+var addInteractions = false;
+
+function checkInteractions_(event) {
+  
+}
+
+function registerInteractions_(){
+  Inputs.registerInteraction({
+    type : CONST.directions.UP
+    , key : CONST.uiElements.BTN_CUSTO
+    , callback : checkInteractions_
+  });
+}
 
 // API :
 
 function loginScreen(){
+  if (!addInteractions){
+    registerInteractions_()
+    addInteractions = true;
+  }
+
   var arrayInstructions = InterfaceUtil.drawAlphaBackground();
 
   // Zone autour du personnage

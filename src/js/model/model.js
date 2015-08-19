@@ -14,11 +14,6 @@ var ui = {
 	ratioScreen : 1,
 	mapCollision : [],
 	mapInteraction : [],	
-	interaction : {
-		 key : ''
-		, type : '' 
-		, id : ''
-	},
 	changeScreen : '',
 	screen : CONST.screens.HOME,
 	middlePoint : {

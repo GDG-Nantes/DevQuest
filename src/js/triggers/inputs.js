@@ -4,16 +4,17 @@ var Model = require('../model/model.js');
 var CONST = require('../model/const.js');
 var SonicServer = require('../ultrasonic/sonic-server.js');
 
-var trackAcceleration = true;
-var arrayZ = [];
-var lastPick = Date.now();
-var orientation = 0;
-var sonicServer = null;
-var stateFeq={
-	frequency : 0,
-	time : 0
-};
-var fullscreen = false;
+var trackAcceleration = true
+	, arrayZ = []
+ 	, lastPick = Date.now()
+	, orientation = 0
+	, sonicServer = null
+	, stateFeq={
+		frequency : 0,
+		time : 0
+	}
+	, fullscreen = false
+	, interactionsListeners = [];
 
 function toggleFullScreen_() {
   if (!document.fullscreenElement &&    // alternative standard method
@@ -88,10 +89,19 @@ function checkMouseIntersection_(event){
 					if (CONST.DEBUG){
 						console.debug("Event Click : %s on %s ", event.type, point.key);
 					}
-					Model.ui.interaction.key = point.key;
-					Model.ui.interaction.type = event.type === 'touchstart' ? CONST.directions.DOWN : 
-										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP);
-					Model.ui.interaction.id = point.id;
+					var eventInteraction = {
+						key : point.key
+						, type : event.type === 'touchstart' ? CONST.directions.DOWN : 
+										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP)
+						, id : point.id
+					}
+					// On vérifies s'il n'y a pas un événement à lever
+					interactionsListeners.forEach(function(listener){
+						if (eventInteraction.type === listener.type
+							&& eventInteraction.key === listener.key){
+							listener.callback(eventInteraction);
+						}
+					});
 
 					return false;
 			}
@@ -241,8 +251,23 @@ function removeListeners(){
 	console.log("RemoveListeners");
 }
 
+function registerInteraction(listener){
+	if (Array.isArray(listener.key)){
+		listener.key.forEach(function(keyItem){
+			interactionsListeners.push({
+				type : listener.type
+				, key : keyItem
+				, callback : listener.callback
+			});
+		});
+	}else{
+		interactionsListeners.push(listener);
+	}
+}
+
 
 module.exports = {
 	  removeListeners : removeListeners
 	, initListeners : initListeners
+	, registerInteraction : registerInteraction
 };
