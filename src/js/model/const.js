@@ -44,6 +44,12 @@ module.exports = {
 		RIGHT : 3,
 		DOWN : 4
 	},
+	// Communes
+	common : {
+		STAND_SILVER : 1
+		, STAND_GOLD : 2
+		, STAND_PLATINIUM : 3
+	},
 	// Personnages
 	characters : Characters,
 	// Ui elements clickable

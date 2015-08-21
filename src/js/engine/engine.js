@@ -29,7 +29,7 @@ function registerInteractions_(){
 
 function processInteraction_(event){
 
-	if (event.type  === CONST.directions.UP){		
+	if (event && event.type  === CONST.directions.UP){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_DEMARER :       
 		    	// On regarde si on a déjà un user de stocké sinon, on passe l'écran suivant 

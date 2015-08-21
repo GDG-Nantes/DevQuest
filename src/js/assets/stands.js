@@ -1,13 +1,11 @@
 'use strict';
 var CONST = require('../model/const.js');
+var StandsModel = require('../model/stands.js');
 var Model = require('../model/model.js');
 
 var widthSilver = 5
 	,widthGold = 7
 	, widthPlatinium = 9
-	, TYPE_SILVER = 1
-	, TYPE_GOLD = 2
-	, TYPE_PLATINIUM = 3
 	, arraySilver = []
 	, arrayGold = []
 	, arrayPlatinium = []
@@ -257,8 +255,8 @@ function initMap(){
 // Fonction qui positionne un stand  en fonction d'un point de départ
 // La map complète est générée afin de placer correctement le stand
 function placeStand(type, idStand, rowIndex, colIndex, map){
-	var standArray = type === TYPE_SILVER ? arraySilver : 
-				(type === TYPE_GOLD ? arrayGold : arrayPlatinium);
+	var standArray = type === CONST.common.STAND_SILVER ? arraySilver : 
+				(type === CONST.common.STAND_GOLD ? arrayGold : arrayPlatinium);
 	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 		for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
 			// Si on trouve notre place, alors, on positionne un stand à cette place
@@ -268,7 +266,7 @@ function placeStand(type, idStand, rowIndex, colIndex, map){
 						map[row+rowStand][col+colStand] = standArray[rowStand][colStand];
 						// On doit aussi mettre à jour la map de collision 
 						switch (type){
-							case TYPE_SILVER :
+							case CONST.common.STAND_SILVER :
 								if (rowStand === 6){
 									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
 								}else{
@@ -286,7 +284,7 @@ function placeStand(type, idStand, rowIndex, colIndex, map){
 									}
 								}
 							break;
-							case TYPE_GOLD:
+							case CONST.common.STAND_GOLD:
 								if (rowStand === 6
 									|| rowStand === 7){
 									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
@@ -305,7 +303,7 @@ function placeStand(type, idStand, rowIndex, colIndex, map){
 									}
 								}
 							break;
-							case TYPE_PLATINIUM:
+							case CONST.common.STAND_PLATINIUM:
 								if (rowStand === 6
 									|| rowStand === 7
 									|| rowStand === 8){
@@ -341,9 +339,9 @@ function placeStand(type, idStand, rowIndex, colIndex, map){
 
 function initStands(){
 	var map = initMap();
-	placeStand(TYPE_SILVER, 'stand1', 10,5,map);
-	placeStand(TYPE_GOLD, 'stand2', 10,15,map);
-	placeStand(TYPE_PLATINIUM, 'stand3', 10,25,map);
+	StandsModel.forEach(function(stand){
+		placeStand(stand.type, stand.name, stand.position.y,stand.position.x,map);
+	});
 	return map;
 }
 

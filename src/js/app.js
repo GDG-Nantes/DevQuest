@@ -7,10 +7,8 @@ var Engine = require('./engine/engine.js');
 var UI = require('./engine/ui.js');
 var Model = require('./model/model.js');
 var Socials = require('./triggers/socials.js');
-require('./triggers/inputs.js');
 
 // Méthodes Internes
-
 
 function checkConfig(){
 	/*
