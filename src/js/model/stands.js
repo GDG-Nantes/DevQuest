@@ -10,6 +10,7 @@ var stands = [
 		, position : {
 			x : 5
 			, y : 10
+			, orientation : CONST.directions.UP
 		}		
 	},
 	{
@@ -18,6 +19,7 @@ var stands = [
 		, position : {
 			x : 15
 			, y : 10
+			, orientation : CONST.directions.LEFT
 		}
 		
 	},
@@ -27,6 +29,7 @@ var stands = [
 		, position : {
 			x : 25
 			, y : 10
+			, orientation : CONST.directions.RIGHT
 		}
 		
 	}

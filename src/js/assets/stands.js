@@ -12,61 +12,164 @@ var widthSilver = 5
 	, arrayInteraction = [];
 
 
-// Stand silver tout seul
-function standSilver(){
+function standFromDefinition(definition){
 	var array = [];
-	for (var row = 0; row < 7; row++){
+	for (var row = 0; row < definition.height; row++){
 		var arrayRow = [];
-		for (var col = 0; col < widthSilver; col++){
-			if (row === 0 ){
-				if (col === 0){
-					arrayRow.push(['00.1','23.5']);
-				}else if (col === widthSilver -1){
-					arrayRow.push(['00.1','23.7']);
+		for (var col = 0; col < definition.width; col++){
+			if (definition['row'+row]){
+				if (definition['row'+row]['col'+col]){
+					arrayRow.push(definition['row'+row]['col'+col]);
 				}else{
-					arrayRow.push('23.6');
-				}				
-			}else if (row === 1){
-				if (col === 0){
-					arrayRow.push('24.5');
-				}else if (col === widthSilver -1){
-					arrayRow.push('24.7');
-				}else{
-					arrayRow.push('24.6');
-				}				
-			}else if (row === 2){
-				if (col === 0){
-					arrayRow.push('25.5');
-				}else if (col === widthSilver -1){
-					arrayRow.push('25.7');
-				}else{
-					arrayRow.push('25.6');
-				}				
-			}else if (row === 3
-				|| row === 4
-				|| row === 5){
-				if (col === 2 && row === 4){					
-					arrayRow.push('40.6');
-				}else if (col === 2 && row === 5){					
-					arrayRow.push('41.6');
-				}else{
-					arrayRow.push('23.3');
-
-				}
-			}else if (row === 6){
-				if (col === 0){					
-					arrayRow.push('09.3');
-				}else if (col === widthSilver - 1){					
-					arrayRow.push('09.4');
-				}else{
-					arrayRow.push('10.1');
-
+					arrayRow.push(definition['row'+row]['colN']);
 				}
 			}
 		}
 		array.push(arrayRow);
 	}
 	return array;
+}
+
+// Stand silver tout seul
+function standSilver(direction){
+	var definition = {};
+	direction = CONST.directions.UP;
+	switch(direction){
+		case CONST.directions.UP : 
+			definition.width  = widthSilver;
+			definition.height =  7;
+			// Toit
+			definition['row0'] = {
+				col0 : ['00.1','23.5']
+				, colN : ['23.6']
+			};
+			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.7'];
+			definition['row1'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+			};
+			definition['row1']['col'+(definition.width - 1)] = ['24.7'];
+			definition['row2'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+			}; 
+			definition['row2']['col'+(definition.width - 1)] = ['25.7'];
+			//Maison
+			definition['row3'] = { colN : ['23.3'] }; 
+			definition['row4'] = { colN : ['23.3'] }; 
+			definition['row5'] = { colN : ['23.3'] }; 
+			// Porte 
+			definition['row4']['col2'] = ['40.6'];
+			definition['row5']['col2'] = ['41.6'];
+			// Sol
+			definition['row6'] = {
+				col0 : ['09.3']
+				, colN : ['10.1']
+			}; 
+			definition['row6']['col'+(definition.width - 1)] = ['09.4'];
+			break;
+		case CONST.directions.UP : 
+			definition.width  = widthSilver;
+			definition.height =  7;
+			// Sol & Toit
+			definition['row0'] = {
+				col0 : ['09.3']
+				, colN : ['10.1']
+			};
+			definition['row0']['col'+(definition.width - 1)] = ['09.4'];
+			definition['row1'] = {
+				col0 : ['09.3','23.5']
+				, colN : ['23.6']
+			};
+			definition['row1']['col'+(definition.width - 1)] = ['09.4','23.6'];
+			definition['row2'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+			};
+			definition['row2']['col'+(definition.width - 1)] = ['24.7'];
+			definition['row3'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+			}; 
+			definition['row3']['col'+(definition.width - 1)] = ['25.7'];
+			//Maison
+			definition['row4'] = { colN : ['23.3'] }; 
+			definition['row5'] = { colN : ['23.3'] }; 
+			definition['row6'] = { colN : ['23.3'] }; 
+			// Porte 
+			// TODO 
+			break;
+		case CONST.directions.LEFT : 
+			definition.width  = 5;
+			definition.height =  7;
+			// Toit
+			definition['row0'] = {
+				col0 : ['00.1','23.5']
+				, colN : ['23.6']
+			};
+			definition['row0']['col'+(definition.width - 2)] = ['00.1','23.7'];
+			definition['row0']['col'+(definition.width - 1)] = ['00.1'];
+			definition['row1'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+			};
+			definition['row1']['col'+(definition.width - 2)] = ['24.7'];
+			definition['row1']['col'+(definition.width - 1)] = ['00.1'];
+			definition['row2'] = definition['row3'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+			};
+			definition['row2']['col'+(definition.width - 2)] = ['24.7'];
+			definition['row2']['col'+(definition.width - 1)] = ['09.3'];
+			definition['row3'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+			}; 
+			definition['row3']['col'+(definition.width - 2)] = ['25.7'];
+			definition['row3']['col'+(definition.width - 1)] = ['09.3'];
+			//Maison
+			definition['row4'] = { colN : ['23.3'] }; 
+			definition['row5'] = definition['row6'] = { colN : ['23.3'] }; 
+			// Sol
+			definition['row4']['col'+(definition.width - 1)] = ['09.4'];
+			definition['row5']['col'+(definition.width - 1)] = ['09.4'];
+			break;
+		case CONST.directions.RIGHT : 
+			definition.width  = 5;
+			definition.height =  7;
+			// Toit
+			definition['row0'] = {
+				col0 : ['00.1','23.5']
+				, colN : ['23.6']
+			};
+			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.7'];
+			definition['row1'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+			};
+			definition['row1']['col'+(definition.width - 1)] = ['24.7'];
+			definition['row2'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+			}; 
+			definition['row2']['col'+(definition.width - 1)] = ['25.7'];
+			//Maison
+			definition['row3'] = { colN : ['23.3'] }; 
+			definition['row4'] = { colN : ['23.3'] }; 
+			definition['row5'] = { colN : ['23.3'] }; 
+			// Porte 
+			definition['row4']['col2'] = ['40.6'];
+			definition['row5']['col2'] = ['41.6'];
+			// Sol
+			definition['row6'] = {
+				col0 : ['09.3']
+				, colN : ['10.1']
+			}; 
+			definition['row6']['col'+(definition.width - 1)] = ['09.4'];
+			break;
+	}
+	return standFromDefinition(definition);	
+	
 }
 
 // Stand GOld
