@@ -6,9 +6,9 @@ var Model = require('../model/model.js');
 var widthSilver = 5
 	,widthGold = 7
 	, widthPlatinium = 9
-	, arraySilver = []
-	, arrayGold = []
-	, arrayPlatinium = []
+	, arraySilver = {}
+	, arrayGold = {}
+	, arrayPlatinium = {}
 	, arrayInteraction = [];
 
 
@@ -33,9 +33,8 @@ function standFromDefinition(definition){
 // Stand silver tout seul
 function standSilver(direction){
 	var definition = {};
-	direction = CONST.directions.UP;
 	switch(direction){
-		case CONST.directions.UP : 
+		case CONST.directions.DOWN : 
 			definition.width  = widthSilver;
 			definition.height =  7;
 			// Toit
@@ -81,7 +80,7 @@ function standSilver(direction){
 				col0 : ['09.3','23.5']
 				, colN : ['23.6']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['09.4','23.6'];
+			definition['row1']['col'+(definition.width - 1)] = ['09.4','23.7'];
 			definition['row2'] = {
 				col0 : ['24.5']
 				, colN : ['24.6']
@@ -99,7 +98,7 @@ function standSilver(direction){
 			// Porte 
 			// TODO 
 			break;
-		case CONST.directions.LEFT : 
+		case CONST.directions.RIGHT : 
 			definition.width  = 5;
 			definition.height =  7;
 			// Toit
@@ -134,38 +133,43 @@ function standSilver(direction){
 			definition['row4']['col'+(definition.width - 1)] = ['09.4'];
 			definition['row5']['col'+(definition.width - 1)] = ['09.4'];
 			break;
-		case CONST.directions.RIGHT : 
+		case CONST.directions.LEFT : 
 			definition.width  = 5;
 			definition.height =  7;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1','23.5']
+				col0 : ['00.1']
+				, col1 : ['00.1','23.5']
 				, colN : ['23.6']
 			};
 			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.7'];
 			definition['row1'] = {
-				col0 : ['24.5']
+				col0 : ['00.1']
+				, col1 : ['24.5']
 				, colN : ['24.6']
 			};
 			definition['row1']['col'+(definition.width - 1)] = ['24.7'];
-			definition['row2'] = {
-				col0 : ['25.5']
+			definition['row2'] = definition['row3'] = {
+				col0 : ['09.3']
+				, col1 : ['24.5']
+				, colN : ['24.6']
+			};
+			definition['row2']['col'+(definition.width - 1)] = ['24.7'];
+			definition['row3'] = {
+				col0 : ['09.3']
+				, col1 : ['25.5']
 				, colN : ['25.6']
 			}; 
-			definition['row2']['col'+(definition.width - 1)] = ['25.7'];
+			definition['row3']['col'+(definition.width - 1)] = ['25.7'];
 			//Maison
-			definition['row3'] = { colN : ['23.3'] }; 
-			definition['row4'] = { colN : ['23.3'] }; 
-			definition['row5'] = { colN : ['23.3'] }; 
-			// Porte 
-			definition['row4']['col2'] = ['40.6'];
-			definition['row5']['col2'] = ['41.6'];
-			// Sol
-			definition['row6'] = {
-				col0 : ['09.3']
-				, colN : ['10.1']
+			definition['row4'] = { 
+				col0 : ['09.4']
+				, colN : ['23.3'] 
 			}; 
-			definition['row6']['col'+(definition.width - 1)] = ['09.4'];
+			definition['row5'] = definition['row6'] = { 
+				col0 : ['09.4']
+				, colN : ['23.3'] 
+			}; 
 			break;
 	}
 	return standFromDefinition(definition);	
@@ -173,7 +177,7 @@ function standSilver(direction){
 }
 
 // Stand GOld
-function standGold(){
+function standGold(direction){
 	var array = [];
 	for (var row = 0; row < 8; row++){
 		var arrayRow = [];
@@ -249,7 +253,7 @@ function standGold(){
 }
 
 // Stand Platinium
-function standPlatinium(){
+function standPlatinium(direction){
 	var array = [];
 	for (var row = 0; row < 9; row++){
 		var arrayRow = [];
@@ -357,9 +361,9 @@ function initMap(){
 
 // Fonction qui positionne un stand  en fonction d'un point de départ
 // La map complète est générée afin de placer correctement le stand
-function placeStand(type, idStand, rowIndex, colIndex, map){
-	var standArray = type === CONST.common.STAND_SILVER ? arraySilver : 
-				(type === CONST.common.STAND_GOLD ? arrayGold : arrayPlatinium);
+function placeStand(type, idStand, orientation, rowIndex, colIndex, map){
+	var standArray = type === CONST.common.STAND_SILVER ? arraySilver[''+orientation] : 
+				(type === CONST.common.STAND_GOLD ? arrayGold[''+orientation] : arrayPlatinium[''+orientation]);
 	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 		for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
 			// Si on trouve notre place, alors, on positionne un stand à cette place
@@ -443,16 +447,25 @@ function placeStand(type, idStand, rowIndex, colIndex, map){
 function initStands(){
 	var map = initMap();
 	StandsModel.forEach(function(stand){
-		placeStand(stand.type, stand.name, stand.position.y,stand.position.x,map);
+		placeStand(stand.type, stand.name, stand.position.orientation, stand.position.y,stand.position.x,map);
 	});
 	return map;
 }
 
 
 // Initialisation des variables de stand
-arraySilver = standSilver();
-arrayGold = standGold();
-arrayPlatinium = standPlatinium();
+arraySilver[''+CONST.directions.UP] = standSilver(CONST.directions.UP);
+arraySilver[''+CONST.directions.DOWN] = standSilver(CONST.directions.DOWN);
+arraySilver[''+CONST.directions.LEFT] = standSilver(CONST.directions.LEFT);
+arraySilver[''+CONST.directions.RIGHT] = standSilver(CONST.directions.RIGHT);
+arrayGold[''+CONST.directions.UP] = standGold(CONST.directions.UP);
+arrayGold[''+CONST.directions.DOWN] = standGold(CONST.directions.DOWN);
+arrayGold[''+CONST.directions.LEFT] = standGold(CONST.directions.LEFT);
+arrayGold[''+CONST.directions.RIGHT] = standGold(CONST.directions.RIGHT);
+arrayPlatinium[''+CONST.directions.UP] = standPlatinium(CONST.directions.UP);
+arrayPlatinium[''+CONST.directions.DOWN] = standPlatinium(CONST.directions.DOWN);
+arrayPlatinium[''+CONST.directions.LEFT] = standPlatinium(CONST.directions.LEFT);
+arrayPlatinium[''+CONST.directions.RIGHT] = standPlatinium(CONST.directions.RIGHT);
 
 module.exports = {
 	initStands : initStands,
