@@ -3,13 +3,10 @@ var CONST = require('../model/const.js');
 var StandsModel = require('../model/stands.js');
 var Model = require('../model/model.js');
 
-var widthSilver = 5
-	,widthGold = 7
-	, widthPlatinium = 9
-	, arraySilver = {}
+var arraySilver = {}
 	, arrayGold = {}
 	, arrayPlatinium = {}
-	, arrayInteraction = [];
+	, _arrayInteraction = [];
 
 
 function standFromDefinition(definition){
@@ -35,24 +32,24 @@ function standSilver(direction){
 	var definition = {};
 	switch(direction){
 		case CONST.directions.DOWN : 
-			definition.width  = widthSilver;
+			definition.width  = 5;
 			definition.height =  7;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1','23.5']
+				col0 : ['23.5']
 				, colN : ['23.6']
+				, col4 :['23.7']
 			};
-			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.7'];
 			definition['row1'] = {
 				col0 : ['24.5']
 				, colN : ['24.6']
+				, col4 : ['24.7']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['24.7'];
 			definition['row2'] = {
 				col0 : ['25.5']
 				, colN : ['25.6']
+				, col4 : ['25.7']
 			}; 
-			definition['row2']['col'+(definition.width - 1)] = ['25.7'];
 			//Maison
 			definition['row3'] = { colN : ['23.3'] }; 
 			definition['row4'] = { colN : ['23.3'] }; 
@@ -64,33 +61,34 @@ function standSilver(direction){
 			definition['row6'] = {
 				col0 : ['09.3']
 				, colN : ['10.1']
+				, col4 : ['09.4']
 			}; 
-			definition['row6']['col'+(definition.width - 1)] = ['09.4'];
 			break;
 		case CONST.directions.UP : 
-			definition.width  = widthSilver;
+			definition.width  = 5;
 			definition.height =  7;
 			// Sol & Toit
 			definition['row0'] = {
 				col0 : ['09.3']
+				, col2 : ['09.1','08.0']
 				, colN : ['10.1']
+				, col4 : ['09.4']
 			};
-			definition['row0']['col'+(definition.width - 1)] = ['09.4'];
 			definition['row1'] = {
 				col0 : ['09.3','23.5']
 				, colN : ['23.6']
+				, col4 : ['09.4','23.7']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['09.4','23.7'];
 			definition['row2'] = {
 				col0 : ['24.5']
 				, colN : ['24.6']
+				, col4 : ['24.7']
 			};
-			definition['row2']['col'+(definition.width - 1)] = ['24.7'];
 			definition['row3'] = {
 				col0 : ['25.5']
 				, colN : ['25.6']
+				, col4 : ['25.7']
 			}; 
-			definition['row3']['col'+(definition.width - 1)] = ['25.7'];
 			//Maison
 			definition['row4'] = { colN : ['23.3'] }; 
 			definition['row5'] = { colN : ['23.3'] }; 
@@ -103,67 +101,74 @@ function standSilver(direction){
 			definition.height =  7;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1','23.5']
+				col0 : ['23.5']
 				, colN : ['23.6']
+				, col3 : ['23.7']
+				, col4 : []
 			};
-			definition['row0']['col'+(definition.width - 2)] = ['00.1','23.7'];
-			definition['row0']['col'+(definition.width - 1)] = ['00.1'];
 			definition['row1'] = {
 				col0 : ['24.5']
 				, colN : ['24.6']
-			};
-			definition['row1']['col'+(definition.width - 2)] = ['24.7'];
-			definition['row1']['col'+(definition.width - 1)] = ['00.1'];
+				, col3 : ['24.7']
+				, col4 : []
+			};			
 			definition['row2'] = definition['row3'] = {
 				col0 : ['24.5']
 				, colN : ['24.6']
-			};
-			definition['row2']['col'+(definition.width - 2)] = ['24.7'];
-			definition['row2']['col'+(definition.width - 1)] = ['09.3'];
+				, col3 : ['24.7']
+				, col4 : ['09.3']
+			};			
 			definition['row3'] = {
 				col0 : ['25.5']
 				, colN : ['25.6']
+				, col3 : ['25.7']
+				, col4 : ['09.3']
 			}; 
-			definition['row3']['col'+(definition.width - 2)] = ['25.7'];
-			definition['row3']['col'+(definition.width - 1)] = ['09.3'];
+			
 			//Maison
-			definition['row4'] = { colN : ['23.3'] }; 
-			definition['row5'] = definition['row6'] = { colN : ['23.3'] }; 
-			// Sol
-			definition['row4']['col'+(definition.width - 1)] = ['09.4'];
-			definition['row5']['col'+(definition.width - 1)] = ['09.4'];
+			definition['row4'] = { 
+				colN : ['23.3']
+				// Sol && porte
+				, col4 : ['09.4', '08.0'] 
+			}; 
+			definition['row5'] = definition['row6'] = { 
+				colN : ['23.3'] 
+				//Sol
+				, col4 : ['09.4']
+			}; 			
 			break;
 		case CONST.directions.LEFT : 
 			definition.width  = 5;
 			definition.height =  7;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1']
-				, col1 : ['00.1','23.5']
+				col0 : []
+				, col1 : ['23.5']
 				, colN : ['23.6']
+				, col4 : ['23.7']
 			};
-			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.7'];
 			definition['row1'] = {
-				col0 : ['00.1']
+				col0 : []
 				, col1 : ['24.5']
 				, colN : ['24.6']
+				, col4 : ['24.7']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['24.7'];
 			definition['row2'] = definition['row3'] = {
 				col0 : ['09.3']
 				, col1 : ['24.5']
 				, colN : ['24.6']
+				, col4 : ['24.7']
 			};
-			definition['row2']['col'+(definition.width - 1)] = ['24.7'];
 			definition['row3'] = {
 				col0 : ['09.3']
 				, col1 : ['25.5']
 				, colN : ['25.6']
+				, col4 : ['25.7']
 			}; 
-			definition['row3']['col'+(definition.width - 1)] = ['25.7'];
 			//Maison
 			definition['row4'] = { 
-				col0 : ['09.4']
+				// Sol & porte
+				col0 : ['09.4', '08.0']
 				, colN : ['23.3'] 
 			}; 
 			definition['row5'] = definition['row6'] = { 
@@ -181,40 +186,40 @@ function standGold(direction){
 	var definition = {};
 	switch(direction){
 		case CONST.directions.DOWN : 
-			definition.width  = widthGold;
+			definition.width  = 7;
 			definition.height =  8;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1','23.0']
+				col0 : ['23.0']
 				, colN : ['23.1']
+				, col6 : ['23.2']
 			};
-			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.2'];
 			definition['row1'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
+				, col6 : ['24.2']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['24.2'];
 			definition['row2'] = {
 				col0 : ['25.0']
 				, colN : ['25.1']
+				, col6 : ['25.2']
 			}; 
-			definition['row2']['col'+(definition.width - 1)] = ['25.2'];
 			//Maison
 			definition['row3'] = { 
 				col0 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col6 : ['04.2']
 			}; 
-			definition['row3']['col'+(definition.width - 1)] = ['04.2'];
 			definition['row4'] = { 
 				col0 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col6 : ['04.2']
 			}; 
-			definition['row4']['col'+(definition.width - 1)] = ['04.2'];
 			definition['row5'] = { 
 				col0 : ['05.0']
-				,colN : ['05.1'] 
+				, colN : ['05.1'] 
+				, col6 : ['05.2']
 			}; 
-			definition['row5']['col'+(definition.width - 1)] = ['05.2'];
 			// Porte 
 			definition['row4']['col3'] = ['40.6'];
 			definition['row5']['col3'] = ['41.6'];
@@ -222,54 +227,55 @@ function standGold(direction){
 			definition['row6'] = {
 				col0 : ['09.0']
 				, colN : ['09.1']
+				, col6 : ['09.2']
 			}; 
-			definition['row6']['col'+(definition.width - 1)] = ['09.2'];
 			definition['row7'] = {
 				col0 : ['11.0']
 				, colN : ['11.1']
+				, col6 : ['11.2']
 			}; 
-			definition['row7']['col'+(definition.width - 1)] = ['11.2'];
 			break;
 		case CONST.directions.UP : 
-			definition.width  = widthGold;
+			definition.width  = 7;
 			definition.height =  7;
 			// Sol & Toit
 			definition['row0'] = {
 				col0 : ['09.0']
+				, col3 : ['09.1','08.0']				
 				, colN : ['09.1']
+				, col6 : ['09.2']
 			};
-			definition['row0']['col'+(definition.width - 1)] = ['09.2'];
 			definition['row1'] = {
 				col0 : ['10.3','23.0']
 				, colN : ['23.1']
+				, col6 : ['10.2','23.2']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['10.2','23.2'];
 			definition['row2'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
+				, col6 : ['24.2']
 			};
-			definition['row2']['col'+(definition.width - 1)] = ['24.2'];
 			definition['row3'] = {
 				col0 : ['25.0']
 				, colN : ['25.1']
+				, col6 : ['25.2']
 			}; 
-			definition['row3']['col'+(definition.width - 1)] = ['25.2'];
 			//Maison
 			definition['row4'] = { 
 				col0 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col6 : ['04.2']
 			}; 
-			definition['row4']['col'+(definition.width - 1)] = ['04.2'];
 			definition['row5'] = { 
 				col0 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col6 : ['04.2']
 			}; 
-			definition['row5']['col'+(definition.width - 1)] = ['04.2'];
 			definition['row6'] = { 
 				col0 : ['05.0']
-				,colN : ['05.1'] 
+				, colN : ['05.1'] 
+				, col6 : ['05.2']
 			}; 
-			definition['row6']['col'+(definition.width - 1)] = ['05.2'];
 			// Porte 
 			// TODO 
 			break;
@@ -278,62 +284,63 @@ function standGold(direction){
 			definition.height =  9;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1','23.0']
+				col0 : ['23.0']
 				, colN : ['23.1']
+				, col4 : ['23.2']
+				, col5 : []
+				, col6 : []
 			};
-			definition['row0']['col'+(definition.width - 3)] = ['00.1','23.2'];
-			definition['row0']['col'+(definition.width - 2)] = ['00.1'];
-			definition['row0']['col'+(definition.width - 1)] = ['00.1'];
 			definition['row1'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
+				, col4 : ['24.2']
+				, col5 : []
+				, col6 : []
 			};
-			definition['row1']['col'+(definition.width - 3)] = ['24.2'];
-			definition['row1']['col'+(definition.width - 2)] = ['00.1'];
-			definition['row1']['col'+(definition.width - 1)] = ['00.1'];
 			definition['row2'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
+				, col4 : ['24.2']
+				, col5 : ['09.0']
+				, col6 : ['09.2']
 			};
-			definition['row2']['col'+(definition.width - 3)] = ['24.2'];
-			definition['row2']['col'+(definition.width - 2)] = ['09.0'];
-			definition['row2']['col'+(definition.width - 1)] = ['09.2'];
 			definition['row3'] = definition['row4'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
+				, col4 : ['24.2']
+				, col5 : ['10.0']
+				, col6 : ['10.2']
 			};
-			definition['row3']['col'+(definition.width - 3)] = ['24.2'];
-			definition['row3']['col'+(definition.width - 2)] = ['10.0'];
-			definition['row3']['col'+(definition.width - 1)] = ['10.2'];
 			definition['row5'] = {
 				col0 : ['25.0']
 				, colN : ['25.1']
+				, col4 : ['25.2']
+				// Porte
+				, col5 : ['10.0','08.0']
+				, col6 : ['10.2']
 			}; 
-			definition['row5']['col'+(definition.width - 3)] = ['25.2'];
-			definition['row5']['col'+(definition.width - 2)] = ['10.0'];
-			definition['row5']['col'+(definition.width - 1)] = ['10.2'];
 			//Maison
 			definition['row6'] = { 
 				col0 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col4 : ['04.2']
+				, col5 : ['10.0']
+				, col6 : ['10.2']
 			}; 
-			definition['row6']['col'+(definition.width - 3)] = ['04.2'];
-			definition['row6']['col'+(definition.width - 2)] = ['10.0'];
-			definition['row6']['col'+(definition.width - 1)] = ['10.2'];
 			definition['row7'] = { 
 				col0 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col4 : ['04.2']
+				, col5 : ['10.0']
+				, col6 : ['10.2']
 			}; 
-			definition['row7']['col'+(definition.width - 3)] = ['04.2'];
-			definition['row7']['col'+(definition.width - 2)] = ['10.0'];
-			definition['row7']['col'+(definition.width - 1)] = ['10.2'];
 			definition['row8'] = { 
 				col0 : ['05.0']
 				,colN : ['05.1'] 
+				, col4 : ['05.2']
+				, col5 : ['11.0']
+				, col6 : ['11.2']
 			}; 
-			definition['row8']['col'+(definition.width - 3)] = ['05.2'];
-			definition['row8']['col'+(definition.width - 2)] = ['11.0'];
-			definition['row8']['col'+(definition.width - 1)] = ['11.2'];
 			// Sol
 			
 			break;
@@ -342,234 +349,592 @@ function standGold(direction){
 			definition.height =  9;
 			// Toit
 			definition['row0'] = {
-				col0 : ['00.1']
-				, col1 : ['00.1']
-				, col2 : ['00.1','23.0']
+				col0 : []
+				, col1 : []
+				, col2 : ['23.0']
 				, colN : ['23.1']
+				, col5 : ['23.2']
 			};
-			definition['row0']['col'+(definition.width - 1)] = ['00.1','23.2'];
 			definition['row1'] = {
-				col0 : ['00.1']
-				, col1 : ['00.1']
+				col0 : []
+				, col1 : []
 				, col2 : ['24.0']
 				, colN : ['24.1']
+				, col5 : ['24.2']
 			};
-			definition['row1']['col'+(definition.width - 1)] = ['24.2'];
 			definition['row2'] = {
 				col0 : ['09.0']
 				, col1 : ['09.2']
 				, col2 : ['24.0']
 				, colN : ['24.1']
+				, col5 : ['24.2']
 			};
-			definition['row2']['col'+(definition.width - 1)] = ['24.2'];
 			definition['row3'] = definition['row4'] = {
 				col0 : ['10.0']
 				, col1 : ['10.2']
 				, col2 : ['24.0']
 				, colN : ['24.1']
+				, col5 : ['24.2']
 			};
-			definition['row3']['col'+(definition.width - 1)] = ['24.2'];
 			definition['row5'] = {
 				col0 : ['10.0']
-				, col1 : ['10.2']
+				// Porte
+				, col1 : ['10.2','08.0']
 				, col2 : ['25.0']
 				, colN : ['25.1']
+				, col5 : ['25.2']
 			}; 
-			definition['row5']['col'+(definition.width - 1)] = ['25.2'];
 			//Maison
 			definition['row6'] = { 
 				col0 : ['10.0']
 				, col1 : ['10.2']
 				, col2 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col5 : ['04.2']
 			}; 
-			definition['row6']['col'+(definition.width - 1)] = ['04.2'];
 			definition['row7'] = { 
 				col0 : ['10.0']
 				, col1 : ['10.2']
 				, col2 : ['04.0']
-				,colN : ['04.1'] 
+				, colN : ['04.1'] 
+				, col5 : ['04.2']
 			}; 
-			definition['row7']['col'+(definition.width - 1)] = ['04.2'];
 			definition['row8'] = { 
 				col0 : ['11.0']
 				, col1 : ['11.2']
 				, col2 : ['05.0']
-				,colN : ['05.1'] 
+				, colN : ['05.1'] 
+				, col5 : ['05.2']
 			}; 
-			definition['row8']['col'+(definition.width - 1)] = ['05.2'];
 			// Sol
 
 
 			break;
 	}
 	return standFromDefinition(definition);	
-	var array = [];
-	for (var row = 0; row < 8; row++){
-		var arrayRow = [];
-		for (var col = 0; col < widthGold; col++){
-			if (row === 0 ){
-				if (col === 0){
-					arrayRow.push(['00.1','23.0']);
-				}else if (col === widthGold -1){
-					arrayRow.push(['00.1','23.2']);
-				}else{
-					arrayRow.push('23.1');
-				}				
-			}else if (row === 1){
-				if (col === 0){
-					arrayRow.push('24.0');
-				}else if (col === widthGold -1){
-					arrayRow.push('24.2');
-				}else{
-					arrayRow.push('24.1');
-				}				
-			}else if (row === 2){
-				if (col === 0){
-					arrayRow.push('25.0');
-				}else if (col === widthGold -1){
-					arrayRow.push('25.2');
-				}else{
-					arrayRow.push('25.1');
-				}				
-			}else if (row === 3
-				|| row === 4){
-				if (col === 3 && row === 4){					
-					arrayRow.push('40.6');
-				}else if (col === 0){
-					arrayRow.push('04.0');
-				}else if (col === widthGold - 1){
-					arrayRow.push('04.2');
-				}else{
-					arrayRow.push('04.1');
-				}
-			}else if (row === 5){
-				if (col === 3 && row === 5){					
-					arrayRow.push('41.6');
-				}else if (col === 0){
-					arrayRow.push('05.0');
-				}else if (col === widthGold - 1){
-					arrayRow.push('05.2');
-				}else{
-					arrayRow.push('05.1');
-				}
-			}else if (row === 6){
-				if (col === 0){					
-					arrayRow.push('09.0');
-				}else if (col === widthGold - 1){					
-					arrayRow.push('09.2');
-				}else{
-					arrayRow.push('09.1');
-
-				}
-			}else if (row === 7){
-				if (col === 0){					
-					arrayRow.push('11.0');
-				}else if (col === widthGold - 1){					
-					arrayRow.push('11.2');
-				}else{
-					arrayRow.push('11.1');
-
-				}
-			}
-		}
-		array.push(arrayRow);
-	}
-	return array;
+	
 }
 
 // Stand Platinium
 function standPlatinium(direction){
-	var array = [];
-	for (var row = 0; row < 9; row++){
-		var arrayRow = [];
-		for (var col = 0; col < widthPlatinium; col++){
-			if (row === 0 ){
-				if (col === 0){
-					arrayRow.push(['00.1','23.5']);
-				}else if (col === widthPlatinium -1){
-					arrayRow.push(['00.1','23.7']);
-				}else{
-					arrayRow.push('23.6');
-				}				
-			}else if (row === 1){
-				if (col === 0){
-					arrayRow.push('24.5');
-				}else if (col === widthPlatinium -1){
-					arrayRow.push('24.7');
-				}else{
-					arrayRow.push('24.6');
-				}				
-			}else if (row === 2){
-				if (col === 0){
-					arrayRow.push('25.5');
-				}else if (col === widthPlatinium -1){
-					arrayRow.push('25.7');
-				}else{
-					arrayRow.push('25.6');
-				}				
-			}else if (row === 3){
-				if (col === 0){
-					arrayRow.push('26.4');
-				}else if (col === widthPlatinium - 1){
-					arrayRow.push('26.6');
-				}else{
-					arrayRow.push('26.5');
-				}
-			}else if (row === 4){
-				if (col === 4){					
-					arrayRow.push('40.6');
-				}else if (col === 0){
-					arrayRow.push('27.4');
-				}else if (col === widthPlatinium - 1){
-					arrayRow.push('27.6');
-				}else{
-					arrayRow.push('27.5');
-				}
-			}else if (row === 5){
-				if (col === 4){					
-					arrayRow.push('41.6');
-				}else if (col === 0){
-					arrayRow.push('28.4');
-				}else if (col === widthPlatinium - 1){
-					arrayRow.push('28.6');
-				}else{
-					arrayRow.push('28.5');
-				}
-			}else if (row === 6){
-				if (col === 0){					
-					arrayRow.push('09.0');
-				}else if (col === widthPlatinium - 1){					
-					arrayRow.push('09.2');
-				}else{
-					arrayRow.push('09.1');
+	var definition = {};
+	switch(direction){
+		case CONST.directions.DOWN : 
+			definition.width  = 9;
+			definition.height =  8;
+			// Toit
+			definition['row0'] = {
+				col0 : ['23.5']
+				, colN : ['23.6']
+				, col8 : ['23.7']
+			};
+			definition['row1'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+				, col8 : ['24.7']
+			};
+			definition['row2'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+				, col8 : ['25.7']
+			}; 
+			//Maison
+			definition['row3'] = { 
+				col0 : ['26.4']
+				, colN : ['26.5'] 
+				, col8 : ['26.6']
+			}; 
+			definition['row4'] = { 
+				col0 : ['27.4']
+				, colN : ['27.6'] 
+				, col8 : ['27.6']
+			}; 
+			definition['row5'] = { 
+				col0 : ['28.4']
+				, colN : ['28.5'] 
+				, col8 : ['28.6']
+			}; 
+			// Porte 
+			definition['row4']['col4'] = ['40.6'];
+			definition['row5']['col4'] = ['41.6'];
+			// Sol
+			definition['row6'] = {
+				col0 : ['09.0']
+				, colN : ['09.1']
+				, col8 : ['09.2']
+			}; 
+			definition['row7'] = {
+				col0 : ['10.0']
+				, colN : ['10.1']
+				, col8 : ['10.2']
+			}; 
+			definition['row8'] = {
+				col0 : ['11.0']
+				, colN : ['11.1']
+				, col8 : ['11.2']
+			}; 
+			break;
+		case CONST.directions.UP : 
+			definition.width  = 9;
+			definition.height =  8;
+			// Sol & Toit
+			definition['row0'] = {
+				col0 : ['09.0']				
+				, colN : ['09.1']
+				, col8 : ['09.2']
+			};
+			definition['row1'] = {
+				col0 : ['10.0']
+				, col5 : ['10.1','08.0']
+				, colN : ['10.1']
+				, col8 : ['10.2']
+			};
+			definition['row2'] = {
+				col0 : ['10.0','23.5']
+				, colN : ['23.6']
+				, col8 : ['10.2','23.7']
+			};
+			definition['row3'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+				, col8 : ['24.7']
+			};
+			definition['row4'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+				, col8 : ['25.7']
+			}; 
+			//Maison
+			definition['row5'] = { 
+				col0 : ['26.4']
+				, colN : ['26.5'] 
+				, col8 : ['26.6']
+			}; 
+			definition['row6'] = { 
+				col0 : ['27.4']
+				, colN : ['27.6'] 
+				, col8 : ['27.6']
+			}; 
+			definition['row7'] = { 
+				col0 : ['28.4']
+				, colN : ['28.5'] 
+				, col8 : ['28.6']
+			}; 
+			// Porte 
 
-				}
-			}else if (row === 7){
-				if (col === 0){					
-					arrayRow.push('10.0');
-				}else if (col === widthPlatinium - 1){					
-					arrayRow.push('10.2');
-				}else{
-					arrayRow.push('10.1');
+			// TODO 
+			break;
+		case CONST.directions.RIGHT : 
+			definition.width  = 7;
+			definition.height =  13;
+			// Toit
+			definition['row0'] = {
+				col0 : ['23.5']
+				, colN : ['23.6']
+				, col3 : ['23.7']
+				, col4 : []
+				, col5 : []
+				, col6 : []
+			};
+			definition['row1'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+				, col3 : ['24.7']
+				, col4 : []
+				, col5 : []
+				, col6 : []
+			};
+			definition['row2'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+				, col3 : ['24.7']
+				, col4 : ['09.0']
+				, col5 : ['09.1']
+				, col6 : ['09.2']
+			};
+			definition['row3'] = definition['row4'] =
+			definition['row5'] = definition['row6'] =
+			definition['row8'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+				, col3 : ['24.7']
+				, col4 : ['10.0']
+				, col5 : ['10.1']
+				, col6 : ['10.2']
+			};			
+			definition['row7'] = {
+				col0 : ['24.5']
+				, colN : ['24.6']
+				, col3 : ['24.7']
+				// Porte
+				, col4 : ['10.0','08.0'] 
+				, col5 : ['10.1']
+				, col6 : ['10.2']
+			}; 
+			definition['row9'] = {
+				col0 : ['25.5']
+				, colN : ['25.6']
+				, col3 : ['25.7']
+				, col4 : ['10.0'] 
+				, col5 : ['10.1']
+				, col6 : ['10.2']
+			}; 
+			//Maison
+			definition['row10'] = { 
+				col0 : ['26.4']
+				, colN : ['26.5'] 
+				, col3 : ['26.6']
+				, col4 : ['10.0'] 
+				, col5 : ['10.1']
+				, col6 : ['10.2']
+			}; 
+			definition['row11'] = { 
+				col0 : ['27.4']
+				, colN : ['27.5'] 
+				, col3 : ['27.6']
+				, col4 : ['10.0'] 
+				, col5 : ['10.1']
+				, col6 : ['10.2']
+			}; 
+			definition['row12'] = { 
+				col0 : ['28.4']
+				, colN : ['28.5'] 
+				, col3 : ['28.6']
+				, col4 : ['11.0'] 
+				, col5 : ['11.1']
+				, col6 : ['11.2']
+			}; 
+			// Sol
+			
+			break;
+		case CONST.directions.LEFT : 
+			definition.width  = 7;
+			definition.height =  13;
+			// Toit
+			definition['row0'] = {
+				col0 : []
+				, col1 : []
+				, col2 : []
+				, col3 : ['23.5']
+				, colN : ['23.6']
+				, col6 : [ '23.7']
+			};
+			definition['row1'] = {
+				col0 : []
+				, col1 : []
+				, col2 : []
+				, col3 : ['24.5']
+				, colN : ['24.6']
+				, col6 : ['24.7']
+			};
+			definition['row2'] = {
+				col0 : ['09.0']
+				, col1 : ['09.1']
+				, col2 : ['09.2']
+				, col3 : ['24.5']
+				, colN : ['24.6']
+				, col6 : ['24.7']
+			};
+			definition['row3'] = definition['row4'] =
+			definition['row5'] = definition['row6'] =
+			definition['row8'] = {
+				col0 : ['10.0']
+				, col1 : ['10.1']
+				, col2 : ['10.2']
+				, col3 : ['24.5']
+				, colN : ['24.6']
+				, col6 : ['24.7']
+			};			
+			definition['row7'] = {
+				col0 : ['10.0'] 
+				, col1 : ['10.1']
+				// Porte
+				, col2 : ['10.2','08.0']
+				, col3 : ['24.5']
+				, colN : ['24.6']
+				, col6 : ['24.7']
+			}; 
+			definition['row9'] = {
+				col0 : ['10.0'] 
+				, col1 : ['10.1']
+				, col2 : ['10.2']
+				, col3 : ['25.5']
+				, colN : ['25.6']
+				, col6 : ['25.7']
+			}; 
+			//Maison
+			definition['row10'] = { 
+				col0 : ['10.0'] 
+				, col1 : ['10.1']
+				, col2 : ['10.2']
+				, col3 : ['26.4']
+				, colN : ['26.5'] 
+				, col6 : ['26.6']
+			}; 
+			definition['row11'] = { 
+				col0 : ['10.0'] 
+				, col1 : ['10.1']
+				, col2 : ['10.2']
+				, col3 : ['27.4']
+				, colN : ['27.5'] 
+				, col6 : ['27.6']
+			}; 
+			definition['row12'] = { 
+				col0 : ['11.0'] 
+				, col1 : ['11.1']
+				, col2 : ['11.2']
+				, col3 : ['28.4']
+				, colN : ['28.5'] 
+				, col6 : ['28.6']
+			}; 
+			// Sol
 
-				}
-			}else if (row === 8){
-				if (col === 0){					
-					arrayRow.push('11.0');
-				}else if (col === widthPlatinium - 1){					
-					arrayRow.push('11.2');
-				}else{
-					arrayRow.push('11.1');
 
-				}
-			}
-		}
-		array.push(arrayRow);
+			break;
 	}
-	return array;
+	return standFromDefinition(definition);	
 }
 
+
+// Calcul des zones d'interaction du stand Silver
+function applyInteractionsAreasSilver(row, col, rowStand, colStand, direction, idStand){
+	switch (direction){		
+		case CONST.directions.DOWN:
+			if (rowStand === 6){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 2 && rowStand === 4){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 2)
+				      , y : CONST.ui.UNIT * (row + 4)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 2
+				      , key : CONST.screens.INSIDE_SILVER
+				      , id : idStand
+				    });
+				}
+			}
+		break;
+		case CONST.directions.UP:
+			if (rowStand === 0){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 2 && rowStand === 0){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 2)
+				      , y : CONST.ui.UNIT * (row + 0)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_SILVER
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+		case CONST.directions.LEFT:
+			if (colStand === 0){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 0 && rowStand === 4){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 0)
+				      , y : CONST.ui.UNIT * (row + 4)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_SILVER
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+		case CONST.directions.RIGHT:
+			if (colStand === 4){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 4 && rowStand === 4){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 4)
+				      , y : CONST.ui.UNIT * (row + 4)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_SILVER
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+	}
+}
+
+// Calcul des zones d'interaction du stand Gold
+function applyInteractionsAreasGold(row, col, rowStand, colStand, direction, idStand){
+	switch (direction){		
+		case CONST.directions.DOWN:
+			if (rowStand === 6 || rowStand === 7){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 3 && rowStand === 4){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 3)
+				      , y : CONST.ui.UNIT * (row + 4)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 2
+				      , key : CONST.screens.INSIDE_GOLD
+				      , id : idStand
+				    });
+				}
+			}
+		break;
+		case CONST.directions.UP:
+			if (rowStand === 0){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 3 && rowStand === 0){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 3)
+				      , y : CONST.ui.UNIT * (row + 0)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_GOLD
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+		case CONST.directions.LEFT:
+			if (colStand === 0 || colStand === 1){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 1 && rowStand === 5){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 1)
+				      , y : CONST.ui.UNIT * (row + 5)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_GOLD
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+		case CONST.directions.RIGHT:
+			if (colStand === 4 || colStand === 5){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 4 && rowStand === 5){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 4)
+				      , y : CONST.ui.UNIT * (row + 5)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_GOLD
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+	}
+}
+
+// Calcul des zones d'interaction du stand Silver
+function applyInteractionsAreasPlatinium(row, col, rowStand, colStand, direction, idStand){
+	switch (direction){		
+		case CONST.directions.DOWN:
+			if (rowStand === 6
+				|| rowStand === 7
+				|| rowStand === 8){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 5 && rowStand === 6){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 5)
+				      , y : CONST.ui.UNIT * (row + 4)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 2
+				      , key : CONST.screens.INSIDE_PLATINIUM
+				      , id : idStand
+				    });
+				}
+			}
+		break;
+		case CONST.directions.UP:
+			if (rowStand === 0 || rowStand === 1){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 5 && rowStand === 1){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 5)
+				      , y : CONST.ui.UNIT * (row + 1)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_PLATINIUM
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+		case CONST.directions.LEFT:
+			if (colStand === 0
+				|| colStand === 1
+				|| colStand === 2){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 2 && rowStand === 7){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 2)
+				      , y : CONST.ui.UNIT * (row + 7)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_PLATINIUM
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+		case CONST.directions.RIGHT:
+			if (colStand === 4
+				|| colStand === 5
+				|| colStand === 6){
+				Model.ui.mapCollision[row+rowStand][col+colStand] = false;
+				// On gère l'interaction (entrée dans un stand)
+				if (colStand === 4 && rowStand === 7){
+					_arrayInteraction.push({
+				        x : CONST.ui.UNIT * (col + 4)
+				      , y : CONST.ui.UNIT * (row + 7)
+				      , w : CONST.ui.UNIT * 1
+				      , h : CONST.ui.UNIT * 1
+				      , key : CONST.screens.INSIDE_PLATINIUM
+				      , id : idStand
+				    });
+				}
+			}else{
+				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
+			}
+		break;
+	}
+}
 
 
 // Initialise la map vide des Stands
@@ -600,61 +965,13 @@ function placeStand(type, idStand, orientation, rowIndex, colIndex, map){
 						// On doit aussi mettre à jour la map de collision 
 						switch (type){
 							case CONST.common.STAND_SILVER :
-								if (rowStand === 6){
-									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
-								}else{
-									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
-									// On gère l'interaction (entrée dans un stand)
-									if (colStand === 2 && rowStand === 4){
-										arrayInteraction.push({
-									        x : CONST.ui.UNIT * (col + 2)
-									      , y : CONST.ui.UNIT * (row + 4)
-									      , w : CONST.ui.UNIT * 1
-									      , h : CONST.ui.UNIT * 2
-									      , key : CONST.screens.INSIDE_SILVER
-									      , id : idStand
-									    });
-									}
-								}
+								applyInteractionsAreasSilver(row, col, rowStand, colStand, orientation, idStand);								
 							break;
 							case CONST.common.STAND_GOLD:
-								if (rowStand === 6
-									|| rowStand === 7){
-									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
-								}else{
-									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
-									// On gère l'interaction (entrée dans un stand)
-									if (colStand === 3 && rowStand === 4){
-										arrayInteraction.push({
-									        x : CONST.ui.UNIT * (col + 3)
-									      , y : CONST.ui.UNIT * (row + 4)
-									      , w : CONST.ui.UNIT * 1
-									      , h : CONST.ui.UNIT * 2
-									      , key : CONST.screens.INSIDE_GOLD
-									      , id : idStand
-									    });
-									}
-								}
+								applyInteractionsAreasGold(row, col, rowStand, colStand, orientation, idStand);																
 							break;
 							case CONST.common.STAND_PLATINIUM:
-								if (rowStand === 6
-									|| rowStand === 7
-									|| rowStand === 8){
-									Model.ui.mapCollision[row+rowStand][col+colStand] = false;
-								}else{
-									Model.ui.mapCollision[row+rowStand][col+colStand] = true;
-									// On gère l'interaction (entrée dans un stand)
-									if (colStand === 4 && rowStand === 4){
-										arrayInteraction.push({
-									        x : CONST.ui.UNIT * (col + 4)
-									      , y : CONST.ui.UNIT * (row + 4)
-									      , w : CONST.ui.UNIT * 1
-									      , h : CONST.ui.UNIT * 2
-									      , key : CONST.screens.INSIDE_PLATINIUM
-									      , id : idStand
-									    });
-									}
-								}
+								applyInteractionsAreasPlatinium(row, col, rowStand, colStand, orientation, idStand);																
 							break;
 						}						
 					}
@@ -695,5 +1012,5 @@ arrayPlatinium[''+CONST.directions.RIGHT] = standPlatinium(CONST.directions.RIGH
 
 module.exports = {
 	initStands : initStands,
-	arrayInteraction : arrayInteraction
+	arrayInteraction : _arrayInteraction
 };
