@@ -130,18 +130,20 @@ function mouseUp_(event){
 function transformOrientationToDirection_(orientation){
 	// On a une valeur qui oscille entre 0 et 360
 	// On va prendre des tranches de 90 degrés pour chaque direction
+	var upRef = 150; // La référence est 150° pour indiquer le up 
 	/*
-		Haut => < 45 || >= 315
-		Gauche => >=45 && < 135
-		Bas => >= 135 && < 225
-		Droite=> >= 225 && < 315
+		Haut => >= 105 || < 195
+		Gauche => >=5 && < 105
+		Bas => >= 285 && < 360 || >= 0 && < 5
+		Droite=> >= 195 && < 285
 	*/
 	var directionStep = CONST.directions.RIGHT;
-	if (orientation < 45 || orientation >= 315){
+	if (orientation >= 105 || orientation < 195){
 		directionStep = CONST.directions.UP;
-	}else if (orientation >= 45 && orientation < 135){
+	}else if (orientation >= 5 && orientation < 105){
 		directionStep = CONST.directions.LEFT;
-	}else if (orientation >= 135 && orientation < 225){
+	}else if ((orientation >= 285 && orientation < 360)
+			|| (orientation >= 0 && orientation < 5)){
 		directionStep = CONST.directions.DOWN;
 	}else{
 		directionStep = CONST.directions.RIGHT;
