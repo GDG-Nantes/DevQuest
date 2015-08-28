@@ -66,6 +66,7 @@ module.exports = {
 		BTN_G_PLUS : 'google-plus',
 		BTN_TWITTER : 'twitter',
 		BTN_GITHUB : 'github',
-		BTN_CUSTO : 'custo'
+		BTN_CUSTO : 'custo', 
+		BTN_PARAM : 'param'
 	}
 };

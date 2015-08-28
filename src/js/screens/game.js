@@ -2,16 +2,42 @@
 var CONST = require('../model/const.js');
 var Model = require('../model/model.js');
 var Stands = require('../assets/stands.js');
+var Inputs = require('../triggers/inputs.js');
+var InterfaceUtil = require('../assets/interface-utils.js');
 
-var lastPoint = {
+var lastPoint_ = {
 	x : 0,
 	y : 0
+	}
+	, interactionParam_ = []
+	, showParam_ = false
+	, addInteractions_ = false;
+
+function registerInteractions_(){
+	Inputs.registerInteraction({
+		type : CONST.directions.DOWN
+		, key : [
+			CONST.uiElements.BTN_PARAM			
+		]
+		, callback : processInteractions_
+	});
+	
 }
 
+function processInteractions_(event){
+  if (event.type && 
+		event.type  === CONST.directions.DOWN){		
+		switch(event.key){
+		    case CONST.uiElements.BTN_PARAM :   
+		    	showParam_ = true;
+		    	break;		    
+		}
+	}
+}
 
 function checkInteractions_(){
-  if (lastPoint.x !=  Model.gameModel.positionScreen.x
-  	|| lastPoint.y != Model.gameModel.positionScreen.y
+  if (lastPoint_.x !=  Model.gameModel.positionScreen.x
+  	|| lastPoint_.y != Model.gameModel.positionScreen.y
   	|| Model.ui.changeScreen != CONST.screens.GAME){  	
 	  // On met à jour la map d'interaction
 	  Model.ui.mapInteraction = [];
@@ -28,7 +54,8 @@ function checkInteractions_(){
 	  			});
 	  	}
 	  });
-	  lastPoint = Model.gameModel.positionScreen;
+	  lastPoint_ = Model.gameModel.positionScreen;
+	  Array.prototype.push.apply(Model.ui.mapInteraction, interactionParam_);
   }
 }
  
@@ -69,13 +96,87 @@ function paintUser_(){
 		);
 }
 
+function paintBtnParameter_(){
+	var arrayInstructions = [];
+	// Boutons
+	var positionBtnParam = {
+		  x : Model.ui.screenSize.width - 4
+		, y : 0
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnParam);
+	instructionsBtn.forEach(function(instruction){
+		instruction.touchContext = true;
+		instruction.alpha = 0.75;
+	});
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : "\ue809"
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnParam.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnParam.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnParam.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+		, touchContext : true
+		, alpha : 0.75
+	});
+
+	  // Mise à jour de la map d'interaction
+	if (Model.ui.changeScreen != CONST.screens.GAME){
+		interactionParam_ = [];
+		interactionParam_.push({
+		    x : CONST.ui.UNIT * positionBtnParam.x
+		  , y : CONST.ui.UNIT * positionBtnParam.y
+		  , w : CONST.ui.UNIT * positionBtnParam.w
+		  , h : CONST.ui.UNIT * positionBtnParam.h
+		  , key : CONST.uiElements.BTN_PARAM
+		});	
+		
+	}
+
+	return arrayInstructions;
+}
+
+function paintParameters_(){
+	// Zone autour du personnage
+	var position = {
+	    x: 1
+	  , y :3
+	  , w: 10
+	  , h: 12}
+	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
+	// Titre
+	arrayInstructions.push({drawText : true
+	  , text : "Paramètres"
+	  , fontSize : '20px'
+	  , x :  CONST.ui.UNIT * (position.x + 1) // X
+	  , y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
+	  , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+	  , lineHeight : 30 // Line Height
+	});
+
+	return arrayInstructions;
+}
 
 // API
 
 function gameScreen(){
+	if (!addInteractions_){
+		registerInteractions_();
+		addInteractions_ = true;
+	}
 
 	var arrayInstructions = [];
 	arrayInstructions.push(paintUser_());
+	if (!showParam_){
+		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());
+	}else{
+		Array.prototype.push.apply(arrayInstructions, paintParameters_());
+	}
 
 	// Calcul des interactions
 	// On doit calculer en fonction de l'emplacement de la map dans l'écran

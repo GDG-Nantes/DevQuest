@@ -151,6 +151,13 @@ function paintGrille_(){
 
 function paintInstructions_(arrayInstructions){
 	arrayInstructions.forEach(function(instruction){
+		if (instruction.touchContext){
+			// on sauve et restore le contexte du canvas histoire de pas perturber les autres affichages
+			Model.ui.context.save();
+		}
+		if (instruction.alpha){
+			Model.ui.context.globalAlpha = instruction.alpha;
+		}
 		if (instruction.repeat){
 			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
   			Model.ui.context.fillRect(CONST.ui.UNIT * instruction.colDest
@@ -158,9 +165,9 @@ function paintInstructions_(arrayInstructions){
   					, CONST.ui.UNIT * instruction.wDest
   					, CONST.ui.UNIT * instruction.hDest
   				);
-		}else if (instruction.drawText){
-			Model.ui.context.font = instruction.fontSize+" Visitor";
-			Model.ui.context.fillStyle = "#deeed6";
+		}else if (instruction.drawText){			
+			Model.ui.context.font = instruction.fontSize+" "+(instruction.font ? instruction.font : "Visitor");
+			Model.ui.context.fillStyle = instruction.color ? instruction.color : "#deeed6";
 			wrapText_(instruction.text
 				, instruction.x // X
 				, instruction.y // Y
@@ -189,6 +196,11 @@ function paintInstructions_(arrayInstructions){
 			    , instruction.rowDest // rowDest
 			    , instruction.colDest // colDest
 			  );
+		}
+		// Reset
+		if (instruction.touchContext){
+			// on sauve et restore le contexte du canvas histoire de pas perturber les autres affichages
+			Model.ui.context.restore();
 		}
 
 	});
