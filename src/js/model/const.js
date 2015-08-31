@@ -2,7 +2,7 @@
 var Characters = require('./charaters-cst.js');
 
 module.exports = {
-	DEBUG : false,
+	DEBUG : true,
 	// Ui Const
 	ui : {		
 		UNIT : 32,
@@ -67,6 +67,9 @@ module.exports = {
 		BTN_TWITTER : 'twitter',
 		BTN_GITHUB : 'github',
 		BTN_CUSTO : 'custo', 
-		BTN_PARAM : 'param'
+		BTN_PARAM : 'param',
+		BTN_PARAM_CLOSE : 'param-close',
+		BTN_PARAM_MIC : 'param-mic',
+		BTN_PARAM_MOTION : 'param-motion'
 	}
 };

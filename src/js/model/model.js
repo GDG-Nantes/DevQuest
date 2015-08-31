@@ -27,7 +27,7 @@ var ui = {
 }; 
 
 var gameModel = {		
-	version : '2',
+	version : '3',
 	user : null,	
 	indexUser : -1,
 	inputArray : [],
@@ -41,6 +41,10 @@ var gameModel = {
 		y:10, 
 		direction : CONST.directions.UP,
 		stepCount : 0
+	},
+	parameters : {
+		mic : true
+		, motion : true
 	}
 };
 

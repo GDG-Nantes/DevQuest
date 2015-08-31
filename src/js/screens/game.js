@@ -17,7 +17,10 @@ function registerInteractions_(){
 	Inputs.registerInteraction({
 		type : CONST.directions.DOWN
 		, key : [
-			CONST.uiElements.BTN_PARAM			
+			CONST.uiElements.BTN_PARAM,			
+			CONST.uiElements.BTN_PARAM_CLOSE,			
+			CONST.uiElements.BTN_PARAM_MIC,			
+			CONST.uiElements.BTN_PARAM_MOTION			
 		]
 		, callback : processInteractions_
 	});
@@ -30,6 +33,15 @@ function processInteractions_(event){
 		switch(event.key){
 		    case CONST.uiElements.BTN_PARAM :   
 		    	showParam_ = true;
+		    	break;		
+		     case CONST.uiElements.BTN_PARAM_CLOSE :   
+		    	showParam_ = false;
+		    	break;		    
+		    case CONST.uiElements.BTN_PARAM_MIC :   
+		    	Model.gameModel.parameters.mic = !Model.gameModel.parameters.mic;
+		    	break;		    
+		    case CONST.uiElements.BTN_PARAM_MOTION :   
+		    	Model.gameModel.parameters.motion = !Model.gameModel.parameters.motion;
 		    	break;		    
 		}
 	}
@@ -145,8 +157,8 @@ function paintParameters_(){
 	var position = {
 	    x: 1
 	  , y :3
-	  , w: 10
-	  , h: 12}
+	  , w: Model.ui.screenSize.width - 3
+	  , h: Model.ui.screenSize.height - 4}
 	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
 	// Titre
@@ -158,6 +170,93 @@ function paintParameters_(){
 	  , w : CONST.ui.UNIT * (position.w - 2) // Max Width
 	  , lineHeight : 30 // Line Height
 	});
+
+	// Boutons
+	var positionBtnUltraSon = {
+		  x : position.x + 1
+		, y : position.y + 2
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnUltraSon);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : Model.gameModel.parameters.mic ? "\ue815" : "\ue816"
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnUltraSon.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnUltraSon.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnUltraSon.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+	arrayInstructions.push({drawText : true
+	  , text : Model.gameModel.parameters.mic ? 
+	  	"Désactiver le positionnement par ultrason"
+	  	: "Activer le positionnement par ultrason"
+	  , fontSize : '15px'
+	  , x :  CONST.ui.UNIT * (positionBtnUltraSon.x + 2) + CONST.ui.UNIT / 2 // X
+	  , y : CONST.ui.UNIT * (positionBtnUltraSon.y + 1) - CONST.ui.UNIT / 3 // Y
+	  , w : CONST.ui.UNIT * (position.w - 4.5) // Max Width
+	  , lineHeight : 25 // Line Height
+	});
+
+	var positionBtnMotion = {
+		  x : position.x + 1
+		, y : positionBtnUltraSon.y + 4
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnMotion);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : Model.gameModel.parameters.motion ? "\ue812" : "\ue80a"
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnMotion.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnMotion.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnMotion.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+	arrayInstructions.push({drawText : true
+	  , text : Model.gameModel.parameters.motion ? 
+	  	"Désactiver le déplacement par l'accéloromètre"
+	  	: "Activer le déplacement par l'accéloromètre"
+	  , fontSize : '15px'
+	  , x :  CONST.ui.UNIT * (positionBtnMotion.x + 2) + CONST.ui.UNIT / 2 // X
+	  , y : CONST.ui.UNIT * (positionBtnMotion.y + 1) - CONST.ui.UNIT / 3 // Y
+	  , w : CONST.ui.UNIT * (position.w - 4.5) // Max Width
+	  , lineHeight : 25 // Line Height
+	});
+
+	  // Mise à jour de la map d'interaction
+	if (Model.ui.changeScreen != CONST.screens.GAME){
+		interactionParam_ = [];
+		interactionParam_.push({
+		    x : CONST.ui.UNIT * (Model.ui.screenSize.width - 3)
+		  , y : CONST.ui.UNIT * 3
+		  , w : CONST.ui.UNIT * 3
+		  , h : CONST.ui.UNIT * 1
+		  , key : CONST.uiElements.BTN_PARAM_CLOSE
+		});	
+		interactionParam_.push({
+		    x : CONST.ui.UNIT * positionBtnUltraSon.x
+		  , y : CONST.ui.UNIT * positionBtnUltraSon.y
+		  , w : CONST.ui.UNIT * positionBtnUltraSon.w
+		  , h : CONST.ui.UNIT * positionBtnUltraSon.h
+		  , key : CONST.uiElements.BTN_PARAM_MIC
+		});	
+		interactionParam_.push({
+		    x : CONST.ui.UNIT * positionBtnMotion.x
+		  , y : CONST.ui.UNIT * positionBtnMotion.y
+		  , w : CONST.ui.UNIT * positionBtnMotion.w
+		  , h : CONST.ui.UNIT * positionBtnMotion.h
+		  , key : CONST.uiElements.BTN_PARAM_MOTION
+		});	
+		
+	}
+
 
 	return arrayInstructions;
 }
