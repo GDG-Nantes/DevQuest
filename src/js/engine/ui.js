@@ -157,14 +157,26 @@ function paintInstructions_(arrayInstructions){
 		}
 		if (instruction.alpha){
 			Model.ui.context.globalAlpha = instruction.alpha;
-		}
-		if (instruction.repeat){
+		}		
+		if (instruction.repeat){						
 			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
+			// On applique une transformtion supplémentaire pour palier à un bug d'affichage lié au pattern
+			if (instruction.applyTransform){
+				debugger; 
+	  			Model.ui.context.translate(	  				
+	  				CONST.ui.UNIT * instruction.applyTransform * (instruction.colDest - Math.floor(instruction.colDest) /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/ )
+	  				,CONST.ui.UNIT * instruction.applyTransform * (instruction.rowDest - Math.floor(instruction.rowDest)));
+	  		}
   			Model.ui.context.fillRect(CONST.ui.UNIT * instruction.colDest
   					, CONST.ui.UNIT * instruction.rowDest
   					, CONST.ui.UNIT * instruction.wDest
   					, CONST.ui.UNIT * instruction.hDest
   				);
+  			if (instruction.applyTransform){
+	  			Model.ui.context.translate(
+	  				CONST.ui.UNIT * instruction.applyTransform * (Math.floor(instruction.colDest) - instruction.colDest /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/)
+	  				,CONST.ui.UNIT * instruction.applyTransform * (Math.floor(instruction.rowDest) - instruction.rowDest));
+	  		}
 		}else if (instruction.drawText){			
 			Model.ui.context.font = instruction.fontSize+" "+(instruction.font ? instruction.font : "Visitor");
 			Model.ui.context.fillStyle = instruction.color ? instruction.color : "#deeed6";

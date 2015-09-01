@@ -34,10 +34,11 @@ function drawCarreTexte(keys, position){
   // Côté Gauche
   arrayInstructions.push({ repeat : true
     , key : keys.gauche
-    , colDest :position.x
+    , colDest : position.x
     , rowDest : (position.y + 1)
     , wDest : 1
     , hDest : (position.h - 2)
+    , applyTransform : 1
   });
   // Centre
   arrayInstructions.push({ repeat : true
@@ -54,6 +55,7 @@ function drawCarreTexte(keys, position){
     , rowDest : (position.y + 1)
     , wDest : 1
     , hDest : (position.h - 2)
+    , applyTransform : -1
   });
   // Coin bas gauche
   arrayInstructions.push({key : keys.basGauche // Sprite
@@ -218,6 +220,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + 2)
       , wDest : 1
       , hDest : (position.h - 2)
+      , applyTransform : -1
     });
   // Centre
   arrayInstructions.push({ repeat : true
@@ -234,6 +237,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + 2)
       , wDest : 1
       , hDest : (position.h - 2)
+      , applyTransform : -1
     });
   // Coin bas gauche
   arrayInstructions.push({key : 'title-bas-gauche' // Sprite

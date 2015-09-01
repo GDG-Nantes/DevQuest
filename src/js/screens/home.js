@@ -11,7 +11,7 @@ function homeScreen(){
   var arrayInstructions = InterfaceUtil.drawAlphaBackground();
 
   var positionBtnDemarer = {
-      x : Math.floor(Model.ui.screenSize.width / 2) - 3
+      x : Math.floor(Model.ui.screenSize.width / 2) - 2.5
     , y : Model.ui.screenSize.height - 5
     , w : 5
     , h : 3

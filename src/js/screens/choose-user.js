@@ -26,7 +26,7 @@ function chooseUserScreen(){
   var position = {
         x: 0
       , y :3
-      , w: 10
+      , w: Model.ui.screenSize.width - 1
       , h: 12}
   var arrayInstructions = InterfaceUtil.drawAlphaBackground();
   Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
@@ -93,7 +93,7 @@ function chooseUserScreen(){
 
   // Boutons
   var positionBtnPrev = {
-      x : positionCreux.x + 0
+      x : positionCreux.x + 0.5
     , y : positionCreux.y + positionCreux.h -1
     , w : 3
     , h : 3
@@ -109,7 +109,7 @@ function chooseUserScreen(){
   });
 
   var positionBtnNext = {
-      x : positionCreux.x + positionCreux.w - 3
+      x : positionCreux.x + positionCreux.w - 2.5
     , y : positionCreux.y + positionCreux.h -1
     , w : 3
     , h : 3
@@ -125,7 +125,7 @@ function chooseUserScreen(){
   });
 
    var positionBtnChoisir = {
-      x : position.x + 2
+      x : position.x + 3
     , y : position.y + position.h -3
     , w : 5
     , h : 3

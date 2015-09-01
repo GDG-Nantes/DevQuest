@@ -112,7 +112,7 @@ function paintBtnParameter_(){
 	var arrayInstructions = [];
 	// Boutons
 	var positionBtnParam = {
-		  x : Model.ui.screenSize.width - 4
+		  x : Model.ui.screenSize.width - 3.5
 		, y : 0
 		, w : 3
 		, h : 3
@@ -157,7 +157,7 @@ function paintParameters_(){
 	var position = {
 	    x: 1
 	  , y :3
-	  , w: Model.ui.screenSize.width - 3
+	  , w: Model.ui.screenSize.width - 2.5
 	  , h: Model.ui.screenSize.height - 4}
 	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
@@ -173,7 +173,7 @@ function paintParameters_(){
 
 	// Boutons
 	var positionBtnUltraSon = {
-		  x : position.x + 1
+		  x : position.x + 0.5
 		, y : position.y + 2
 		, w : 3
 		, h : 3
@@ -202,7 +202,7 @@ function paintParameters_(){
 	});
 
 	var positionBtnMotion = {
-		  x : position.x + 1
+		  x : positionBtnUltraSon.x
 		, y : positionBtnUltraSon.y + 4
 		, w : 3
 		, h : 3

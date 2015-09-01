@@ -32,8 +32,8 @@ function loginScreen(){
   var position = {
         x: 0
       , y :3
-      , w: 10
-      , h: 12}
+      , w: Model.ui.screenSize.width - 1
+      , h: Model.ui.screenSize.height - 4}
   Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
   // Titre
   arrayInstructions.push({drawText : true
@@ -47,7 +47,7 @@ function loginScreen(){
 
 
   // Boutons de login
-  var xBtns = 2;
+  var xBtns = 1.5;
   var ecart = 2;
 
   var positionGooglePlus = {
