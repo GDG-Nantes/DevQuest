@@ -161,8 +161,7 @@ function paintInstructions_(arrayInstructions){
 		if (instruction.repeat){						
 			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
 			// On applique une transformtion supplémentaire pour palier à un bug d'affichage lié au pattern
-			if (instruction.applyTransform){
-				debugger; 
+			if (instruction.applyTransform){				
 	  			Model.ui.context.translate(	  				
 	  				CONST.ui.UNIT * instruction.applyTransform * (instruction.colDest - Math.floor(instruction.colDest) /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/ )
 	  				,CONST.ui.UNIT * instruction.applyTransform * (instruction.rowDest - Math.floor(instruction.rowDest)));

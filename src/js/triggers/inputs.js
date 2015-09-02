@@ -166,7 +166,8 @@ function motionCallBack_(event){
 				&& arrayZ[1] > CONST.motion.STEP_ACCELERATION){
 				var currentTime = Date.now();
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
-				if (currentTime - lastPick > CONST.motion.STEP_RATE){
+				if (currentTime - lastPick > CONST.motion.STEP_RATE
+					&& Model.gameModel.parameters.motion){
 					lastPick = currentTime;
 					applyDirection_(transformOrientationToDirection_(orientation));
 					console.log( new Date().toISOString()+" : "+ arrayZ[1]+" -> "+orientation);
@@ -194,7 +195,8 @@ function callBackSonic_(message){
 		stateFeq.frequency = message.freq;
 		stateFeq.time = Date.now();
 	}else{
-		if (Date.now() - stateFeq.time > CONST.audio.DELAY_STABLE){
+		if (Model.gameModel.parameters.mic 
+			&& Date.now() - stateFeq.time > CONST.audio.DELAY_STABLE){
 			console.info('Recieve message : %d Mhz, %d db',message.freq, message.power);
 		}
 	}
