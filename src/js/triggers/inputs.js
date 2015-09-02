@@ -14,7 +14,8 @@ var trackAcceleration = true
 		time : 0
 	}
 	, fullscreen = false
-	, interactionsListeners = [];
+	, interactionsListeners = []
+	, addInteractions_ = false;
 
 function toggleFullScreen_() {
   if (!document.fullscreenElement &&    // alternative standard method
@@ -39,6 +40,37 @@ function toggleFullScreen_() {
       document.webkitExitFullscreen();
     }
   }
+}
+
+function registerInteractions_(){
+	registerInteraction({
+		type : CONST.directions.DOWN
+		, key : [
+			CONST.uiElements.BTN_UP,			
+			CONST.uiElements.BTN_LEFT,			
+			CONST.uiElements.BTN_RIGHT,			
+			CONST.uiElements.BTN_DOWN			
+		]
+		, callback : processBtnDirections_
+	});
+	
+}
+
+function processBtnDirections_(event){
+	switch(event.key){
+		case CONST.uiElements.BTN_UP:
+			applyDirection_(CONST.directions.UP);
+		break;
+		case CONST.uiElements.BTN_LEFT:
+			applyDirection_(CONST.directions.LEFT);
+		break;
+		case CONST.uiElements.BTN_RIGHT:
+			applyDirection_(CONST.directions.RIGHT);
+		break;
+		case CONST.uiElements.BTN_DOWN:
+			applyDirection_(CONST.directions.DOWN);
+		break;
+	}
 }
 
 
@@ -205,6 +237,10 @@ function callBackSonic_(message){
 // API
 
 function initListeners(){
+	if (!addInteractions_){
+		addInteractions_ = true;
+		registerInteractions_();
+	}
 
 	document.addEventListener('keydown', keypress_, false);
 

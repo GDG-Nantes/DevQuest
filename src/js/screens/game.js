@@ -10,6 +10,8 @@ var lastPoint_ = {
 	y : 0
 	}
 	, interactionParam_ = []
+	, interactionParams_ = []
+	, interactionArrow_ = []
 	, showParam_ = false
 	, addInteractions_ = false;
 
@@ -67,7 +69,14 @@ function checkInteractions_(){
 	  	}
 	  });
 	  lastPoint_ = Model.gameModel.positionScreen;
-	  Array.prototype.push.apply(Model.ui.mapInteraction, interactionParam_);
+	  if (!Model.gameModel.parameters.motion){
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionArrow_);
+	  }
+	  if (showParam_){
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionParam_);
+	  }else{	  	
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionParams_);
+	  }
   }
 }
  
@@ -137,8 +146,7 @@ function paintBtnParameter_(){
 	});
 
 	  // Mise à jour de la map d'interaction
-	if (Model.ui.changeScreen != CONST.screens.GAME){
-		interactionParam_ = [];
+	if (interactionParam_.length === 0){
 		interactionParam_.push({
 		    x : CONST.ui.UNIT * positionBtnParam.x
 		  , y : CONST.ui.UNIT * positionBtnParam.y
@@ -231,29 +239,170 @@ function paintParameters_(){
 	});
 
 	  // Mise à jour de la map d'interaction
-	if (Model.ui.changeScreen != CONST.screens.GAME){
-		interactionParam_ = [];
-		interactionParam_.push({
+	if (interactionParams_.length === 0){
+		interactionParams_.push({
 		    x : CONST.ui.UNIT * (Model.ui.screenSize.width - 3)
 		  , y : CONST.ui.UNIT * 3
 		  , w : CONST.ui.UNIT * 3
 		  , h : CONST.ui.UNIT * 1
 		  , key : CONST.uiElements.BTN_PARAM_CLOSE
 		});	
-		interactionParam_.push({
+		interactionParams_.push({
 		    x : CONST.ui.UNIT * positionBtnUltraSon.x
 		  , y : CONST.ui.UNIT * positionBtnUltraSon.y
 		  , w : CONST.ui.UNIT * positionBtnUltraSon.w
 		  , h : CONST.ui.UNIT * positionBtnUltraSon.h
 		  , key : CONST.uiElements.BTN_PARAM_MIC
 		});	
-		interactionParam_.push({
+		interactionParams_.push({
 		    x : CONST.ui.UNIT * positionBtnMotion.x
 		  , y : CONST.ui.UNIT * positionBtnMotion.y
 		  , w : CONST.ui.UNIT * positionBtnMotion.w
 		  , h : CONST.ui.UNIT * positionBtnMotion.h
 		  , key : CONST.uiElements.BTN_PARAM_MOTION
 		});	
+		
+	}
+
+
+	return arrayInstructions;
+}
+
+function paintBtnArrow_(){
+	
+	var arrayInstructions = [];
+	// Boutons
+	var positionBtnUp = {
+		  x : Model.ui.screenSize.width - 5
+		, y : Model.ui.screenSize.height - 5
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtnUp = InterfaceUtil.drawBtn(positionBtnUp);
+	instructionsBtnUp.forEach(function(instruction){
+		instruction.touchContext = true;
+		instruction.alpha = 0.75;
+	});
+	Array.prototype.push.apply(arrayInstructions, instructionsBtnUp);
+	arrayInstructions.push({drawText : true
+		, text : "\ue815" // TODO
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnUp.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnUp.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnUp.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+		, touchContext : true
+		, alpha : 0.75
+	});
+
+	var positionBtnLeft = {
+		  x : Model.ui.screenSize.width - 7
+		, y : Model.ui.screenSize.height - 3
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtnLeft = InterfaceUtil.drawBtn(positionBtnLeft);
+	instructionsBtnLeft.forEach(function(instruction){
+		instruction.touchContext = true;
+		instruction.alpha = 0.75;
+	});
+	Array.prototype.push.apply(arrayInstructions, instructionsBtnLeft);
+	arrayInstructions.push({drawText : true
+		, text : "\ue815" // TODO
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnLeft.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnLeft.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnLeft.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+		, touchContext : true
+		, alpha : 0.75
+	});
+
+	var positionBtnRight = {
+		  x : Model.ui.screenSize.width - 3
+		, y : Model.ui.screenSize.height - 3
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtnRight = InterfaceUtil.drawBtn(positionBtnRight);
+	instructionsBtnRight.forEach(function(instruction){
+		instruction.touchContext = true;
+		instruction.alpha = 0.75;
+	});
+	Array.prototype.push.apply(arrayInstructions, instructionsBtnRight);
+	arrayInstructions.push({drawText : true
+		, text : "\ue815" // TODO
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnRight.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnRight.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnRight.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+		, touchContext : true
+		, alpha : 0.75
+	});
+
+	var positionBtnDown = {
+		  x : Model.ui.screenSize.width - 5
+		, y : Model.ui.screenSize.height - 3
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtnDown = InterfaceUtil.drawBtn(positionBtnDown);
+	instructionsBtnDown.forEach(function(instruction){
+		instruction.touchContext = true;
+		instruction.alpha = 0.75;
+	});
+	Array.prototype.push.apply(arrayInstructions, instructionsBtnDown);
+	arrayInstructions.push({drawText : true
+		, text : "\ue815" // TODO
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnDown.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnDown.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnDown.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+		, touchContext : true
+		, alpha : 0.75
+	});
+	
+	  // Mise à jour de la map d'interaction
+	if (interactionArrow_.length === 0){		
+		interactionArrow_.push({
+		    x : CONST.ui.UNIT * positionBtnUp.x
+		  , y : CONST.ui.UNIT * positionBtnUp.y
+		  , w : CONST.ui.UNIT * positionBtnUp.w
+		  , h : CONST.ui.UNIT * positionBtnUp.h
+		  , key : CONST.uiElements.BTN_UP
+		});	
+		interactionArrow_.push({
+		    x : CONST.ui.UNIT * positionBtnLeft.x
+		  , y : CONST.ui.UNIT * positionBtnLeft.y
+		  , w : CONST.ui.UNIT * positionBtnLeft.w
+		  , h : CONST.ui.UNIT * positionBtnLeft.h
+		  , key : CONST.uiElements.BTN_LEFT
+		});	
+		interactionArrow_.push({
+		    x : CONST.ui.UNIT * positionBtnRight.x
+		  , y : CONST.ui.UNIT * positionBtnRight.y
+		  , w : CONST.ui.UNIT * positionBtnRight.w
+		  , h : CONST.ui.UNIT * positionBtnRight.h
+		  , key : CONST.uiElements.BTN_RIGHT
+		});	
+		interactionArrow_.push({
+		    x : CONST.ui.UNIT * positionBtnDown.x
+		  , y : CONST.ui.UNIT * positionBtnDown.y
+		  , w : CONST.ui.UNIT * positionBtnDown.w
+		  , h : CONST.ui.UNIT * positionBtnDown.h
+		  , key : CONST.uiElements.BTN_RIGHT
+		});	
+	
 		
 	}
 
@@ -270,6 +419,9 @@ function gameScreen(){
 	}
 
 	var arrayInstructions = [];
+	if (!Model.gameModel.parameters.motion){
+		Array.prototype.push.apply(arrayInstructions, paintBtnArrow_());
+	}
 	arrayInstructions.push(paintUser_());
 	if (!showParam_){
 		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());

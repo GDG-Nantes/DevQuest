@@ -70,6 +70,10 @@ module.exports = {
 		BTN_PARAM : 'param',
 		BTN_PARAM_CLOSE : 'param-close',
 		BTN_PARAM_MIC : 'param-mic',
-		BTN_PARAM_MOTION : 'param-motion'
+		BTN_PARAM_MOTION : 'param-motion',
+		BTN_UP : 'btn-up',
+		BTN_LEFT : 'btn-left',
+		BTN_RIGHT : 'btn-right',
+		BTN_DOWN : 'btn-down'
 	}
 };
