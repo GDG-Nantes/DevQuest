@@ -1,6 +1,8 @@
 'use strict';
 
 var Model = require('../model/model.js');
+var StandsModel = require('../model/stands.js');
+var Stands = require('../assets/stands.js');
 var CONST = require('../model/const.js');
 var SonicServer = require('../ultrasonic/sonic-server.js');
 
@@ -229,7 +231,30 @@ function callBackSonic_(message){
 	}else{
 		if (Model.gameModel.parameters.mic 
 			&& Date.now() - stateFeq.time > CONST.audio.DELAY_STABLE){
-			console.info('Recieve message : %d Mhz, %d db',message.freq, message.power);
+			var stand = StandsModel.find(function(standTmp){
+				return (standTmp.frequency + CONST.audio.DELTA) > message.freq
+				&& (standTmp.frequency - CONST.audio.DELTA) < message.freq;
+			});
+			if (stand){
+				var standInteraction = Stands.find(function(standInteractionTmp){
+					return standInteractionTmp.id === stand.name;
+				});
+				var eventInteraction = {
+					key : standInteraction.key
+					, type : CONST.directions.DOWN
+					, id : standInteraction.id
+				}
+				// On vérifies s'il n'y a pas un événement à lever
+				interactionsListeners.forEach(function(listener){
+					if (eventInteraction.type === listener.type
+						&& eventInteraction.key === listener.key){
+						listener.callback(eventInteraction);
+					}
+				});
+				if (CONST.DEBUG){
+					console.debug('Recieve message : %d Mhz, %d db for Stand %s',message.freq, message.power, stand.name);
+				}
+			}
 		}
 	}
 }
@@ -261,7 +286,7 @@ function initListeners(){
 	/*if (!sonicServer){
 		sonicServer = new SonicServer({peakThreshold: CONST.audio.THRESHOLD});
 		//sonicServer.setDebug(true);
-		sonicServer.on('message', callBackSonic);
+		sonicServer.on('message', callBackSonic_);
 	}
 
 	sonicServer.start();

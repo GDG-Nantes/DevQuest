@@ -38,7 +38,7 @@ var stands = [
 // Posttraitement pour mettre en place les fréquences ultrason
 stands.forEach(function(stand, index){
 	stand['indexQuestion'] = index;
-	stand['frequence'] = 18000 + (index * 100);
+	stand['frequency'] = 18000 + (index * 100);
 });
 
 

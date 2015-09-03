@@ -94,10 +94,10 @@ function paintBackground_(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
 
-	extractBackground_().forEach(function(rowArray, rowIndex){
-		rowArray.forEach(function(colValue, colIndex){
+	extractBackground_().forEach(function bgForEach(rowArray, rowIndex){
+		rowArray.forEach(function rowForEach(colValue, colIndex){
 			if (Array.isArray(colValue)){
-				colValue.forEach(function(doublon){
+				colValue.forEach(function doublonForEach(doublon){
 					drawPixelBackground_(doublon, rowIndex, colIndex);
 				});
 			}else{
@@ -150,7 +150,7 @@ function paintGrille_(){
 }
 
 function paintInstructions_(arrayInstructions){
-	arrayInstructions.forEach(function(instruction){
+	arrayInstructions.forEach(function paintInstructionForEach(instruction){
 		if (instruction.touchContext){
 			// on sauve et restore le contexte du canvas histoire de pas perturber les autres affichages
 			Model.ui.context.save();

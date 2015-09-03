@@ -25,6 +25,7 @@ module.exports = {
 	// Audio Conf
 	audio : {		
 		THRESHOLD : -80,
+		DELTA : 40,
 		DELAY_STABLE : 2000
 	},
 	// Screen Const
