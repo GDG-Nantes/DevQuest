@@ -46,10 +46,10 @@ function registerInteractions_(){
 	registerInteraction({
 		type : CONST.directions.DOWN
 		, key : [
-			CONST.uiElements.BTN_UP,			
-			CONST.uiElements.BTN_LEFT,			
-			CONST.uiElements.BTN_RIGHT,			
-			CONST.uiElements.BTN_DOWN			
+			CONST.uiElements.BTN_DIRECTION_UP,			
+			CONST.uiElements.BTN_DIRECTION_LEFT,			
+			CONST.uiElements.BTN_DIRECTION_RIGHT,			
+			CONST.uiElements.BTN_DIRECTION_DOWN			
 		]
 		, callback : processBtnDirections_
 	});
@@ -58,16 +58,16 @@ function registerInteractions_(){
 
 function processBtnDirections_(event){
 	switch(event.key){
-		case CONST.uiElements.BTN_UP:
+		case CONST.uiElements.BTN_DIRECTION_UP:
 			applyDirection_(CONST.directions.UP);
 		break;
-		case CONST.uiElements.BTN_LEFT:
+		case CONST.uiElements.BTN_DIRECTION_LEFT:
 			applyDirection_(CONST.directions.LEFT);
 		break;
-		case CONST.uiElements.BTN_RIGHT:
+		case CONST.uiElements.BTN_DIRECTION_RIGHT:
 			applyDirection_(CONST.directions.RIGHT);
 		break;
-		case CONST.uiElements.BTN_DOWN:
+		case CONST.uiElements.BTN_DIRECTION_DOWN:
 			applyDirection_(CONST.directions.DOWN);
 		break;
 	}

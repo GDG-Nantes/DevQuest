@@ -72,7 +72,7 @@ function checkInteractions_(){
 	  if (!Model.gameModel.parameters.motion){
 	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionArrow_);
 	  }
-	  if (showParam_){
+	  if (!showParam_){
 	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionParam_);
 	  }else{	  	
 	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionParams_);
@@ -285,7 +285,7 @@ function paintBtnArrow_(){
 	});
 	Array.prototype.push.apply(arrayInstructions, instructionsBtnUp);
 	arrayInstructions.push({drawText : true
-		, text : "\ue815" // TODO
+		, text : "\ue81a" 
 		, color : "#8f563b"
 		, font : 'Fontello'
 		, fontSize : '30px'
@@ -310,7 +310,7 @@ function paintBtnArrow_(){
 	});
 	Array.prototype.push.apply(arrayInstructions, instructionsBtnLeft);
 	arrayInstructions.push({drawText : true
-		, text : "\ue815" // TODO
+		, text : "\ue818" 
 		, color : "#8f563b"
 		, font : 'Fontello'
 		, fontSize : '30px'
@@ -335,7 +335,7 @@ function paintBtnArrow_(){
 	});
 	Array.prototype.push.apply(arrayInstructions, instructionsBtnRight);
 	arrayInstructions.push({drawText : true
-		, text : "\ue815" // TODO
+		, text : "\ue819" 
 		, color : "#8f563b"
 		, font : 'Fontello'
 		, fontSize : '30px'
@@ -360,7 +360,7 @@ function paintBtnArrow_(){
 	});
 	Array.prototype.push.apply(arrayInstructions, instructionsBtnDown);
 	arrayInstructions.push({drawText : true
-		, text : "\ue815" // TODO
+		, text : "\ue817" 
 		, color : "#8f563b"
 		, font : 'Fontello'
 		, fontSize : '30px'
@@ -379,28 +379,28 @@ function paintBtnArrow_(){
 		  , y : CONST.ui.UNIT * positionBtnUp.y
 		  , w : CONST.ui.UNIT * positionBtnUp.w
 		  , h : CONST.ui.UNIT * positionBtnUp.h
-		  , key : CONST.uiElements.BTN_UP
+		  , key : CONST.uiElements.BTN_DIRECTION_UP
 		});	
 		interactionArrow_.push({
 		    x : CONST.ui.UNIT * positionBtnLeft.x
 		  , y : CONST.ui.UNIT * positionBtnLeft.y
 		  , w : CONST.ui.UNIT * positionBtnLeft.w
 		  , h : CONST.ui.UNIT * positionBtnLeft.h
-		  , key : CONST.uiElements.BTN_LEFT
+		  , key : CONST.uiElements.BTN_DIRECTION_LEFT
 		});	
 		interactionArrow_.push({
 		    x : CONST.ui.UNIT * positionBtnRight.x
 		  , y : CONST.ui.UNIT * positionBtnRight.y
 		  , w : CONST.ui.UNIT * positionBtnRight.w
 		  , h : CONST.ui.UNIT * positionBtnRight.h
-		  , key : CONST.uiElements.BTN_RIGHT
+		  , key : CONST.uiElements.BTN_DIRECTION_RIGHT
 		});	
 		interactionArrow_.push({
 		    x : CONST.ui.UNIT * positionBtnDown.x
 		  , y : CONST.ui.UNIT * positionBtnDown.y
 		  , w : CONST.ui.UNIT * positionBtnDown.w
 		  , h : CONST.ui.UNIT * positionBtnDown.h
-		  , key : CONST.uiElements.BTN_RIGHT
+		  , key : CONST.uiElements.BTN_DIRECTION_DOWN
 		});	
 	
 		

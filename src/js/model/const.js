@@ -71,9 +71,9 @@ module.exports = {
 		BTN_PARAM_CLOSE : 'param-close',
 		BTN_PARAM_MIC : 'param-mic',
 		BTN_PARAM_MOTION : 'param-motion',
-		BTN_UP : 'btn-up',
-		BTN_LEFT : 'btn-left',
-		BTN_RIGHT : 'btn-right',
-		BTN_DOWN : 'btn-down'
+		BTN_DIRECTION_UP : 'btn-direction-up',
+		BTN_DIRECTION_LEFT : 'btn-direction-left',
+		BTN_DIRECTION_RIGHT : 'btn-direction-right',
+		BTN_DIRECTION_DOWN : 'btn-direction-down'
 	}
 };
