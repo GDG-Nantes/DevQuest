@@ -179,7 +179,7 @@ function homeScreen(){
   };
   Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawBtn(positionBtnDemarer));
   arrayInstructions.push({drawText : true
-      , text : "Démarer"
+      , text : "Démarrer"
       , fontSize : '20px'
       , x :  CONST.ui.UNIT * (positionBtnDemarer.x + 1) // X
       , y : CONST.ui.UNIT * (positionBtnDemarer.y + 2) - CONST.ui.UNIT / 3 // Y
