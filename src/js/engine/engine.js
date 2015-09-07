@@ -163,7 +163,7 @@ function manageVisibility_(){
 }
 
 function run_(){
-	try{
+	try{		
 		processDirection_();
 		processInteraction_();
 		if (runActiv){

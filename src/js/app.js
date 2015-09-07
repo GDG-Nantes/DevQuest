@@ -124,6 +124,12 @@ function pageLoad(){
 				{title: 'inside_1', url: 'assets/img/inside01.png'},
 				{title: 'inside_2', url: 'assets/img/inside02.png'},
 				{title: 'magecity', url: 'assets/img/magecity_0.png'},
+				{title: 'grass', url: 'assets/img/grass_parallax.png'},
+				{title: 'sky', url: 'assets/img/sky_parallax.png'},
+				{title: 'water', url: 'assets/img/water_parallax.png'},
+				{title: 'cloud', url: 'assets/img/cloud_parallax.png'},
+				{title: 'title', url: 'assets/img/title_devquest.png'},
+				{title: 'logo', url: 'assets/img/logo_HQ_full_devquest.png'},
 				// Eléments Ui
 				{title: 'ui', url: 'assets/img/ui_split.png'},
 				{title: 'socials', url: 'assets/img/socials.png'}

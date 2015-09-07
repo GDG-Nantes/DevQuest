@@ -226,7 +226,6 @@ function paintChooseUser_(){
 }
 
 function paint_(){
-	paintBackground_();
 	if (Model.ui.changeScreen 
 		&& Model.ui.changeScreen != Model.ui.screen){
 		Model.ui.screen = Model.ui.changeScreen;
@@ -237,14 +236,17 @@ function paint_(){
 	if (Model.ui.screen === CONST.screens.HOME){
 		paintInstructions_(ScreenHome.homeScreen());				
 	}else if (Model.ui.screen === CONST.screens.LOGIN){
+		paintBackground_();
 		paintInstructions_(ScreenLogin.loginScreen());				
 	}else if (Model.ui.screen === CONST.screens.CHOOSE_USER){
+		paintBackground_();
 		paintChooseUser_();		
 	}else if (Model.ui.screen === CONST.screens.GAME){
+		paintBackground_();
 		paintInstructions_(ScreenGame.gameScreen());		
 	}else if (Model.ui.screen === CONST.screens.INSIDE_SILVER
 		|| Model.ui.screen === CONST.screens.INSIDE_GOLD
-		|| Model.ui.screen === CONST.screens.INSIDE_PLATINIUM){		
+		|| Model.ui.screen === CONST.screens.INSIDE_PLATINIUM){				
 		paintInside_();	
 	}
 	

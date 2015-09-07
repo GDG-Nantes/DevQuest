@@ -12,6 +12,8 @@ var ui = {
 	context : null,
 	ratio : 1,
 	ratioScreen : 1,
+	stepAnimation : 0,
+	stepAnimationCloud : 0,
 	mapCollision : [],
 	mapInteraction : [],	
 	changeScreen : '',

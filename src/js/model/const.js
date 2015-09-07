@@ -13,7 +13,17 @@ module.exports = {
 		NPC_HEAD_W : 60,
 		NPC_HEAD_H : 71,
 		NPC_HEAD_X : 82,
-		NPC_HEAD_Y : 3
+		NPC_HEAD_Y : 3, 
+		RATIO_SKY : 0.725,
+		RATIO_WATER : 0.125,
+		RATIO_GRASS : 0.1875,
+		RATIO_CLOUD : 0.175,
+		RATIO_TITLE : 0.08125,
+		RATIO_LOGO : 0.2375,
+		MAX_WIDTH_PARALLAX : 1000,
+		WIDTH_CLOUD_PARALLAX : 800,
+		SPEED_CLOUD : 0.15,
+		SPEED_GRASS : 0.75
 	},
 	// Motion Const
 	motion : {		
