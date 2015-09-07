@@ -11,6 +11,7 @@ credentials.json
 #browserify
 bundle.js
 
+**.fuse_hidden**
 
 
 # Runtime data
