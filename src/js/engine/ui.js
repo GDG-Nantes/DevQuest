@@ -161,20 +161,30 @@ function paintInstructions_(arrayInstructions){
 		if (instruction.repeat){						
 			Model.ui.context.fillStyle = Model.resources.patterns[instruction.key];
 			// On applique une transformtion supplémentaire pour palier à un bug d'affichage lié au pattern
-			if (instruction.applyTransform){				
+			if (instruction.applyTransformX){				
 	  			Model.ui.context.translate(	  				
-	  				CONST.ui.UNIT * instruction.applyTransform * (instruction.colDest - Math.floor(instruction.colDest) /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/ )
-	  				,CONST.ui.UNIT * instruction.applyTransform * (instruction.rowDest - Math.floor(instruction.rowDest)));
+	  				CONST.ui.UNIT * instruction.applyTransformX * (instruction.colDest - Math.floor(instruction.colDest) /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/ )
+	  				,0);
+	  		}
+	  		if (instruction.applyTransformY){				
+	  			Model.ui.context.translate(	  				
+	  				0
+	  				,CONST.ui.UNIT * instruction.applyTransformY * (instruction.rowDest - Math.floor(instruction.rowDest)));
 	  		}
   			Model.ui.context.fillRect(CONST.ui.UNIT * instruction.colDest
   					, CONST.ui.UNIT * instruction.rowDest
   					, CONST.ui.UNIT * instruction.wDest
   					, CONST.ui.UNIT * instruction.hDest
   				);
-  			if (instruction.applyTransform){
+  			if (instruction.applyTransformX){
 	  			Model.ui.context.translate(
-	  				CONST.ui.UNIT * instruction.applyTransform * (Math.floor(instruction.colDest) - instruction.colDest /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/)
-	  				,CONST.ui.UNIT * instruction.applyTransform * (Math.floor(instruction.rowDest) - instruction.rowDest));
+	  				CONST.ui.UNIT * instruction.applyTransformX * (Math.floor(instruction.colDest) - instruction.colDest /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/)
+	  				,0);
+	  		}
+	  		if (instruction.applyTransformY){
+	  			Model.ui.context.translate(
+	  				0
+	  				,CONST.ui.UNIT * instruction.applyTransformY * (Math.floor(instruction.rowDest) - instruction.rowDest));
 	  		}
 		}else if (instruction.drawText){			
 			Model.ui.context.font = instruction.fontSize+" "+(instruction.font ? instruction.font : "Visitor");

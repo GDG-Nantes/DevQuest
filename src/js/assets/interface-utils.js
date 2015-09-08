@@ -21,6 +21,7 @@ function drawCarreTexte(keys, position){
     , rowDest : position.y
     , wDest : (position.w - 2)
     , hDest : 1
+    , applyTransformY : 1
   });
   // Coin Haut droit
   arrayInstructions.push({key : keys.hautDroite // Sprite
@@ -38,7 +39,7 @@ function drawCarreTexte(keys, position){
     , rowDest : (position.y + 1)
     , wDest : 1
     , hDest : (position.h - 2)
-    , applyTransform : 1
+    , applyTransformX : 1
   });
   // Centre
   arrayInstructions.push({ repeat : true
@@ -55,7 +56,7 @@ function drawCarreTexte(keys, position){
     , rowDest : (position.y + 1)
     , wDest : 1
     , hDest : (position.h - 2)
-    , applyTransform : -1
+    , applyTransformX : -1
   });
   // Coin bas gauche
   arrayInstructions.push({key : keys.basGauche // Sprite
@@ -73,6 +74,7 @@ function drawCarreTexte(keys, position){
     , rowDest : (position.y + position.h  - 1)
     , wDest : (position.w - 2)
     , hDest : 1
+    , applyTransformY : -1
   });
   // Coin bas droit
   arrayInstructions.push({key : keys.basDroite // Sprite
@@ -170,6 +172,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + 0)
       , wDest : (position.w - 2)
       , hDest : 1
+      , applyTransformY : 1
     });
   arrayInstructions.push({key : 'title-droite' // Sprite
       , wOriValue : CONST.ui.UNIT // wOriValue
@@ -203,6 +206,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + 1)
       , wDest : (position.w - 2)
       , hDest : 1
+      , applyTransformY : 1
     });
   // Coin Haut droit
   arrayInstructions.push({key : 'title-haut-droite' // Sprite
@@ -220,7 +224,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + 2)
       , wDest : 1
       , hDest : (position.h - 2)
-      , applyTransform : -1
+      , applyTransformX : -1
     });
   // Centre
   arrayInstructions.push({ repeat : true
@@ -237,7 +241,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + 2)
       , wDest : 1
       , hDest : (position.h - 2)
-      , applyTransform : -1
+      , applyTransformX : -1
     });
   // Coin bas gauche
   arrayInstructions.push({key : 'title-bas-gauche' // Sprite
@@ -255,6 +259,7 @@ function drawZoneTexteAvecTitre(position){
       , rowDest : (position.y + position.h)
       , wDest : (position.w - 2)
       , hDest : 1
+      , applyTransformY : -1
     });
   // Coin bas droit
   arrayInstructions.push({key : 'title-bas-droite' // Sprite

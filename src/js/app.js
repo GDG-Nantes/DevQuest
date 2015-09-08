@@ -142,6 +142,7 @@ function pageLoad(){
 		return LocalStorageCheck.checkLocalStorage();
 	}).then(function(){
 		Engine.start();
+		window.scrollTo(0,1);
 
 	})
 	.catch(function(err){

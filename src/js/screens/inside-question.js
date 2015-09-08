@@ -92,7 +92,7 @@ function insideQuestion(){
 				(Model.ui.screen === CONST.screens.INSIDE_GOLD ? widthGold : widthPlatinium);				
 	var heightStand = 8;
 	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
-	var rowIndex = 4;//Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
+	var rowIndex = 2;//Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
 	var arrayInside = [];
 	var npc = '';
 	var npc_face = '';
@@ -145,7 +145,7 @@ function insideQuestion(){
       , text : question.question
       , fontSize : '15px'
       , x :  CONST.ui.UNIT * 2.5 // X
-      , y : CONST.ui.UNIT * 1.5 // Y
+      , y : CONST.ui.UNIT * 1 // Y
       , w : CONST.ui.UNIT * 10 // Max Width
       , lineHeight : 30 // Line Height
   	});
@@ -172,14 +172,14 @@ function insideQuestion(){
       , hOriValue : CONST.ui.NPC_HEAD_H // hOriValue
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
-      , yDest :  CONST.ui.UNIT * 1 //(rowIndex + 4) // rowDest
+      , yDest :  CONST.ui.UNIT * 0.5 //(rowIndex + 4) // rowDest
       , xDest :  CONST.ui.UNIT * 0.5 // colDest
       , hDest :  CONST.ui.NPC_HEAD_W * 0.75 // hDest
       , wDest :  CONST.ui.NPC_HEAD_H * 0.75// wDest
     });
 
     // Ajout des boutons
-    var widthBtn = Model.ui.screenSize.width - 1; //Math.floor(Model.ui.screenSize.width / 2) - 1;
+    var widthBtn = Model.ui.screenSize.width; //Math.floor(Model.ui.screenSize.width / 2) - 1;
     var heightBtn = 3;
     var fontSize = '12px';
     var positionBtnRepA = {
@@ -199,7 +199,7 @@ function insideQuestion(){
 	});
 	var positionBtnRepB = {
 		  x : positionBtnRepA.x// + widthBtn
-		, y : positionBtnRepA.y + heightBtn - 1
+		, y : positionBtnRepA.y + heightBtn - 1.5
 		, w : widthBtn
 		, h : heightBtn
 	};
@@ -214,7 +214,7 @@ function insideQuestion(){
 	});
 	var positionBtnRepC = {
 		  x : positionBtnRepA.x
-		, y : positionBtnRepB.y + heightBtn - 1
+		, y : positionBtnRepB.y + heightBtn - 1.5
 		, w : widthBtn
 		, h : heightBtn
 	};
@@ -229,7 +229,7 @@ function insideQuestion(){
 	});
 	var positionBtnRepD = {
 		  x : positionBtnRepB.x
-		, y : positionBtnRepC.y + heightBtn - 1
+		, y : positionBtnRepC.y + heightBtn - 1.5
 		, w : widthBtn
 		, h : heightBtn
 	};
