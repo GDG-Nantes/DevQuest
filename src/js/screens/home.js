@@ -152,7 +152,7 @@ function homeScreen(){
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
       , yDest :  CONST.ui.UNIT * 3 // rowDest
-      , xDest :  (widthScreen - title.width) / 4  // colDest
+      , xDest :  (widthScreen - title.width) / 2  // colDest
       , hDest :  title.height // hDest
       , wDest :  title.width // wDest
     });
@@ -165,7 +165,7 @@ function homeScreen(){
       , rowOri :  0 // rowOri
       , colOri : 0 // colOri
       , yDest :  (sky.height / 3) + cloud.height // rowDest
-      , xDest :  (widthScreen - logo.width) / 4  // colDest
+      , xDest :  (widthScreen - logo.width) / 2  // colDest
       , hDest :  logo.height // hDest
       , wDest :  logo.width // wDest
     });
@@ -173,7 +173,7 @@ function homeScreen(){
   // Bouton 
   var positionBtnDemarer = {
       x : Math.floor(Model.ui.screenSize.width / 2) - 2.5
-    , y : Model.ui.screenSize.height - 6
+    , y : Math.floor(sky.height / CONST.ui.UNIT)
     , w : 5
     , h : 3
   };
