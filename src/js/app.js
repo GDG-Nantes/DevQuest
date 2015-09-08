@@ -66,8 +66,11 @@ function checkConfig(){
 function pageLoad(){
 
 	if (!checkConfig()){
+		document.getElementById('not-compatible').style.display = '';
+		document.getElementById('load').style.display = 'none';
 		// Faire qqe chose !
 		return;
+	}else{
 	}
 
 
@@ -141,8 +144,9 @@ function pageLoad(){
 		Socials.initSocialsLogins();
 		return LocalStorageCheck.checkLocalStorage();
 	}).then(function(){
+		document.getElementById('game').style.display = '';
+		document.getElementById('load').style.display = 'none';
 		Engine.start();
-		window.scrollTo(0,1);
 
 	})
 	.catch(function(err){
