@@ -100,6 +100,18 @@ function keypress_(event){
 	}
 }
 
+function fireEvent_(eventInteraction){
+	// On vérifies s'il n'y a pas un événement à lever
+	interactionsListeners.forEach(function(listener){
+		if (!eventInteraction.cancel 
+			&& eventInteraction.type === listener.type
+			&& eventInteraction.key === listener.key){
+			listener.callback(eventInteraction);
+		}
+	});
+
+} 
+
 function checkMouseIntersection_(event){
 	if (Model.ui.mapInteraction && Model.ui.mapInteraction.length > 0){
 		var eventX = event.clientX / Model.ui.ratio;
@@ -108,7 +120,12 @@ function checkMouseIntersection_(event){
 			eventX = event.changedTouches[0].pageX / Model.ui.ratioScreen;
 			eventY = event.changedTouches[0].pageY / Model.ui.ratioScreen;
 		}
-		Model.ui.mapInteraction.every(function(point){
+		// On tri la map afin de gérer des prioritées
+		Model.ui.mapInteraction.sort(function sortMapInterraction(interectionA, interactionB){
+			return interectionA.priority && interactionB.priority  ? interectionA.priority - interactionB.priority 
+				: (interectionA.priority ? -1 : 1)
+		});
+		Model.ui.mapInteraction.every(function everyMapInteraction(point){
 			if (CONST.DEBUG){				
 				console.debug('Point %s : %s;%s{%s;%s} | %s;%s', point.key, point.x, point.y
 						, point.w, point.h
@@ -123,18 +140,11 @@ function checkMouseIntersection_(event){
 					if (CONST.DEBUG){
 						console.debug("Event Click : %s on %s ", event.type, point.key);
 					}
-					var eventInteraction = {
+					fireEvent_({
 						key : point.key
 						, type : event.type === 'touchstart' ? CONST.directions.DOWN : 
 										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP)
 						, id : point.id
-					}
-					// On vérifies s'il n'y a pas un événement à lever
-					interactionsListeners.forEach(function(listener){
-						if (eventInteraction.type === listener.type
-							&& eventInteraction.key === listener.key){
-							listener.callback(eventInteraction);
-						}
 					});
 
 					return false;
@@ -239,17 +249,10 @@ function callBackSonic_(message){
 				var standInteraction = Stands.find(function(standInteractionTmp){
 					return standInteractionTmp.id === stand.name;
 				});
-				var eventInteraction = {
+				fireEvent_({
 					key : standInteraction.key
 					, type : CONST.directions.DOWN
 					, id : standInteraction.id
-				}
-				// On vérifies s'il n'y a pas un événement à lever
-				interactionsListeners.forEach(function(listener){
-					if (eventInteraction.type === listener.type
-						&& eventInteraction.key === listener.key){
-						listener.callback(eventInteraction);
-					}
 				});
 				if (CONST.DEBUG){
 					console.debug('Recieve message : %d Mhz, %d db for Stand %s',message.freq, message.power, stand.name);

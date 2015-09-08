@@ -380,6 +380,7 @@ function paintBtnArrow_(){
 		  , w : CONST.ui.UNIT * positionBtnUp.w
 		  , h : CONST.ui.UNIT * positionBtnUp.h
 		  , key : CONST.uiElements.BTN_DIRECTION_UP
+		  , priority : -1
 		});	
 		interactionArrow_.push({
 		    x : CONST.ui.UNIT * positionBtnLeft.x
@@ -387,6 +388,7 @@ function paintBtnArrow_(){
 		  , w : CONST.ui.UNIT * positionBtnLeft.w
 		  , h : CONST.ui.UNIT * positionBtnLeft.h
 		  , key : CONST.uiElements.BTN_DIRECTION_LEFT
+		  , priority : -1
 		});	
 		interactionArrow_.push({
 		    x : CONST.ui.UNIT * positionBtnRight.x
@@ -394,6 +396,7 @@ function paintBtnArrow_(){
 		  , w : CONST.ui.UNIT * positionBtnRight.w
 		  , h : CONST.ui.UNIT * positionBtnRight.h
 		  , key : CONST.uiElements.BTN_DIRECTION_RIGHT
+		  , priority : -1
 		});	
 		interactionArrow_.push({
 		    x : CONST.ui.UNIT * positionBtnDown.x
@@ -401,6 +404,7 @@ function paintBtnArrow_(){
 		  , w : CONST.ui.UNIT * positionBtnDown.w
 		  , h : CONST.ui.UNIT * positionBtnDown.h
 		  , key : CONST.uiElements.BTN_DIRECTION_DOWN
+		  , priority : -1
 		});	
 	
 		
