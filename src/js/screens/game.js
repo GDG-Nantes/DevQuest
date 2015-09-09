@@ -31,7 +31,7 @@ function registerInteractions_(){
 			CONST.screens.INSIDE_SILVER,			
 			CONST.screens.INSIDE_GOLD,			
 			CONST.screens.INSIDE_PLATINIUM,			
-			CONST.uiElements.BTN_OK,			
+			//CONST.uiElements.BTN_OK,			
 			CONST.uiElements.BTN_YES,			
 			CONST.uiElements.BTN_NO			
 		]
@@ -83,9 +83,9 @@ function processInteractions_(event){
 		    	_showConfirmStand = false;
 		    	_eventTmp = null;
 		    	break;
-		    case CONST.uiElements.BTN_OK :   
+		    /*case CONST.uiElements.BTN_OK :   
 		    	// TODO voir ce qu'on fait
-		    	break;
+		    	break;*/
 		}
 	}
 
@@ -277,7 +277,7 @@ function paintWrongOrientation_(){
 	});
 
 	// Boutons
-	var positionBtnYes = {
+	/*var positionBtnYes = {
 		  x : (Model.ui.screenSize.width - 4) / 2
 		, y : position.y + 4.5
 		, w : 4
@@ -305,7 +305,7 @@ function paintWrongOrientation_(){
 		  , key : CONST.uiElements.BTN_YES
 		});			
 		
-	}
+	}*/
 
 
 	return arrayInstructions;
