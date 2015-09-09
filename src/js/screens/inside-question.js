@@ -7,17 +7,20 @@ var Inputs = require('../triggers/inputs.js');
 var Questions = require('../model/questions.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
 
-var widthSilver = 7
-	,widthGold = 9
-	, widthPlatinium = 11;
-
-var addInteractions = false;
-var drawFunctions = {
-  	drawA : InterfaceUtil.drawBtn
-  	, drawB : InterfaceUtil.drawBtn
-  	, drawC : InterfaceUtil.drawBtn
-  	, drawD : InterfaceUtil.drawBtn
-  };
+var _widthSilver = 7
+	, _widthGold = 9
+	, _widthPlatinium = 11
+	, _addInteractions = false
+	, _interactionConfirmation = []
+	, _drawFunctions = {
+	  	drawA : InterfaceUtil.drawBtn
+	  	, drawB : InterfaceUtil.drawBtn
+	  	, drawC : InterfaceUtil.drawBtn
+	  	, drawD : InterfaceUtil.drawBtn
+	}
+	, _showConfirmation = false
+	, _chooseAnswer = ''
+	, _state = -1;
 
 function registerInteractions_(){
 	Inputs.registerInteraction({
@@ -27,6 +30,7 @@ function registerInteractions_(){
 			, CONST.uiElements.BTN_REP_B
 			, CONST.uiElements.BTN_REP_C
 			, CONST.uiElements.BTN_REP_D
+			, CONST.uiElements.BTN_SEND
 		]
 		, callback : checkInteractions_
 	});
@@ -47,49 +51,132 @@ function checkInteractions_(event){
 		event.type  === CONST.eventType.DOWN){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_REP_A :   
-		    	drawFunctions.drawA = InterfaceUtil.drawBtnPressed;
+		    	_drawFunctions.drawA = InterfaceUtil.drawBtnPressed;
 		    	break;
 		    case CONST.uiElements.BTN_REP_B :   
-		    	drawFunctions.drawB = InterfaceUtil.drawBtnPressed;
+		    	_drawFunctions.drawB = InterfaceUtil.drawBtnPressed;
 		    	break;
 		    case CONST.uiElements.BTN_REP_C :   
-		    	drawFunctions.drawC = InterfaceUtil.drawBtnPressed;
+		    	_drawFunctions.drawC = InterfaceUtil.drawBtnPressed;
 		    	break;
 		    case CONST.uiElements.BTN_REP_D :   
-		    	drawFunctions.drawD = InterfaceUtil.drawBtnPressed;
+		    	_drawFunctions.drawD = InterfaceUtil.drawBtnPressed;
+		    	break;
+		    case CONST.uiElements.BTN_SEND :   
+		    	var input = document.getElementById('code-confirmation');
+		    	if (input && input.value){
+		    		var code = input.value;
+		    		// TODO faire quelque chose avec le code de confirmation
+		    		document.body.removeChild(input);
+		    	}
 		    	break;
 		}
 	}else if (event.type && 
 		event.type  === CONST.eventType.UP){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_REP_A :   
-		    	drawFunctions.drawA = InterfaceUtil.drawBtn;
+		    	_drawFunctions.drawA = InterfaceUtil.drawBtn;
+		    	_chooseAnswer = 'A';
 		    	break;
 		    case CONST.uiElements.BTN_REP_B :   
-		    	drawFunctions.drawB = InterfaceUtil.drawBtn;
+		    	_drawFunctions.drawB = InterfaceUtil.drawBtn;
+		    	_chooseAnswer = 'B';
 		    	break;
 		    case CONST.uiElements.BTN_REP_C :   
-		    	drawFunctions.drawC = InterfaceUtil.drawBtn;
+		    	_drawFunctions.drawC = InterfaceUtil.drawBtn;
+		    	_chooseAnswer = 'C';
 		    	break;
 		    case CONST.uiElements.BTN_REP_D :   
-		    	drawFunctions.drawD = InterfaceUtil.drawBtn;		    	
+		    	_drawFunctions.drawD = InterfaceUtil.drawBtn;		    	
+		    	_chooseAnswer = 'D';
 		    	break;
 		}
+		_showConfirmation = true;
 	}
-	return drawFunctions;
+	return _drawFunctions;
 }
 
+function paintConfirmation_(){
+	// Zone autour 
+	var position = {
+	    x: 1
+	  , y : (Model.ui.screenSize.height - 4) / 4
+	  , w: Model.ui.screenSize.width - 2.5
+	  , h: 9
+	}
+	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
+	// Titre
+	arrayInstructions.push({drawText : true
+	  , text : "Vous avez choisis la réponse : "+_chooseAnswer
+	  , fontSize : '20px'
+	  , x :  CONST.ui.UNIT * (position.x + 1) // X
+	  , y : CONST.ui.UNIT * (position.y + 2) // Y
+	  , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+	  , lineHeight : 30 // Line Height
+	});
+
+	// Boutons
+	var positionBtnSend = {
+		  x : (Model.ui.screenSize.width - 6) / 2
+		, y : position.y + 5.5
+		, w : 6
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnSend);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : "Valider"
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnSend.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnSend.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnSend.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+	
+
+	// Gestion du champ de saisie du code
+	var input = document.getElementById('code-confirmation');
+	if (!input){
+		input = document.createElement('input');
+		input.id = 'code-confirmation';
+		input.type = 'text';
+		input.placeholder = 'code du stand';
+		input.style.position = 'absolute';
+		input.style.top = (CONST.ui.UNIT * 8.5)+'px';  
+		input.style.left = (CONST.ui.UNIT * 2)+'px';  
+		input.style.width = (CONST.ui.UNIT * (position.w - 3))+'px';
+		document.body.appendChild(input);
+		// input = document.querySelector('#code-confirmation');
+
+	}
+	
+	  // Mise à jour de la map d'interaction
+	if(_interactionConfirmation.length === 0){
+		_interactionConfirmation.push({
+		    x : CONST.ui.UNIT * positionBtnSend.x
+		  , y : CONST.ui.UNIT * positionBtnSend.y
+		  , w : CONST.ui.UNIT * positionBtnSend.w
+		  , h : CONST.ui.UNIT * positionBtnSend.h
+		  , key : CONST.uiElements.BTN_SEND
+		});			
+		
+	}
+
+
+	return arrayInstructions;
+}
 
 function insideQuestion(){
-	if (!addInteractions){
+	if (!_addInteractions){
 		registerInteractions_();
-		addInteractions = true;
+		_addInteractions = true;
 	}
 	var arrayInstructions = [];
 
 	// On récupère le bon type de stand
-    var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? widthSilver :
-				(Model.ui.screen === CONST.screens.INSIDE_GOLD ? widthGold : widthPlatinium);				
+    var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? _widthSilver :
+				(Model.ui.screen === CONST.screens.INSIDE_GOLD ? _widthGold : _widthPlatinium);				
 	var heightStand = 8;
 	var colIndex = Math.max(0, Math.floor((Model.ui.screenSize.width - widthStand) / 2));
 	var rowIndex = 2;//Math.max(0, Math.floor((Model.ui.screenSize.height - heightStand) / 2));
@@ -188,7 +275,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawA(positionBtnRepA));
+	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawA(positionBtnRepA));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseA
 	  , fontSize : fontSize
@@ -203,7 +290,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawB(positionBtnRepB));
+	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawB(positionBtnRepB));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseB
 	  , fontSize : fontSize
@@ -218,7 +305,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawC(positionBtnRepC));
+	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawC(positionBtnRepC));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseC
 	  , fontSize : fontSize
@@ -233,7 +320,7 @@ function insideQuestion(){
 		, w : widthBtn
 		, h : heightBtn
 	};
-	Array.prototype.push.apply(arrayInstructions, drawFunctions.drawD(positionBtnRepD));
+	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawD(positionBtnRepD));
 	arrayInstructions.push({drawText : true
 	  , text : question.reponseD
 	  , fontSize : fontSize
@@ -243,9 +330,17 @@ function insideQuestion(){
 	  , lineHeight : 30 // Line Height
 	});
 
+	var stateConfirmation = -1;
+	if (_showConfirmation){
+		Array.prototype.push.apply(arrayInstructions, paintConfirmation_());
+		stateConfirmation = 0;
+	}else{
+		stateConfirmation = 1;
+	}
+
 
       // Mise à jour de la map d'interaction
-	if (Model.ui.changeScreen != CONST.screens.CHOOSE_USER){
+	if (_state != stateConfirmation){
 		var interaction = [];
 		Model.ui.mapInteraction = interaction;
 		Model.ui.screen = CONST.screens.CHOOSE_USER;
@@ -286,6 +381,11 @@ function insideQuestion(){
 		  , h : CONST.ui.UNIT * 1
 		  , key : CONST.uiElements.DOOR
 		});
+
+		if (_showConfirmation){
+			Array.prototype.push.apply(interaction, _interactionConfirmation);			
+		}
+		_state = stateConfirmation;
 		
 	}
 

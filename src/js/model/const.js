@@ -95,6 +95,7 @@ module.exports = {
 		BTN_DIRECTION_DOWN : 'btn-direction-down',
 		BTN_YES : 'btn-yes',
 		BTN_OK : 'btn-ok',
-		BTN_NO : 'btn-no'
+		BTN_NO : 'btn-no',
+		BTN_SEND : 'btn-send'
 	}
 };
