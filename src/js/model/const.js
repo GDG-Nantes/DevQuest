@@ -53,7 +53,13 @@ module.exports = {
 		UP : 1,
 		LEFT : 2,
 		RIGHT : 3,
-		DOWN : 4
+		DOWN : 4, 
+	},
+	// Events types
+	eventType : {
+		UP : 1,
+		DOWN : 2,
+		SOUND : 3
 	},
 	// Communes
 	common : {
@@ -85,6 +91,8 @@ module.exports = {
 		BTN_DIRECTION_UP : 'btn-direction-up',
 		BTN_DIRECTION_LEFT : 'btn-direction-left',
 		BTN_DIRECTION_RIGHT : 'btn-direction-right',
-		BTN_DIRECTION_DOWN : 'btn-direction-down'
+		BTN_DIRECTION_DOWN : 'btn-direction-down',
+		BTN_YES : 'btn-yes',
+		BTN_NO : 'btn-no'
 	}
 };

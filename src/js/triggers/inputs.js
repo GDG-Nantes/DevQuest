@@ -46,7 +46,7 @@ function toggleFullScreen_() {
 
 function registerInteractions_(){
 	registerInteraction({
-		type : CONST.directions.DOWN
+		type : CONST.eventType.DOWN
 		, key : [
 			CONST.uiElements.BTN_DIRECTION_UP,			
 			CONST.uiElements.BTN_DIRECTION_LEFT,			
@@ -142,8 +142,8 @@ function checkMouseIntersection_(event){
 					}
 					fireEvent_({
 						key : point.key
-						, type : event.type === 'touchstart' ? CONST.directions.DOWN : 
-										(event.type === 'touchend' ? CONST.directions.UP : CONST.directions.UP)
+						, type : event.type === 'touchstart' ? CONST.eventType.DOWN : 
+										(event.type === 'touchend' ? CONST.eventType.UP : CONST.eventType.UP)
 						, id : point.id
 					});
 
@@ -246,12 +246,12 @@ function callBackSonic_(message){
 				&& (standTmp.frequency - CONST.audio.DELTA) < message.freq;
 			});
 			if (stand){
-				var standInteraction = Stands.find(function(standInteractionTmp){
+				var standInteraction = Stands.arrayInteraction.find(function(standInteractionTmp){
 					return standInteractionTmp.id === stand.name;
 				});
 				fireEvent_({
 					key : standInteraction.key
-					, type : CONST.directions.DOWN
+					, type : CONST.eventType.SOUND
 					, id : standInteraction.id
 				});
 				if (CONST.DEBUG){

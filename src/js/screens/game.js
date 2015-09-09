@@ -5,24 +5,42 @@ var Stands = require('../assets/stands.js');
 var Inputs = require('../triggers/inputs.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
 
-var lastPoint_ = {
+var _lastPoint = {
 	x : 0,
 	y : 0
 	}
-	, interactionParam_ = []
-	, interactionParams_ = []
-	, interactionArrow_ = []
-	, showParam_ = false
-	, addInteractions_ = false;
+	, _interactionParam = []
+	, _interactionParams = []
+	, _interactionConfirmation = []
+	, _interactionArrow = []
+	, _showParam = false
+	, _showConfirmStand = false
+	, _eventTmp = null
+	, _lastSoundStand = null
+	, _addInteractions = false;
 
 function registerInteractions_(){
 	Inputs.registerInteraction({
-		type : CONST.directions.DOWN
+		type : CONST.eventType.DOWN
 		, key : [
 			CONST.uiElements.BTN_PARAM,			
 			CONST.uiElements.BTN_PARAM_CLOSE,			
 			CONST.uiElements.BTN_PARAM_MIC,			
-			CONST.uiElements.BTN_PARAM_MOTION			
+			CONST.uiElements.BTN_PARAM_MOTION,			
+			CONST.screens.INSIDE_SILVER,			
+			CONST.screens.INSIDE_GOLD,			
+			CONST.screens.INSIDE_PLATINIUM,			
+			CONST.uiElements.BTN_YES,			
+			CONST.uiElements.BTN_NO			
+		]
+		, callback : processInteractions_
+	});
+	Inputs.registerInteraction({
+		type : CONST.eventType.SOUND
+		, key : [
+			CONST.screens.INSIDE_SILVER,			
+			CONST.screens.INSIDE_GOLD,			
+			CONST.screens.INSIDE_PLATINIUM	
 		]
 		, callback : processInteractions_
 	});
@@ -31,13 +49,14 @@ function registerInteractions_(){
 
 function processInteractions_(event){
   if (event.type && 
-		event.type  === CONST.directions.DOWN){		
+		event.type  === CONST.eventType.DOWN		
+		){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_PARAM :   
-		    	showParam_ = true;
+		    	sh_owParam = true;
 		    	break;		
 		     case CONST.uiElements.BTN_PARAM_CLOSE :   
-		    	showParam_ = false;
+		    	sh_owParam = false;
 		    	break;		    
 		    case CONST.uiElements.BTN_PARAM_MIC :   
 		    	Model.gameModel.parameters.mic = !Model.gameModel.parameters.mic;
@@ -45,13 +64,47 @@ function processInteractions_(event){
 		    case CONST.uiElements.BTN_PARAM_MOTION :   
 		    	Model.gameModel.parameters.motion = !Model.gameModel.parameters.motion;
 		    	break;		    
+		    case CONST.screens.INSIDE_SILVER :   
+		    case CONST.screens.INSIDE_GOLD :   
+		    case CONST.screens.INSIDE_PLATINIUM :   
+		    	_eventTmp = event;
+		    	_showConfirmStand = true;
+		    	break;
+		    case CONST.uiElements.BTN_YES :   
+		    	Model.gameModel.standId = _eventTmp.id;
+		    	Model.ui.changeScreen = _eventTmp.key;        
+		    	_showConfirmStand = false;
+		    	_eventTmp = null;
+		    	break;
+		    case CONST.uiElements.BTN_NO :   
+		    	_showConfirmStand = false;
+		    	_eventTmp = null;
+		    	break;
 		}
 	}
+
+
+  	if (event.type && 
+  		event.type === CONST.eventType.SOUND
+  		){		
+  		switch(event.key){
+		    case CONST.screens.INSIDE_SILVER :   
+		    case CONST.screens.INSIDE_GOLD :   
+		    case CONST.screens.INSIDE_PLATINIUM :   
+		    	// On évite le spam à proximité d'un stand si on est déjà
+		    	if (_lastSoundStand != event.id){		    		
+			    	_eventTmp = event;
+			    	_showConfirmStand = true;
+			    	_lastSoundStand = event.id;
+		    	}
+		    	break;		 
+		}
+  	}
 }
 
 function checkInteractions_(){
-  if (lastPoint_.x !=  Model.gameModel.positionScreen.x
-  	|| lastPoint_.y != Model.gameModel.positionScreen.y
+  if (_lastPoint.x !=  Model.gameModel.positionScreen.x
+  	|| _lastPoint.y != Model.gameModel.positionScreen.y
   	|| Model.ui.changeScreen != CONST.screens.GAME){  	
 	  // On met à jour la map d'interaction
 	  Model.ui.mapInteraction = [];
@@ -68,14 +121,16 @@ function checkInteractions_(){
 	  			});
 	  	}
 	  });
-	  lastPoint_ = Model.gameModel.positionScreen;
+	  _lastPoint = Model.gameModel.positionScreen;
 	  if (!Model.gameModel.parameters.motion){
-	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionArrow_);
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, _interactionArrow);
 	  }
-	  if (!showParam_){
-	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionParam_);
+	  if(_showParam){
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, _interactionParams);
+	  }else if (_showConfirmStand){
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, _interactionConfirmation);
 	  }else{	  	
-	  	Array.prototype.push.apply(Model.ui.mapInteraction, interactionParams_);
+	  	Array.prototype.push.apply(Model.ui.mapInteraction, _interactionParam);
 	  }
   }
 }
@@ -117,6 +172,84 @@ function paintUser_(){
 		);
 }
 
+function paintConfirmation_(){
+	// Zone autour 
+	var position = {
+	    x: 1
+	  , y : (Model.ui.screenSize.height - 4) / 4
+	  , w: Model.ui.screenSize.width - 2.5
+	  , h: 8
+	}
+	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
+	// Titre
+	arrayInstructions.push({drawText : true
+	  , text : "Voulez vous entrez dans ce stand ?"
+	  , fontSize : '20px'
+	  , x :  CONST.ui.UNIT * (position.x + 1) // X
+	  , y : CONST.ui.UNIT * (position.y + 2) // Y
+	  , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+	  , lineHeight : 30 // Line Height
+	});
+
+	// Boutons
+	var positionBtnYes = {
+		  x : position.x + 1
+		, y : position.y + 3.5
+		, w : 4
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnYes);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : "Oui"
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnYes.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnYes.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnYes.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+	
+	var positionBtnNo = {
+		  x : positionBtnYes.x + 3.5
+		, y : positionBtnYes.y
+		, w : 4
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnNo);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : "Non"
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnNo.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnNo.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnNo.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+	
+	  // Mise à jour de la map d'interaction
+	if(_interactionConfirmation.length === 0){
+		_interactionConfirmation.push({
+		    x : CONST.ui.UNIT * positionBtnYes.x
+		  , y : CONST.ui.UNIT * positionBtnYes.y
+		  , w : CONST.ui.UNIT * positionBtnYes.w
+		  , h : CONST.ui.UNIT * positionBtnYes.h
+		  , key : CONST.uiElements.BTN_YES
+		});	
+		_interactionConfirmation.push({
+		    x : CONST.ui.UNIT * positionBtnNo.x
+		  , y : CONST.ui.UNIT * positionBtnNo.y
+		  , w : CONST.ui.UNIT * positionBtnNo.w
+		  , h : CONST.ui.UNIT * positionBtnNo.h
+		  , key : CONST.uiElements.BTN_NO
+		});	
+		
+	}
+
+
+	return arrayInstructions;
+}
+
 function paintBtnParameter_(){
 	var arrayInstructions = [];
 	// Boutons
@@ -146,8 +279,8 @@ function paintBtnParameter_(){
 	});
 
 	  // Mise à jour de la map d'interaction
-	if (interactionParam_.length === 0){
-		interactionParam_.push({
+	if (_interactionParam.length === 0){
+		_interactionParam.push({
 		    x : CONST.ui.UNIT * positionBtnParam.x
 		  , y : CONST.ui.UNIT * positionBtnParam.y
 		  , w : CONST.ui.UNIT * positionBtnParam.w
@@ -239,22 +372,22 @@ function paintParameters_(){
 	});
 
 	  // Mise à jour de la map d'interaction
-	if (interactionParams_.length === 0){
-		interactionParams_.push({
+	if(_interactionParams.length === 0){
+		_interactionParams.push({
 		    x : CONST.ui.UNIT * (Model.ui.screenSize.width - 3)
 		  , y : CONST.ui.UNIT * 3
 		  , w : CONST.ui.UNIT * 3
 		  , h : CONST.ui.UNIT * 1
 		  , key : CONST.uiElements.BTN_PARAM_CLOSE
 		});	
-		interactionParams_.push({
+		_interactionParams.push({
 		    x : CONST.ui.UNIT * positionBtnUltraSon.x
 		  , y : CONST.ui.UNIT * positionBtnUltraSon.y
 		  , w : CONST.ui.UNIT * positionBtnUltraSon.w
 		  , h : CONST.ui.UNIT * positionBtnUltraSon.h
 		  , key : CONST.uiElements.BTN_PARAM_MIC
 		});	
-		interactionParams_.push({
+		_interactionParams.push({
 		    x : CONST.ui.UNIT * positionBtnMotion.x
 		  , y : CONST.ui.UNIT * positionBtnMotion.y
 		  , w : CONST.ui.UNIT * positionBtnMotion.w
@@ -373,8 +506,8 @@ function paintBtnArrow_(){
 	});
 	
 	  // Mise à jour de la map d'interaction
-	if (interactionArrow_.length === 0){		
-		interactionArrow_.push({
+	if(_interactionArrow.length === 0){		
+		_interactionArrow.push({
 		    x : CONST.ui.UNIT * positionBtnUp.x
 		  , y : CONST.ui.UNIT * positionBtnUp.y
 		  , w : CONST.ui.UNIT * positionBtnUp.w
@@ -382,7 +515,7 @@ function paintBtnArrow_(){
 		  , key : CONST.uiElements.BTN_DIRECTION_UP
 		  , priority : -1
 		});	
-		interactionArrow_.push({
+		_interactionArrow.push({
 		    x : CONST.ui.UNIT * positionBtnLeft.x
 		  , y : CONST.ui.UNIT * positionBtnLeft.y
 		  , w : CONST.ui.UNIT * positionBtnLeft.w
@@ -390,7 +523,7 @@ function paintBtnArrow_(){
 		  , key : CONST.uiElements.BTN_DIRECTION_LEFT
 		  , priority : -1
 		});	
-		interactionArrow_.push({
+		_interactionArrow.push({
 		    x : CONST.ui.UNIT * positionBtnRight.x
 		  , y : CONST.ui.UNIT * positionBtnRight.y
 		  , w : CONST.ui.UNIT * positionBtnRight.w
@@ -398,7 +531,7 @@ function paintBtnArrow_(){
 		  , key : CONST.uiElements.BTN_DIRECTION_RIGHT
 		  , priority : -1
 		});	
-		interactionArrow_.push({
+		_interactionArrow.push({
 		    x : CONST.ui.UNIT * positionBtnDown.x
 		  , y : CONST.ui.UNIT * positionBtnDown.y
 		  , w : CONST.ui.UNIT * positionBtnDown.w
@@ -417,9 +550,9 @@ function paintBtnArrow_(){
 // API
 
 function gameScreen(){
-	if (!addInteractions_){
+	if (!_addInteractions){
 		registerInteractions_();
-		addInteractions_ = true;
+		_addInteractions = true;
 	}
 
 	var arrayInstructions = [];
@@ -427,10 +560,13 @@ function gameScreen(){
 		Array.prototype.push.apply(arrayInstructions, paintBtnArrow_());
 	}
 	arrayInstructions.push(paintUser_());
-	if (!showParam_){
-		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());
-	}else{
+	if(_showParam){
 		Array.prototype.push.apply(arrayInstructions, paintParameters_());
+	}else if (_showConfirmStand){
+		Array.prototype.push.apply(arrayInstructions, paintConfirmation_());
+	}else{
+		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());
+
 	}
 
 	// Calcul des interactions

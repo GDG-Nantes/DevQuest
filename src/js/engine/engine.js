@@ -9,7 +9,7 @@ var runActiv = false;
 
 function registerInteractions_(){
 	Inputs.registerInteraction({
-		type : CONST.directions.UP
+		type : CONST.eventType.UP
 		, key : [
 			CONST.uiElements.BTN_DEMARER
 			, CONST.uiElements.BTN_G_PLUS
@@ -19,9 +19,6 @@ function registerInteractions_(){
 			, CONST.uiElements.BTN_LEFT
 			, CONST.uiElements.BTN_CHOISIR
 			, CONST.uiElements.DOOR
-			, CONST.screens.INSIDE_SILVER
-			, CONST.screens.INSIDE_GOLD
-			, CONST.screens.INSIDE_PLATINIUM
 			]
 		, callback : processInteraction_
 	});	
@@ -29,7 +26,7 @@ function registerInteractions_(){
 
 function processInteraction_(event){
 
-	if (event && event.type  === CONST.directions.UP){		
+	if (event && event.type  === CONST.eventType.UP){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_DEMARER :       
 		    	// On regarde si on a déjà un user de stocké sinon, on passe l'écran suivant 

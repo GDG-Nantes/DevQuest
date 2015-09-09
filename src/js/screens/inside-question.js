@@ -21,7 +21,7 @@ var drawFunctions = {
 
 function registerInteractions_(){
 	Inputs.registerInteraction({
-		type : CONST.directions.DOWN
+		type : CONST.eventType.DOWN
 		, key : [
 			CONST.uiElements.BTN_REP_A
 			, CONST.uiElements.BTN_REP_B
@@ -31,7 +31,7 @@ function registerInteractions_(){
 		, callback : checkInteractions_
 	});
 	Inputs.registerInteraction({
-		type : CONST.directions.UP
+		type : CONST.eventType.UP
 		, key : [
 			CONST.uiElements.BTN_REP_A
 			, CONST.uiElements.BTN_REP_B
@@ -44,7 +44,7 @@ function registerInteractions_(){
 
 function checkInteractions_(event){
   if (event.type && 
-		event.type  === CONST.directions.DOWN){		
+		event.type  === CONST.eventType.DOWN){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_REP_A :   
 		    	drawFunctions.drawA = InterfaceUtil.drawBtnPressed;
@@ -60,7 +60,7 @@ function checkInteractions_(event){
 		    	break;
 		}
 	}else if (event.type && 
-		event.type  === CONST.directions.UP){		
+		event.type  === CONST.eventType.UP){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_REP_A :   
 		    	drawFunctions.drawA = InterfaceUtil.drawBtn;

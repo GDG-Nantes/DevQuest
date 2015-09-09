@@ -12,7 +12,7 @@ function checkInteractions_(event) {
 
 function registerInteractions_(){
   Inputs.registerInteraction({
-    type : CONST.directions.UP
+    type : CONST.eventType.UP
     , key : CONST.uiElements.BTN_CUSTO
     , callback : checkInteractions_
   });
