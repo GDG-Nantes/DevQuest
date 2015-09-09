@@ -19,6 +19,8 @@ if (!credentials){
   credentials['GITHUB_CLIENT_SECRET'] = "xxxxxxx";
 }
 
+
+
 gulp.task('serve',  ['browserify','sass'], function(){
   browserSync.init({
     server:'./',
@@ -60,3 +62,4 @@ gulp.task('browserify',function(){
 
 /* Default task */
 gulp.task("default", ["serve"]);
+gulp.task('build', ['browserify', 'sass']);
