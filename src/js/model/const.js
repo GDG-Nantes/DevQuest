@@ -29,6 +29,7 @@ module.exports = {
 	motion : {		
 		GRAVITY : 9.80665,
 		LIMIT_ORIENTATION : 20,
+		LIMIT_ORIENTATION_ALERT : 50,
 		STEP_ACCELERATION : 1,
 		STEP_RATE : 300
 	},
@@ -53,7 +54,7 @@ module.exports = {
 		UP : 1,
 		LEFT : 2,
 		RIGHT : 3,
-		DOWN : 4, 
+		DOWN : 4
 	},
 	// Events types
 	eventType : {
@@ -93,6 +94,7 @@ module.exports = {
 		BTN_DIRECTION_RIGHT : 'btn-direction-right',
 		BTN_DIRECTION_DOWN : 'btn-direction-down',
 		BTN_YES : 'btn-yes',
+		BTN_OK : 'btn-ok',
 		BTN_NO : 'btn-no'
 	}
 };

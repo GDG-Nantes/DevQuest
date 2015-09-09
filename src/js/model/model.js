@@ -47,6 +47,7 @@ var gameModel = {
 	parameters : {
 		mic : true
 		, motion : true
+		, wrongOrientation : false
 	}
 };
 

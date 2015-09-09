@@ -6,18 +6,19 @@ var Stands = require('../assets/stands.js');
 var CONST = require('../model/const.js');
 var SonicServer = require('../ultrasonic/sonic-server.js');
 
-var trackAcceleration = true
-	, arrayZ = []
- 	, lastPick = Date.now()
-	, orientation = 0
-	, sonicServer = null
-	, stateFeq={
+var _trackAcceleration = true
+	, _arrayZ = []
+ 	, _lastPick = Date.now()
+	, _orientation = 0
+	, _sonicServer = null
+	, _stateFeq={
 		frequency : 0,
 		time : 0
 	}
-	, fullscreen = false
-	, interactionsListeners = []
-	, addInteractions_ = false;
+	, _fullscreen = false
+	, _interactionsListeners = []
+	, _fireSoundStand = null
+	, _addInteractions = false;
 
 function toggleFullScreen_() {
   if (!document.fullscreenElement &&    // alternative standard method
@@ -102,7 +103,7 @@ function keypress_(event){
 
 function fireEvent_(eventInteraction){
 	// On vérifies s'il n'y a pas un événement à lever
-	interactionsListeners.forEach(function(listener){
+	_interactionsListeners.forEach(function(listener){
 		if (!eventInteraction.cancel 
 			&& eventInteraction.type === listener.type
 			&& eventInteraction.key === listener.key){
@@ -155,9 +156,9 @@ function checkMouseIntersection_(event){
 		// Cas particulier du bouton démarer car on passe en fullScreen
 		/*
 		TODO à décomenter
-		if (!fullscreen){
+		if (!_fullscreen){
 			toggleFullScreen_();
-				fullscreen = true
+				_fullscreen = true
 		}
 		*/
 	}
@@ -197,24 +198,24 @@ function transformOrientationToDirection_(orientation){
 }
 
 function motionCallBack_(event){
-	if (trackAcceleration &&  event.accelerationIncludingGravity){
+	if (_trackAcceleration &&  event.accelerationIncludingGravity){
 		//console.log("x: %s | y: %s | z: %s",event.accelerationIncludingGravity.x, event.accelerationIncludingGravity.y,event.accelerationIncludingGravity.z);
 		var zValue = event.accelerationIncludingGravity.z - CONST.motion.GRAVITY;
 		// Initialisation
-		arrayZ.push(zValue);
-		if (arrayZ.length > 3){
-			arrayZ = arrayZ.slice(1,4);
+		_arrayZ.push(zValue);
+		if (_arrayZ.length > 3){
+			_arrayZ = _arrayZ.slice(1,4);
 			// On est sur un pic
-			if (arrayZ[1] > arrayZ[0]
-				&& arrayZ[1] > arrayZ[2]
-				&& arrayZ[1] > CONST.motion.STEP_ACCELERATION){
+			if (_arrayZ[1] > _arrayZ[0]
+				&& _arrayZ[1] > _arrayZ[2]
+				&& _arrayZ[1] > CONST.motion.STEP_ACCELERATION){
 				var currentTime = Date.now();
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
-				if (currentTime - lastPick > CONST.motion.STEP_RATE
+				if (currentTime - _lastPick > CONST.motion.STEP_RATE
 					&& Model.gameModel.parameters.motion){
-					lastPick = currentTime;
-					applyDirection_(transformOrientationToDirection_(orientation));
-					console.log( new Date().toISOString()+" : "+ arrayZ[1]+" -> "+orientation);
+					_lastPick = currentTime;
+					applyDirection_(transformOrientationToDirection_(_orientation));
+					console.log( new Date().toISOString()+" : "+ _arrayZ[1]+" -> "+_orientation);
 				}
 			}
 		}
@@ -228,24 +229,38 @@ function motionCallBack_(event){
 function orientationCallBack_(event){
 	// On ne tien comptes des pas que si le téléphone est à plat => abs(gamma) < 20 && abs(beta) < 20
 	// Le alpha représente la bousolle et nous permet de savoir où l'on est dirigé
-	trackAcceleration = Math.abs(event.beta) < CONST.motion.LIMIT_ORIENTATION
+	_trackAcceleration = Math.abs(event.beta) < CONST.motion.LIMIT_ORIENTATION
 		&& Math.abs(event.gamma) < CONST.motion.LIMIT_ORIENTATION;
-	orientation = event.alpha;
+	var orientationAlert = Math.abs(event.beta) >= CONST.motion.LIMIT_ORIENTATION_ALERT
+		|| Math.abs(event.gamma) >= CONST.motion.LIMIT_ORIENTATION_ALERT; 
+	_orientation = event.alpha;
+	if (Model.gameModel.parameters.motion && orientationAlert && !Model.gameModel.parameters.wrongOrientation){
+		Model.gameModel.parameters.wrongOrientation = true;
+	}else if (Model.gameModel.parameters.motion && !orientationAlert && Model.gameModel.parameters.wrongOrientation){
+		Model.gameModel.parameters.wrongOrientation = false;
+	}
 
 }
 
 function callBackSonic_(message){
-	if (message.freq != stateFeq.frequency){
-		stateFeq.frequency = message.freq;
-		stateFeq.time = Date.now();
+	if (message.freq != _stateFeq.frequency){
+		_stateFeq.frequency = message.freq;
+		_stateFeq.time = Date.now();
 	}else{
 		if (Model.gameModel.parameters.mic 
-			&& Date.now() - stateFeq.time > CONST.audio.DELAY_STABLE){
+			&& Date.now() - _stateFeq.time > CONST.audio.DELAY_STABLE){
 			var stand = StandsModel.find(function(standTmp){
 				return (standTmp.frequency + CONST.audio.DELTA) > message.freq
 				&& (standTmp.frequency - CONST.audio.DELTA) < message.freq;
 			});
 			if (stand){
+				// On vérifie qu'on vient pas déjà de propagé l'événement
+				if (_fireSoundStand 
+					&& _fireSoundStand.name === stand.name){
+					return;
+				}
+				_fireSoundStand = stand;
+
 				var standInteraction = Stands.arrayInteraction.find(function(standInteractionTmp){
 					return standInteractionTmp.id === stand.name;
 				});
@@ -265,8 +280,8 @@ function callBackSonic_(message){
 // API
 
 function initListeners(){
-	if (!addInteractions_){
-		addInteractions_ = true;
+	if (!_addInteractions){
+		_addInteractions = true;
 		registerInteractions_();
 	}
 
@@ -286,13 +301,13 @@ function initListeners(){
 	}
 
 // TODO à décommenter !!!
-	/*if (!sonicServer){
-		sonicServer = new SonicServer({peakThreshold: CONST.audio.THRESHOLD});
-		//sonicServer.setDebug(true);
-		sonicServer.on('message', callBackSonic_);
+	/*if (!_sonicServer){
+		_sonicServer = new SonicServer({peakThreshold: CONST.audio.THRESHOLD});
+		//_sonicServer.setDebug(true);
+		_sonicServer.on('message', callBackSonic_);
 	}
 
-	sonicServer.start();
+	_sonicServer.start();
 	*/
 
 	console.log("InitListeners");
@@ -315,21 +330,21 @@ function removeListeners(){
 		window.removeEventListener('deviceorientation', orientationCallBack_, false);
 	}
 	// TODO à décommenter
-	//sonicServer.stop();
+	//_sonicServer.stop();
 	console.log("RemoveListeners");
 }
 
 function registerInteraction(listener){
 	if (Array.isArray(listener.key)){
 		listener.key.forEach(function(keyItem){
-			interactionsListeners.push({
+			_interactionsListeners.push({
 				type : listener.type
 				, key : keyItem
 				, callback : listener.callback
 			});
 		});
 	}else{
-		interactionsListeners.push(listener);
+		_interactionsListeners.push(listener);
 	}
 }
 

@@ -12,6 +12,7 @@ var _lastPoint = {
 	, _interactionParam = []
 	, _interactionParams = []
 	, _interactionConfirmation = []
+	, _interactionWrongOrientation = []
 	, _interactionArrow = []
 	, _showParam = false
 	, _showConfirmStand = false
@@ -30,6 +31,7 @@ function registerInteractions_(){
 			CONST.screens.INSIDE_SILVER,			
 			CONST.screens.INSIDE_GOLD,			
 			CONST.screens.INSIDE_PLATINIUM,			
+			CONST.uiElements.BTN_OK,			
 			CONST.uiElements.BTN_YES,			
 			CONST.uiElements.BTN_NO			
 		]
@@ -53,16 +55,17 @@ function processInteractions_(event){
 		){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_PARAM :   
-		    	sh_owParam = true;
+		    	_showParam = true;
 		    	break;		
 		     case CONST.uiElements.BTN_PARAM_CLOSE :   
-		    	sh_owParam = false;
+		    	_showParam = false;
 		    	break;		    
 		    case CONST.uiElements.BTN_PARAM_MIC :   
 		    	Model.gameModel.parameters.mic = !Model.gameModel.parameters.mic;
 		    	break;		    
 		    case CONST.uiElements.BTN_PARAM_MOTION :   
 		    	Model.gameModel.parameters.motion = !Model.gameModel.parameters.motion;
+		    	Model.gameModel.parameters.wrongOrientation = false;
 		    	break;		    
 		    case CONST.screens.INSIDE_SILVER :   
 		    case CONST.screens.INSIDE_GOLD :   
@@ -79,6 +82,9 @@ function processInteractions_(event){
 		    case CONST.uiElements.BTN_NO :   
 		    	_showConfirmStand = false;
 		    	_eventTmp = null;
+		    	break;
+		    case CONST.uiElements.BTN_OK :   
+		    	// TODO voir ce qu'on fait
 		    	break;
 		}
 	}
@@ -243,6 +249,61 @@ function paintConfirmation_(){
 		  , h : CONST.ui.UNIT * positionBtnNo.h
 		  , key : CONST.uiElements.BTN_NO
 		});	
+		
+	}
+
+
+	return arrayInstructions;
+}
+
+function paintWrongOrientation_(){
+	// Zone autour 
+	var position = {
+	    x: 1
+	  , y : (Model.ui.screenSize.height - 4) / 4
+	  , w: Model.ui.screenSize.width - 2.5
+	  , h: 8
+	}
+	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
+	// Titre
+	arrayInstructions.push({drawText : true
+	  , text : "Vous devez tenir votre téléphone à plat pour vous déplacer."
+	  , fontSize : '20px'
+	  , x :  CONST.ui.UNIT * (position.x + 1) // X
+	  , y : CONST.ui.UNIT * (position.y + 2) // Y
+	  , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+	  , lineHeight : 30 // Line Height
+	});
+
+	// Boutons
+	var positionBtnYes = {
+		  x : (Model.ui.screenSize.width - 4) / 2
+		, y : position.y + 4.5
+		, w : 4
+		, h : 3
+	};
+	var instructionsBtn = InterfaceUtil.drawBtn(positionBtnYes);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtn);
+	arrayInstructions.push({drawText : true
+		, text : "OK"
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnYes.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnYes.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnYes.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+	
+	
+	  // Mise à jour de la map d'interaction
+	if(_interactionWrongOrientation.length === 0){
+		_interactionWrongOrientation.push({
+		    x : CONST.ui.UNIT * positionBtnYes.x
+		  , y : CONST.ui.UNIT * positionBtnYes.y
+		  , w : CONST.ui.UNIT * positionBtnYes.w
+		  , h : CONST.ui.UNIT * positionBtnYes.h
+		  , key : CONST.uiElements.BTN_YES
+		});			
 		
 	}
 
@@ -564,6 +625,8 @@ function gameScreen(){
 		Array.prototype.push.apply(arrayInstructions, paintParameters_());
 	}else if (_showConfirmStand){
 		Array.prototype.push.apply(arrayInstructions, paintConfirmation_());
+	}else if (Model.gameModel.parameters.wrongOrientation){		
+		Array.prototype.push.apply(arrayInstructions, paintWrongOrientation_());
 	}else{
 		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());
 
