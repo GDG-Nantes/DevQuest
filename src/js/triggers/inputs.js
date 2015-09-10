@@ -8,6 +8,8 @@ var SonicServer = require('../ultrasonic/sonic-server.js');
 
 var _trackAcceleration = true
 	, _arrayZ = []
+	, _maxY = 0
+ 	, _minY = 10
  	, _lastPick = Date.now()
 	, _orientation = 0
 	, _sonicServer = null
@@ -175,32 +177,37 @@ function mouseUp_(event){
 function transformOrientationToDirection_(orientation){
 	// On a une valeur qui oscille entre 0 et 360
 	// On va prendre des tranches de 90 degrés pour chaque direction
+	// Attention l'orientation html va à l'inverse des aiguilles d'une montre !
 	var upRef = 150; // La référence est 150° pour indiquer le up 
 	/*
 		Haut => >= 105 || < 195
-		Gauche => >=5 && < 105
+		Droite => >=5 && < 105
 		Bas => >= 285 && < 360 || >= 0 && < 5
-		Droite=> >= 195 && < 285
+		Gauge=> >= 195 && < 285
 	*/
 	var directionStep = CONST.directions.RIGHT;
-	if (orientation >= 105 || orientation < 195){
+	if (orientation >= 105 && orientation < 195){
 		directionStep = CONST.directions.UP;
 	}else if (orientation >= 5 && orientation < 105){
-		directionStep = CONST.directions.LEFT;
+		directionStep = CONST.directions.RIGHT;
 	}else if ((orientation >= 285 && orientation < 360)
 			|| (orientation >= 0 && orientation < 5)){
 		directionStep = CONST.directions.DOWN;
 	}else{
-		directionStep = CONST.directions.RIGHT;
+		directionStep = CONST.directions.LEFT;
 	}
 
 	return directionStep;
 }
 
+
+
 function motionCallBack_(event){
 	if (_trackAcceleration &&  event.accelerationIncludingGravity){
 		//console.log("x: %s | y: %s | z: %s",event.accelerationIncludingGravity.x, event.accelerationIncludingGravity.y,event.accelerationIncludingGravity.z);
 		var zValue = event.accelerationIncludingGravity.z - CONST.motion.GRAVITY;
+		_maxY = Math.max(event.accelerationIncludingGravity.y, _maxY);
+		_minY = Math.min(event.accelerationIncludingGravity.y, _minY);
 		// Initialisation
 		_arrayZ.push(zValue);
 		if (_arrayZ.length > 3){
@@ -208,21 +215,27 @@ function motionCallBack_(event){
 			// On est sur un pic
 			if (_arrayZ[1] > _arrayZ[0]
 				&& _arrayZ[1] > _arrayZ[2]
-				&& _arrayZ[1] > CONST.motion.STEP_ACCELERATION){
+				&& _arrayZ[1] > CONST.motion.STEP_ACCELERATION_Z
+				&& _maxY > CONST.motion.STEP_ACCELERATION_Y ){
 				var currentTime = Date.now();
 				// On tiens comptes d'un temps de rafraischissement minimal pour éviter les événements parasites
 				if (currentTime - _lastPick > CONST.motion.STEP_RATE
 					&& Model.gameModel.parameters.motion){
 					_lastPick = currentTime;
 					applyDirection_(transformOrientationToDirection_(_orientation));
-					console.log( new Date().toISOString()+" : "+ _arrayZ[1]+" -> "+_orientation);
+					if (CONST.DEBUG){
+						console.debug( new Date().toISOString()+" : "+ _arrayZ[1]+" -> "+_orientation
+							+" maxY : "+_maxY
+							+" minY : "+_minY);
+					}
+					_maxY = 0;
+					_minY = 10;
 				}
 			}
 		}
 
 
-		if (Math.abs(zValue) > CONST.motion.STEP_ACCELERATION){
-		}
+		
 	}
 }
 

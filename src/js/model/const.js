@@ -2,7 +2,7 @@
 var Characters = require('./charaters-cst.js');
 
 module.exports = {
-	DEBUG : false,
+	DEBUG : true,
 	// Ui Const
 	ui : {		
 		UNIT : 32,
@@ -30,7 +30,8 @@ module.exports = {
 		GRAVITY : 9.80665,
 		LIMIT_ORIENTATION : 20,
 		LIMIT_ORIENTATION_ALERT : 50,
-		STEP_ACCELERATION : 1,
+		STEP_ACCELERATION_Z : 1,
+		STEP_ACCELERATION_Y : 3,
 		STEP_RATE : 300
 	},
 	// Audio Conf
