@@ -66,9 +66,10 @@ function checkInteractions_(event){
 		    	var input = document.getElementById('code-confirmation');
 		    	if (input && input.value){
 		    		var code = input.value;
-		    		// TODO faire quelque chose avec le code de confirmation
-		    		document.body.removeChild(input);
+	    			// TODO faire quelque chose avec le code de confirmation
 		    	}
+	    		document.body.removeChild(input);
+		    	Model.ui.changeScreen = CONST.screens.GAME;
 		    	break;
 		}
 	}else if (event.type && 
@@ -330,6 +331,20 @@ function insideQuestion(){
 	  , lineHeight : 30 // Line Height
 	});
 
+	if (Model.ui.changeScreen === CONST.screens.INSIDE_SILVER
+		|| Model.ui.changeScreen === CONST.screens.INSIDE_GOLD
+		|| Model.ui.changeScreen === CONST.screens.INSIDE_PLATINIUM){
+		_showConfirmation = false;
+		_state = -1;
+		_drawFunctions = {
+		  	drawA : InterfaceUtil.drawBtn
+		  	, drawB : InterfaceUtil.drawBtn
+		  	, drawC : InterfaceUtil.drawBtn
+		  	, drawD : InterfaceUtil.drawBtn
+		};
+		_chooseAnswer = '';
+	}
+
 	var stateConfirmation = -1;
 	if (_showConfirmation){
 		Array.prototype.push.apply(arrayInstructions, paintConfirmation_());
@@ -343,48 +358,48 @@ function insideQuestion(){
 	if (_state != stateConfirmation){
 		var interaction = [];
 		Model.ui.mapInteraction = interaction;
-		Model.ui.screen = CONST.screens.CHOOSE_USER;
-		interaction.push({
-		    x : CONST.ui.UNIT * positionBtnRepA.x
-		  , y : CONST.ui.UNIT * positionBtnRepA.y
-		  , w : CONST.ui.UNIT * positionBtnRepA.w
-		  , h : CONST.ui.UNIT * positionBtnRepA.h
-		  , key : CONST.uiElements.BTN_REP_A
-		});
-		interaction.push({
-		    x : CONST.ui.UNIT * positionBtnRepB.x
-		  , y : CONST.ui.UNIT * positionBtnRepB.y
-		  , w : CONST.ui.UNIT * positionBtnRepB.w
-		  , h : CONST.ui.UNIT * positionBtnRepB.h
-		  , key : CONST.uiElements.BTN_REP_B
-		});
-		interaction.push({
-		    x : CONST.ui.UNIT * positionBtnRepC.x
-		  , y : CONST.ui.UNIT * positionBtnRepC.y
-		  , w : CONST.ui.UNIT * positionBtnRepC.w
-		  , h : CONST.ui.UNIT * positionBtnRepC.h
-		  , key : CONST.uiElements.BTN_REP_C
-		});
-		interaction.push({
-		    x : CONST.ui.UNIT * positionBtnRepD.x
-		  , y : CONST.ui.UNIT * positionBtnRepD.y
-		  , w : CONST.ui.UNIT * positionBtnRepD.w
-		  , h : CONST.ui.UNIT * positionBtnRepD.h
-		  , key : CONST.uiElements.BTN_REP_D
-		});
-		// Porte d'entrée
-		
-		interaction.push({
-		    x : CONST.ui.UNIT * (colIndex  + Math.floor(widthStand / 2))
-		  , y : CONST.ui.UNIT * (rowIndex + 6)
-		  , w : CONST.ui.UNIT * 1
-		  , h : CONST.ui.UNIT * 1
-		  , key : CONST.uiElements.DOOR
-		});
-
 		if (_showConfirmation){
 			Array.prototype.push.apply(interaction, _interactionConfirmation);			
+		}else{			
+			interaction.push({
+			    x : CONST.ui.UNIT * positionBtnRepA.x
+			  , y : CONST.ui.UNIT * positionBtnRepA.y
+			  , w : CONST.ui.UNIT * positionBtnRepA.w
+			  , h : CONST.ui.UNIT * positionBtnRepA.h
+			  , key : CONST.uiElements.BTN_REP_A
+			});
+			interaction.push({
+			    x : CONST.ui.UNIT * positionBtnRepB.x
+			  , y : CONST.ui.UNIT * positionBtnRepB.y
+			  , w : CONST.ui.UNIT * positionBtnRepB.w
+			  , h : CONST.ui.UNIT * positionBtnRepB.h
+			  , key : CONST.uiElements.BTN_REP_B
+			});
+			interaction.push({
+			    x : CONST.ui.UNIT * positionBtnRepC.x
+			  , y : CONST.ui.UNIT * positionBtnRepC.y
+			  , w : CONST.ui.UNIT * positionBtnRepC.w
+			  , h : CONST.ui.UNIT * positionBtnRepC.h
+			  , key : CONST.uiElements.BTN_REP_C
+			});
+			interaction.push({
+			    x : CONST.ui.UNIT * positionBtnRepD.x
+			  , y : CONST.ui.UNIT * positionBtnRepD.y
+			  , w : CONST.ui.UNIT * positionBtnRepD.w
+			  , h : CONST.ui.UNIT * positionBtnRepD.h
+			  , key : CONST.uiElements.BTN_REP_D
+			});
+			// Porte d'entrée
+			
+			interaction.push({
+			    x : CONST.ui.UNIT * (colIndex  + Math.floor(widthStand / 2))
+			  , y : CONST.ui.UNIT * (rowIndex + 6)
+			  , w : CONST.ui.UNIT * 1
+			  , h : CONST.ui.UNIT * 1
+			  , key : CONST.uiElements.DOOR
+			});
 		}
+
 		_state = stateConfirmation;
 		
 	}
