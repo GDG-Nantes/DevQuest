@@ -30,7 +30,10 @@ function processInteraction_(event){
 		switch(event.key){
 		    case CONST.uiElements.BTN_DEMARER :       
 		    	// On regarde si on a déjà un user de stocké sinon, on passe l'écran suivant 
-		    	if (!Model.gameModel.user){
+		    	if (!Model.gameModel.showStory){
+		    		Model.ui.changeScreen = CONST.screens.STORY;        
+		    		Model.gameModel.showStory = true;
+		    	}else if (!Model.gameModel.user){
 		    		Model.ui.changeScreen = CONST.screens.LOGIN;        
 		    	}else if (Model.gameModel.indexUser === -1){
 		    		Model.ui.changeScreen = CONST.screens.CHOOSE_USER;        

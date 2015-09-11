@@ -46,6 +46,7 @@ module.exports = {
 		LOGIN : 'login',
 		CHOOSE_USER : 'choose-user',
 		GAME : 'game',
+		STORY : 'story',
 		INSIDE_SILVER : 'inside-silver',
 		INSIDE_GOLD : 'inside-gold',
 		INSIDE_PLATINIUM : 'inside-platinium'

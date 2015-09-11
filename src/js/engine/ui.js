@@ -7,6 +7,7 @@ var ScreenInside = require('../screens/inside-question.js');
 var ScreenChooseUser = require('../screens/choose-user.js');
 var ScreenHome = require('../screens/home.js');
 var ScreenLogin = require('../screens/login.js');
+var ScreenStory = require('../screens/story.js');
 var CONST = require('../model/const.js');
 
 // On défini l'ensemble des array qui vont servir pour le dessin
@@ -245,6 +246,8 @@ function paint_(){
 
 	if (Model.ui.screen === CONST.screens.HOME){
 		paintInstructions_(ScreenHome.homeScreen());				
+	}else if (Model.ui.screen === CONST.screens.STORY){
+		paintInstructions_(ScreenStory.storyScreen());				
 	}else if (Model.ui.screen === CONST.screens.LOGIN){
 		paintBackground_();
 		paintInstructions_(ScreenLogin.loginScreen());				
