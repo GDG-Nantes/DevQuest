@@ -5,15 +5,12 @@ api_version: go1
 
 
 handlers:
-- url: /.*
+- url: /api/.*
   script: _go_app
-#handlers:
-#- url: /
-#  static_files: index.html
-#  upload: index.html
-
+- url: /
+  static_files: index.html
+  upload: index.html
 # access the static resources in the root director
-
-#- url: /(.*)
-#  static_files: \1
-#  upload: (.*)
+- url: /(.*)
+  static_files: \1
+  upload: (.*)

@@ -1,13 +1,16 @@
-package static
+package golang
 
 import (
     "net/http"
 )
 
 func init() {
-    http.HandleFunc("/", static)
+    http.HandleFunc("/v1/questions", questions)
 }
 
-func static(w http.ResponseWriter, r *http.Request) {
-    http.ServeFile(w, r, "./"+r.URL.Path)
+func questions(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("SUPER-HACK", "@GDGNANTES")
+    //w.WriteHeader(http.StatusFound)
+    fmt.Fprint(w, "Hello, world!")
+    return
 }
