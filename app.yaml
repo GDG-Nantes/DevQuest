@@ -5,22 +5,26 @@ api_version: go1
 
 
 handlers:
-#- url: /
-#  static_files: index.html
-#  upload: index.html
-# access the static resources in the root director
-#- url: /(.*)
-#  static_files: \1
-#  upload: (.*)
-#- url: /api/.*
-- url: /.*
+
+- url: /api/.*
   script: _go_app
+
+- url: /
+  static_files: index.html
+  upload: index.html
+
+- url: /(.*\.(css|gif|png|jpg|ico|js|html))
+  static_files: \1
+  upload: (.*\.(css|gif|png|jpg|ico|js|html))
+
+
+
 skip_files:
 - ^node_modules/*.*
 - ^\.git/*.*
-- ^\assets/*.*
-- ^\lib/*.*
-- ^\src/*.*
+#- ^\assets/*.*
+#- ^\lib/*.*
+#- ^\src/*.*
 #- ^(.*/)?.*\.go$
 
 
