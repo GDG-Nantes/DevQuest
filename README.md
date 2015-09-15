@@ -1,6 +1,12 @@
 # DevQuest
 Jeux RPG pour le devfest 205
 
+## How to use
+
+Pour le dev, il faut lancer gulp dev
+
+Sinon gulp build et aller dans le répertoire dist
+
 ##Credits 
 
 Les images des personnages viennent de OpenGameArt : http://opengameart.org/content/antifareas-rpg-sprite-set-1-enlarged-w-transparent-background-fixed
