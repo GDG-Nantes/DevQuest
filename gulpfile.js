@@ -37,7 +37,7 @@ gulp.task('clean', function(){
 
 gulp.task("copy-site", ["clean", "browserify-prod", "sass-prod"], function(){
   return gulp.src(["index.html", "redirect.html", "robots.txt", "sitemap.xml", "bundle.js", "assets/**", "css/**", "lib/**"], { "base" : "." })
-    .pipe(gulp.dest("dist/static"));
+    .pipe(gulp.dest("dist"));
 });
 
 gulp.task("copy-go", function(){
