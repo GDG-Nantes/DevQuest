@@ -47,7 +47,7 @@ gulp.task("copy-go", function(){
 })
 
 gulp.task("copy", ["copy-site", "copy-go"], function () {
-  return gulp.src(["app.yaml"], { "base" : "." })
+  return gulp.src(["app.yaml", "devquest.go"], { "base" : "." })
     .pipe(gulp.dest("dist"));
 });
 
