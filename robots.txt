@@ -1,0 +1,3 @@
+User-Agent: *
+Disallow:
+Sitemap: https://devquest.appspot.com/sitemap.xml

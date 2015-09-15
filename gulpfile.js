@@ -5,11 +5,20 @@ var sourcemaps = require("gulp-sourcemaps")
 var path = require("path");
 var browserSync = require("browser-sync").create();
 var sass = require('gulp-sass');
+
+var rev = require("gulp-rev");
+var uglify = require("gulp-uglify");
+var usemin = require("gulp-usemin");
+var minifyCss = require('gulp-minify-css');
+var minifyHtml = require("gulp-minify-html");
+var del = require("del");
+
 var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var rename = require("gulp-rename");
 var replace = require("gulp-replace");
 var reload = browserSync.reload;
+
 var credentials = require('./credentials.json');
 if (!credentials){
   credentials['GOOGLE_CLIENT'] = "xxxxxxx.apps.googleusercontent.com";
@@ -19,7 +28,48 @@ if (!credentials){
   credentials['GITHUB_CLIENT_SECRET'] = "xxxxxxx";
 }
 
+gulp.task('clean', function(){
+  return del.sync([
+    ".tmp",
+    "dist/**"
+    ]);
+});
 
+gulp.task("copy-site", ["clean", "browserify-prod", "sass-prod"], function(){
+  return gulp.src(["index.html", "redirect.html", "robots.txt", "sitemap.xml", "bundle.js", "assets/**", "css/**", "lib/**"], { "base" : "." })
+    .pipe(gulp.dest("dist/static"));
+});
+
+gulp.task("copy-go", function(){
+  return gulp.src(["src/golang/devquest.go"], { "base" : "." })
+    .pipe(rename({dirname: ''}))
+    .pipe(gulp.dest("dist"));
+})
+
+gulp.task("copy", ["copy-site", "copy-go"], function () {
+  return gulp.src(["app.yaml"], { "base" : "." })
+    .pipe(gulp.dest("dist"));
+});
+
+
+gulp.task("rev_index", ["copy"], function () {
+  process.chdir(path.join(__dirname, "dist"));
+  return gulp.src("./index.html")
+    .pipe(usemin({
+      css: [
+        minifyCss(),
+        rev()
+      ],
+      html: [
+        minifyHtml({empty: true})
+      ],
+      jsscripts: [
+        uglify(),
+        rev()
+      ]
+    }))
+    .pipe(gulp.dest("."));
+});
 
 gulp.task('serve',  ['browserify','sass'], function(){
   browserSync.init({
@@ -43,6 +93,16 @@ gulp.task('sass',function(){
     .pipe(reload({stream:true}));
 });
 
+gulp.task('sass-prod',function(){
+  return gulp.src('./src/sass/**/*.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass()).on('error', function logError(error) {
+        console.error(error);
+    })
+    .pipe(gulp.dest('./css'))
+    .pipe(reload({stream:true}));
+});
+
 
 gulp.task('browserify',function(){
   return browserify(['./src/js/app.js'], {debug:true})
@@ -60,6 +120,22 @@ gulp.task('browserify',function(){
     .pipe(gulp.dest('./'));
 });
 
+gulp.task('browserify-prod',function(){
+  return browserify(['./src/js/app.js'], {debug:false})
+    .bundle()    
+    .on('error', function(err){
+      console.log(err.stack);
+      this.emit('end');
+    })    
+    .pipe(source('bundle.js'))
+    .pipe(replace('<GOOGLE_CLIENT>', credentials['GOOGLE_CLIENT']))
+    .pipe(replace('<TWITTER_CLIENT>', credentials['TWITTER_CLIENT']))
+    .pipe(replace('<TWITTER_CLIENT_SECRET>', credentials['TWITTER_CLIENT_SECRET']))
+    .pipe(replace('<GITHUB_CLIENT>', credentials['GITHUB_CLIENT']))
+    .pipe(replace('<GITHUB_CLIENT_SECRET>', credentials['GITHUB_CLIENT_SECRET']))
+    .pipe(gulp.dest('./'));
+});
+
 /* Default task */
 gulp.task("default", ["serve"]);
-gulp.task('build', ['browserify', 'sass']);
+gulp.task('build', ['rev_index']);
