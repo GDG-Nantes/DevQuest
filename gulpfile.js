@@ -34,24 +34,14 @@ if (!credentials){
 gulp.task('clean', function(){
   return del.sync([
     ".tmp",
-    ENV === "prod" ? "dist/**" : "dev/**"
+    "dist/**"
     ]);
 });
 
-gulp.task("copy-site", function(){
-  return gulp.src(["index.html", "redirect.html", "robots.txt", "sitemap.xml", "bundle.js", "assets/**", "css/**", "lib/**"], { "base" : "." })
-    .pipe(gulp.dest(ENV === "prod" ? "dist" : "dev"));
-});
 
-gulp.task("copy-go", function(){
-  return gulp.src(["src/golang/devquest.go"], { "base" : "." })
-    .pipe(rename({dirname: ''}))
-    .pipe(gulp.dest(ENV === "prod" ? "dist" : "dev"));
-})
-
-gulp.task("copy", ["copy-site", "copy-go"], function () {
-  return gulp.src(["app.yaml", "devquest.go"], { "base" : "." })
-    .pipe(gulp.dest(ENV === "prod" ? "dist" : "dev"));
+gulp.task("copy", function () {
+  return gulp.src(["app.yaml", "devquest.go", "credentials.json", "index.html", "redirect.html", "robots.txt", "sitemap.xml", "bundle.js", "assets/**", "css/**", "lib/**"], { "base" : "." })
+    .pipe(gulp.dest("dist"));
 });
 
 gulp.task("set_prod", function(){
@@ -63,7 +53,7 @@ gulp.task("set_dev", function(){
 });
 
 
-gulp.task("rev_index", ["copy"], function () {
+gulp.task("rev_index", function () {
   process.chdir(path.join(__dirname, "dist"));
   return gulp.src("./index.html")
     .pipe(usemin({
@@ -82,24 +72,20 @@ gulp.task("rev_index", ["copy"], function () {
     .pipe(gulp.dest("."));
 });
 
-gulp.task('go_app', shell.task(['goapp serve dev']));
+gulp.task('go_app', shell.task(['goapp serve']));
 
-gulp.task('watch',  function(){
+gulp.task('watch',['browserify', 'sass'], function(){
   browserSync.init({
     proxy : 'http://localhost:8080'
   });
-  gulp.watch("./src/sass/**/*.scss", ['sass', 'copy-site']);
-  gulp.watch("./src/js/**/*.js", ['browserify', 'copy-site']);  
-  gulp.watch("./src/**/*.html", ['copy-site']);  
-  gulp.watch("./src/golang/devquest.go", ['copy-go']);  
-  gulp.watch("./bundle.js", ['copy-site']);
-  gulp.watch("./dev/**/*.html").on('change', reload);
-  gulp.watch("./dev/bundle.js").on('change', reload);  
+  gulp.watch("./src/sass/**/*.scss", ['sass']);
+  gulp.watch("./src/js/**/*.js", ['browserify']);  
+  gulp.watch("./**/*.html").on('change', reload);  
+  gulp.watch("./bundle.js").on('change', reload);
 });
 
-gulp.task('serve', function(){
+gulp.task('serve', function(){  
   runSequence(
-    'copy', 
     ['watch', 'go_app']
   );  
 });
@@ -142,6 +128,12 @@ gulp.task('browserify',function(){
 
 
 /* Default task */
-gulp.task("default", ["serve"]);
-gulp.task('build', ['set_prod', 'clean', 'browserify', 'sass', 'rev_index']);
-gulp.task('dev', ['set_dev', 'clean', 'browserify', 'sass', 'serve']);
+gulp.task("default", ["dev"]);
+gulp.task('build', function(){
+  runSequence(
+    ['clean', 'browserify', 'sass']
+    , 'copy'
+    , 'rev_index'
+  );  
+});
+gulp.task('dev', ['set_dev','clean',  'serve']);
