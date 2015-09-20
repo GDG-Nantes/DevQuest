@@ -152,6 +152,28 @@ func questions(w http.ResponseWriter, r *http.Request) {
 func anwser(w http.ResponseWriter, r *http.Request) {
     //w.Header().Set("SUPER-HACK", "@GDGNANTES")
     //w.WriteHeader(http.StatusFound)
-    fmt.Fprint(w, "Hello World")
+    fmt.Fprint(w, "Hello World\n")
     fmt.Fprint(w, jsontype.SPREADSHEET_KEY);
+    fmt.Fprint(w, "\n")
+    email := r.FormValue("email")
+    indexQuestion := r.FormValue("indexQuestion")
+    resp := r.FormValue("resp")
+    code := r.FormValue("code")
+    time := r.FormValue("time")
+    if len(email) != 0{
+        fmt.Fprint(w, email+"\n")
+    }
+    if len(indexQuestion) != 0{
+        fmt.Fprint(w, indexQuestion+"\n")
+    }
+    if len(resp) != 0{
+        fmt.Fprint(w, resp+"\n")
+    }
+    if len(code) != 0{
+        fmt.Fprint(w, code+"\n")
+    }
+    if len(time) != 0{
+        fmt.Fprint(w, time+"\n")
+    }
+
 }
