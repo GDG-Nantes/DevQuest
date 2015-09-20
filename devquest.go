@@ -4,12 +4,13 @@ import (
     "fmt"
     "strconv"
     "net/http"
-    "appengine"
-    "appengine/urlfetch"
     "log"
     "encoding/json"
     "io/ioutil"
     "os"
+    "appengine"
+    "appengine/urlfetch"
+    "appengine/memcache"
 )
 
 type jsonobject struct {
@@ -72,63 +73,80 @@ func questions(w http.ResponseWriter, r *http.Request) {
     //w.WriteHeader(http.StatusFound) 
     c := appengine.NewContext(r)
     client := urlfetch.Client(c)
-    
-    url := "https://spreadsheets.google.com/feeds/cells/"+jsontype.SPREADSHEET_KEY+"/od6/public/basic?alt=json";
-    //fmt.Fprintf(w, "%s\n", url)
-    resp, err := client.Get(url)
 
-    //fmt.Fprintf(w, "HTTP GET returned status %v", resp.Status)
-     if err != nil {
-        fmt.Fprintf(w, "%s\n", err)
-        os.Exit(1)
-    } else {
-        body, err := ioutil.ReadAll(resp.Body)
-        if err != nil {
+    // Get the item from the memcache
+    keyMemCache := "questions"+jsontype.SPREADSHEET_KEY;
+    item, err := memcache.Get(c, keyMemCache);        
+    if  err == memcache.ErrCacheMiss || err != nil{
+        // No Cache info
+        url := "https://spreadsheets.google.com/feeds/cells/"+jsontype.SPREADSHEET_KEY+"/od6/public/basic?alt=json";
+        resp, err := client.Get(url)
+
+         if err != nil {
             fmt.Fprintf(w, "%s\n", err)
             os.Exit(1)
-        }
-        data := SpreadSheet{}
-        json.Unmarshal([]byte(string(body)), &data)
-        //str, err := json.Marshal(data);
-
-        //var arrayQuestions []Question;    
-        questions := Questions{}
-        questions.Questions = make([]Question,(len(data.Feed.Entry)/6));    
-        indexQuestion :=0
-        indexRow := 1;
-        for _,element := range data.Feed.Entry{
-            keyA := "A"+strconv.Itoa(indexRow)
-            if element.Title.T == keyA{
-                question := Question{}
-                questions.Questions[indexQuestion] = question
-            }else{
-                question := &questions.Questions[indexQuestion]                 
-
-                keyB := "B"+strconv.Itoa(indexRow)
-                keyC := "C"+strconv.Itoa(indexRow)
-                keyD := "D"+strconv.Itoa(indexRow)
-                keyE := "E"+strconv.Itoa(indexRow)
-                keyF := "F"+strconv.Itoa(indexRow)
-                if element.Title.T == keyB{
-                    question.Title = element.Content.T;
-                }else if element.Title.T == keyC{
-                    question.RepA = element.Content.T;
-                }else if element.Title.T == keyD{
-                    question.RepB = element.Content.T;
-                }else if element.Title.T == keyE{
-                    question.RepC = element.Content.T;
-                }else if element.Title.T == keyF{
-                    question.RepD = element.Content.T;
-                    indexRow++
-                    indexQuestion++
-                }
+        } else {
+            body, err := ioutil.ReadAll(resp.Body)
+            if err != nil {
+                fmt.Fprintf(w, "%s\n", err)
+                os.Exit(1)
             }
+            data := SpreadSheet{}
+            json.Unmarshal([]byte(string(body)), &data)
+        
+            questions := Questions{}
+            questions.Questions = make([]Question,(len(data.Feed.Entry)/6));    
+            indexQuestion :=0
+            indexRow := 1;
+            for _,element := range data.Feed.Entry{
+                keyA := "A"+strconv.Itoa(indexRow)
+                if element.Title.T == keyA{
+                    question := Question{}
+                    questions.Questions[indexQuestion] = question
+                }else{
+                    question := &questions.Questions[indexQuestion]                 
 
+                    keyB := "B"+strconv.Itoa(indexRow)
+                    keyC := "C"+strconv.Itoa(indexRow)
+                    keyD := "D"+strconv.Itoa(indexRow)
+                    keyE := "E"+strconv.Itoa(indexRow)
+                    keyF := "F"+strconv.Itoa(indexRow)
+                    if element.Title.T == keyB{
+                        question.Title = element.Content.T;
+                    }else if element.Title.T == keyC{
+                        question.RepA = element.Content.T;
+                    }else if element.Title.T == keyD{
+                        question.RepB = element.Content.T;
+                    }else if element.Title.T == keyE{
+                        question.RepC = element.Content.T;
+                    }else if element.Title.T == keyF{
+                        question.RepD = element.Content.T;
+                        indexRow++
+                        indexQuestion++
+                    }
+                }
+
+            }
+            strJson, _ := json.Marshal(questions);
+            itemValue := &memcache.Item{
+                Key: keyMemCache, 
+                Value: strJson,
+            }
+            if err := memcache.Add(c, itemValue); err == memcache.ErrNotStored {
+                c.Infof("itemValue with key %q already exists", itemValue.Key)
+            } else if err != nil {
+                c.Errorf("error adding itemValue: %v", err)
+            }
+            fmt.Fprintf(w, "%s\n", strJson)
         }
-        //fmt.Fprintf(w, "%s\n", str)
-        strJson, _ := json.Marshal(questions);
-        fmt.Fprintf(w, "%s\n", strJson)
+        //c.Infof("item not in the cache")
+        //c.Errorf("error getting item: %v", err)
+    } else {
+        fmt.Fprintf(w, "%s\n", item.Value)
+        // Data in Cache
+        //c.Infof("the lyric is %q", item.Value)
     }
+    
 }
 
 func anwser(w http.ResponseWriter, r *http.Request) {
