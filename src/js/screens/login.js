@@ -32,7 +32,6 @@ function checkInteractions_(event) {
             _pseudoEmpty = true;
             inputPseudo.style.border = "thin solid red";
             inputPseudo.placeholder = "PSEUDO OBLIGATOIRE";
-            // TODO 
             return;
 
           }
@@ -45,7 +44,6 @@ function checkInteractions_(event) {
             _emailEmpty = true;
             inputEmail.style.border = "thin solid red";
             inputEmail.placeholder = "EMAIL OBLIGATOIRE";
-            // TODO 
             return;
 
           }
