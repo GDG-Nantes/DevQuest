@@ -25,10 +25,13 @@ function checkInteractions_(event) {
           Model.gameModel.user = {}
           if (inputPseudo && inputPseudo.value){
             _pseudoEmpty = false;
-            Model.gameModel.user.displayName = inputPseudo.value;
+            Model.gameModel.user.displayName = inputPseudo.value;            
+            inputPseudo.style.border = "";
             // TODO faire quelque chose avec le code de confirmation
           }else{
             _pseudoEmpty = true;
+            inputPseudo.style.border = "thin solid red";
+            inputPseudo.placeholder = "PSEUDO OBLIGATOIRE";
             // TODO 
             return;
 
@@ -36,9 +39,12 @@ function checkInteractions_(event) {
           if (inputEmail && inputEmail.value){
             _emailEmpty = false;
             Model.gameModel.user.email = inputEmail.value;
+            inputEmail.style.border = "";
             // TODO faire quelque chose avec le code de confirmation
           }else{
             _emailEmpty = true;
+            inputEmail.style.border = "thin solid red";
+            inputEmail.placeholder = "EMAIL OBLIGATOIRE";
             // TODO 
             return;
 
