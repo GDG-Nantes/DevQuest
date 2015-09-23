@@ -10,8 +10,16 @@ import (
     "os"
     "appengine"
     "appengine/urlfetch"
+    "appengine/datastore"
     "appengine/memcache"
 )
+
+type Resp struct {
+    Email string
+    Pseudo string
+    Score int8
+    Time int64
+}
 
 type jsonobject struct {
     SPREADSHEET_KEY string
@@ -176,4 +184,16 @@ func anwser(w http.ResponseWriter, r *http.Request) {
         fmt.Fprint(w, time+"\n")
     }
 
+    c := appengine.NewContext(r)
+    respDataStore := Resp{
+        Email: email,
+        Score: 1,
+        Time: 1,
+    }
+    key := datastore.NewIncompleteKey(c,"Score", nil)
+    _, err := datastore.Put(c, key, &respDataStore)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
 }
