@@ -27,8 +27,21 @@ function chooseUserScreen(){
         x: 0
       , y :3
       , w: Model.ui.screenSize.width - 1
-      , h: 12}
-  var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+      , h: 12};
+  var arrayInstructions = [{
+     custom : true
+      , key : "chooseUser" // Sprite
+      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+      , rowOri :  0  // rowOri
+      , colOri : 0 // colOri
+      , yDest :  0 // rowDest
+      , xDest :  0 // colDest
+      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+  }];
+
+  /*var arrayInstructions = InterfaceUtil.drawAlphaBackground();
   Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
   // Titre
   arrayInstructions.push({drawText : true
@@ -38,7 +51,7 @@ function chooseUserScreen(){
       , y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
       , w : CONST.ui.UNIT * (position.w - 2) // Max Width
       , lineHeight : 30 // Line Height
-  });
+  });*/
 
 
   // Personnage
@@ -48,7 +61,7 @@ function chooseUserScreen(){
       , w: 5
       , h: 5
     };
-  Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawCreux(positionCreux));
+  //Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawCreux(positionCreux));
 
   arrayInstructions.push({
       custom : true

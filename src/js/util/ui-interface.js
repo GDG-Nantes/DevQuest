@@ -1,11 +1,76 @@
 'use strict';
 var Model = require('../model/model.js');
 var CONST = require('../model/const.js');
+// Assets généraux de constructions des images de fond
+var Background = require('../assets/background.js');
+var Stands = require('../assets/stands.js');
+var InterfaceUtil = require('../assets/interface-utils.js');
 
 // Helper Methodes
 
+function addFromArray_(cel, arrayOri, row, col){
+  var valueTmp = arrayOri[row][col];
+  if (Array.isArray(arrayOri[row][col])){
+    for (var doublon in valueTmp){
+      cel.push(valueTmp[doublon]);
+    }
+  }else if (valueTmp != ''){
+    cel.push(valueTmp);
+  }
+}
+
+// Fonction générique d'écriture d'un pixel
+function drawPixel_(context, spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
+
+  var image = Model.resources.images[spriteToUse];
+  var drawPixelValue = CONST.ui.UNIT;
+
+  context.drawImage(image
+    , wOriValue * colOri //sx clipping de l'image originale
+    , hOriValue * rowOri //sy clipping de l'image originale
+    , wOriValue // swidth clipping de l'image originale
+    , hOriValue // sheight clipping de l'image originale
+    , drawPixelValue * colDest // x Coordonnées dans le dessin du Model.ui.canvas
+    , drawPixelValue * rowDest // y Coordonnées dans le dessin du Model.ui.canvas
+    , drawPixelValue // width taille du dessin
+    , drawPixelValue // height taille du dessin
+    );
+}
+
+function drawPixelBackground_(context, pixelToPaint, row, col){
+  if (pixelToPaint === '')
+    return;
+  var regExp = /(\d\d).(\d)/;
+  var rowOri = regExp.exec(pixelToPaint)[1]|0;
+  var colOri = regExp.exec(pixelToPaint)[2]|0;
+  drawPixel_(context // Context Canva
+      , 'magecity' // Sprite
+      , CONST.ui.UNIT // wOriValue
+      , CONST.ui.UNIT // hOriValue
+      , rowOri // rowOri
+      , colOri // colOri
+      , row // rowDest
+      , col // colDest
+    );
+}
+
+
 function bestSize_(size){
   return Math.ceil(size / CONST.ui.UNIT) * CONST.ui.UNIT;
+}
+
+function finaliseImage_(canvas, key){
+  var imageToReturn = new Image();
+  imageToReturn.src = canvas.toDataURL("image/png");
+  Model.resources.images[key] = imageToReturn;
+
+  if (CONST.DEBUG){
+    console.debug("Img : key : %s", key);
+    var img = Model.resources.images[key];
+    document.body.appendChild(img);
+    img.style.display = 'none';
+    console.debug(img);
+  }
 }
 
 function extractImage_(canvas, context, idImage, x, y, w, h, xCanvas, yCanvas, wCanvas, hCanvas){
@@ -455,7 +520,209 @@ function prepareNPC_(canvas, context){
   });
 return promise;
 }
+
+function prepareBackground_(canvas, context){
+  var promise = new Promise(function promiseBackground(resolve, reject){
+
+    canvas.width = CONST.ui.SIZE_UNIT.w * CONST.ui.UNIT;
+    canvas.height = CONST.ui.SIZE_UNIT.h * CONST.ui.UNIT;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    var solArray = Background.initSol();
+    var contourArray = Background.initContour();
+    var mursArray = Background.initMurs();;
+    var herbeArray = Background.initHerbe();
+    var sortiesArray = Background.initSorties();
+    var standsArray = Stands.initStands();
+
+    // On prépare l'array de dessin
+    var array = [];
+    for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
+      var arrayRow = [];
+      for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
+        var cel = [];
+        addFromArray_(cel,solArray,row, col);
+        addFromArray_(cel,contourArray,row, col);
+        addFromArray_(cel,mursArray,row, col);
+        addFromArray_(cel,herbeArray,row, col);
+        addFromArray_(cel,sortiesArray,row, col);
+        addFromArray_(cel,standsArray,row, col);
+        arrayRow.push(cel);
+      }
+      array.push(arrayRow);
+    }
+
+    array.forEach(function bgForEach(rowArray, rowIndex){
+      rowArray.forEach(function rowForEach(colValue, colIndex){
+        if (Array.isArray(colValue)){
+          colValue.forEach(function doublonForEach(doublon){
+            drawPixelBackground_(context, doublon, rowIndex, colIndex);
+          });
+        }else{
+          drawPixelBackground_(context, colValue, rowIndex, colIndex);
+        }
+      });
+    }); 
+
+    finaliseImage_(canvas, "background");
+    
+    resolve();
+
+  });
+  return promise;
+}
+
+function prepareChooseUserUI_(canvas, context){
+  var promise = new Promise(function promiseChooseUser(resolve, reject){
+
+     // Zone autour du personnage
+    var position = {
+        x: 0
+      , y :3
+      , w: Model.ui.screenSize.width - 1
+      , h: 12}
+
+    canvas.width = Model.ui.screenSize.width * CONST.ui.UNIT;
+    canvas.height = Model.ui.screenSize.height * CONST.ui.UNIT;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+    Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
+    // Titre
+    arrayInstructions.push({drawText : true
+        , text : "Choississez votre joueur"
+        , fontSize : '20px'
+        , x :  CONST.ui.UNIT * (position.x + 1) // X
+        , y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
+        , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+        , lineHeight : 30 // Line Height
+    });
+
+
+    // Personnage
+    var positionCreux = {
+          x: position.x + 0
+        , y : position.y + 3
+        , w: 5
+        , h: 5
+      };
+    Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawCreux(positionCreux));
+
+    paintInstructions(context, arrayInstructions);   
+
+    finaliseImage_(canvas, "chooseUser");
+    
+    resolve();
+
+  });
+  return promise;
+}
+
+//////////////////////////////////
+//////////////////////////////////
 // API
+//////////////////////////////////
+//////////////////////////////////
+
+function wrapText(context, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var line = '';
+
+    for(var n = 0; n < words.length; n++) {
+      var testLine = line + words[n] + ' ';
+      var metrics = context.measureText(testLine);
+      var testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        context.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      }
+      else {
+        line = testLine;
+      }
+    }
+    context.fillText(line, x, y);
+}
+
+function paintInstructions(context, arrayInstructions){
+  arrayInstructions.forEach(function paintInstructionForEach(instruction){
+    if (instruction.touchContext){
+      // on sauve et restore le contexte du canvas histoire de pas perturber les autres affichages
+      context.save();
+    }
+    if (instruction.alpha){
+      context.globalAlpha = instruction.alpha;
+    }   
+    if (instruction.repeat){            
+      context.fillStyle = Model.resources.patterns[instruction.key];
+      // On applique une transformtion supplémentaire pour palier à un bug d'affichage lié au pattern
+      if (instruction.applyTransformX){       
+          context.translate(           
+            CONST.ui.UNIT * instruction.applyTransformX * (instruction.colDest - Math.floor(instruction.colDest) /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/ )
+            ,0);
+        }
+        if (instruction.applyTransformY){       
+          context.translate(           
+            0
+            ,CONST.ui.UNIT * instruction.applyTransformY * (instruction.rowDest - Math.floor(instruction.rowDest)));
+        }
+        context.fillRect(CONST.ui.UNIT * instruction.colDest
+            , CONST.ui.UNIT * instruction.rowDest
+            , CONST.ui.UNIT * instruction.wDest
+            , CONST.ui.UNIT * instruction.hDest
+          );
+        if (instruction.applyTransformX){
+          context.translate(
+            CONST.ui.UNIT * instruction.applyTransformX * (Math.floor(instruction.colDest) - instruction.colDest /*+ (Math.floor(instruction.wDest) - instruction.wDest)*/)
+            ,0);
+        }
+        if (instruction.applyTransformY){
+          context.translate(
+            0
+            ,CONST.ui.UNIT * instruction.applyTransformY * (Math.floor(instruction.rowDest) - instruction.rowDest));
+        }
+    }else if (instruction.drawText){      
+      context.font = instruction.fontSize+" "+(instruction.font ? instruction.font : "Visitor");
+      context.fillStyle = instruction.color ? instruction.color : "#deeed6";
+      wrapText(context
+        , instruction.text
+        , instruction.x // X
+        , instruction.y // Y
+        , instruction.w // Max Width
+        , instruction.lineHeight // Line Height
+      );
+    }else if (instruction.custom){
+      var image = Model.resources.images[instruction.key];
+      context.drawImage(image
+        , instruction.wOriValue * instruction.colOri //sx clipping de l'image originale
+        , instruction.hOriValue * instruction.rowOri //sy clipping de l'image originale
+        , instruction.wOriValue // swidth clipping de l'image originale
+        , instruction.hOriValue // sheight clipping de l'image originale
+        , instruction.xDest // x Coordonnées dans le dessin du Model.ui.canvas
+        , instruction.yDest // y Coordonnées dans le dessin du Model.ui.canvas
+        , instruction.wDest // width taille du dessin
+        , instruction.hDest // height taille du dessin
+        );
+
+    }else {
+      drawPixel_( context
+          , instruction.key // Sprite
+          , instruction.wOriValue // wOriValue
+          , instruction.hOriValue // hOriValue
+          , instruction.rowOri // rowOri
+          , instruction.colOri // colOri
+          , instruction.rowDest // rowDest
+          , instruction.colDest // colDest
+        );
+    }
+    // Reset
+    if (instruction.touchContext){
+      // on sauve et restore le contexte du canvas histoire de pas perturber les autres affichages
+      context.restore();
+    }
+
+  });
+}
 
 
 // Prépare toutes les ressources
@@ -476,6 +743,8 @@ function prepareUiElements(){
             , prepareBtn_(canvasTmp, contextTmp)
             , prepareBtnPressed_(canvasTmp, contextTmp)
             , prepareNPC_(canvasTmp, contextTmp)
+            , prepareBackground_(canvasTmp, contextTmp)
+            , prepareChooseUserUI_(canvasTmp, contextTmp)
             ];
     Promise.all(promises)
           .then(function(){
@@ -490,5 +759,7 @@ function prepareUiElements(){
 
 
 module.exports = {
-  prepareUiElements : prepareUiElements
+  prepareUiElements : prepareUiElements, 
+  paintInstructions : paintInstructions,
+  wrapText : wrapText
 };

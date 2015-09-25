@@ -1,7 +1,7 @@
 'use strict';
 var Model = require('../model/model.js');
-var Background = require('../assets/background.js');
-var Stands = require('../assets/stands.js');
+//var Background = require('../assets/background.js');
+//var Stands = require('../assets/stands.js');
 var ScreenGame = require('../screens/game.js');
 var ScreenInside = require('../screens/inside-question.js');
 var ScreenChooseUser = require('../screens/choose-user.js');
@@ -11,16 +11,16 @@ var ScreenStory = require('../screens/story.js');
 var CONST = require('../model/const.js');
 
 // On défini l'ensemble des array qui vont servir pour le dessin
-var solArray = Background.initSol();
-var contourArray = Background.initContour();
-var mursArray = Background.initMurs();;
-var herbeArray = Background.initHerbe();
-var sortiesArray = Background.initSorties();
-var standsArray = Stands.initStands();
+//var solArray = Background.initSol();
+//var contourArray = Background.initContour();
+//var mursArray = Background.initMurs();;
+//var herbeArray = Background.initHerbe();
+//var sortiesArray = Background.initSorties();
+//var standsArray = Stands.initStands();
 var stepMove = 0;
 var paintActive = false;
 
-
+/*
 function addFromArray_(cel, arrayOri, row, col){
 	var valueTmp = arrayOri[row][col];
 	if (Array.isArray(arrayOri[row][col])){
@@ -30,7 +30,7 @@ function addFromArray_(cel, arrayOri, row, col){
 	}else if (valueTmp != ''){
 		cel.push(valueTmp);
 	}
-}
+}*/
 
 /*
 	Extrait le background correspond à la taille de l'écran
@@ -94,8 +94,20 @@ function drawPixelBackground_(pixelToPaint, row, col){
 function paintBackground_(){
 	// Référence graphique : Mezzanine Cité : 27mx21.3m => 27x22
 	// 1m = 64px => Image de 1792x1472
+	
+	var image = Model.resources.images['background'];
+	Model.ui.context.drawImage(image
+		, Model.gameModel.positionScreen.x * CONST.ui.UNIT //sx clipping de l'image originale
+		, Model.gameModel.positionScreen.y * CONST.ui.UNIT //sy clipping de l'image originale
+		, Model.ui.screenSize.width * CONST.ui.UNIT // swidth clipping de l'image originale
+		, Model.ui.screenSize.height * CONST.ui.UNIT // sheight clipping de l'image originale
+		, 0 // x Coordonnées dans le dessin du Model.ui.canvas
+		, 0 // y Coordonnées dans le dessin du Model.ui.canvas
+		, Model.ui.screenSize.width * CONST.ui.UNIT // width taille du dessin
+		, Model.ui.screenSize.height * CONST.ui.UNIT // height taille du dessin
+		);
 
-	extractBackground_().forEach(function bgForEach(rowArray, rowIndex){
+	/*extractBackground_().forEach(function bgForEach(rowArray, rowIndex){
 		rowArray.forEach(function rowForEach(colValue, colIndex){
 			if (Array.isArray(colValue)){
 				colValue.forEach(function doublonForEach(doublon){
@@ -105,7 +117,7 @@ function paintBackground_(){
 				drawPixelBackground_(colValue, rowIndex, colIndex);
 			}
 		});
-	});	
+	});	*/
 }
 
 
