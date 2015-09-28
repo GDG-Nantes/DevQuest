@@ -186,7 +186,18 @@ function paintConfirmation_(){
 	  , w: Model.ui.screenSize.width - 2.5
 	  , h: 8
 	}
-	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	var arrayInstructions = [{
+	     custom : true
+	      , key : "alphaBackground" // Sprite
+	      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+	      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+	      , rowOri :  0  // rowOri
+	      , colOri : 0 // colOri
+	      , yDest :  0 // rowDest
+	      , xDest :  0 // colDest
+	      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+	      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+	  }];
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
 	// Titre
 	arrayInstructions.push({drawText : true
@@ -264,7 +275,18 @@ function paintWrongOrientation_(){
 	  , w: Model.ui.screenSize.width - 2.5
 	  , h: 8
 	}
-	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	var arrayInstructions = [{
+	     custom : true
+	      , key : "alphaBackground" // Sprite
+	      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+	      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+	      , rowOri :  0  // rowOri
+	      , colOri : 0 // colOri
+	      , yDest :  0 // rowDest
+	      , xDest :  0 // colDest
+	      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+	      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+	  }];
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
 	// Titre
 	arrayInstructions.push({drawText : true
@@ -361,7 +383,18 @@ function paintParameters_(){
 	  , y :3
 	  , w: Model.ui.screenSize.width - 2.5
 	  , h: Model.ui.screenSize.height - 4}
-	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	var arrayInstructions = [{
+	     custom : true
+	      , key : "alphaBackground" // Sprite
+	      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+	      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+	      , rowOri :  0  // rowOri
+	      , colOri : 0 // colOri
+	      , yDest :  0 // rowDest
+	      , xDest :  0 // colDest
+	      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+	      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+	  }];
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
 	// Titre
 	arrayInstructions.push({drawText : true

@@ -25,7 +25,7 @@ function chooseUserScreen(){
   // Zone autour du personnage
   var position = {
         x: 0
-      , y :3
+      , y: 2
       , w: Model.ui.screenSize.width - 1
       , h: 12};
   var arrayInstructions = [{
@@ -41,19 +41,7 @@ function chooseUserScreen(){
       , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
   }];
 
-  /*var arrayInstructions = InterfaceUtil.drawAlphaBackground();
-  Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
-  // Titre
-  arrayInstructions.push({drawText : true
-      , text : "Choississez votre joueur"
-      , fontSize : '20px'
-      , x :  CONST.ui.UNIT * (position.x + 1) // X
-      , y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
-      , w : CONST.ui.UNIT * (position.w - 2) // Max Width
-      , lineHeight : 30 // Line Height
-  });*/
-
-
+ 
   // Personnage
   var positionCreux = {
         x: position.x + 0

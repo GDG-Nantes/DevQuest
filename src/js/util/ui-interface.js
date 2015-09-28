@@ -4,6 +4,7 @@ var CONST = require('../model/const.js');
 // Assets généraux de constructions des images de fond
 var Background = require('../assets/background.js');
 var Stands = require('../assets/stands.js');
+var Inside = require('../assets/inside.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
 
 // Helper Methodes
@@ -572,13 +573,32 @@ function prepareBackground_(canvas, context){
   return promise;
 }
 
+function prepareAlphaBackground_(canvas, context){
+  var promise = new Promise(function promiseAlphaBackground(resolve, reject){
+    
+    canvas.width = Model.ui.screenSize.width * CONST.ui.UNIT;
+    canvas.height = Model.ui.screenSize.height * CONST.ui.UNIT;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+
+    paintInstructions(context, arrayInstructions);   
+
+    finaliseImage_(canvas, "alphaBackground");
+    
+    resolve();
+
+  });
+  return promise;
+}
+
 function prepareChooseUserUI_(canvas, context){
   var promise = new Promise(function promiseChooseUser(resolve, reject){
 
      // Zone autour du personnage
     var position = {
         x: 0
-      , y :3
+      , y: 2
       , w: Model.ui.screenSize.width - 1
       , h: 12}
 
@@ -611,6 +631,99 @@ function prepareChooseUserUI_(canvas, context){
     paintInstructions(context, arrayInstructions);   
 
     finaliseImage_(canvas, "chooseUser");
+    
+    resolve();
+
+  });
+  return promise;
+}
+
+function prepareLoginUser_(canvas, context){
+  var promise = new Promise(function promiseLoginUser(resolve, reject){
+
+    // Zone autour du personnage
+    var position = {
+          x: 0
+        , y: 2
+        , w: Model.ui.screenSize.width - 1
+        , h: Model.ui.screenSize.height - 4}
+
+    canvas.width = Model.ui.screenSize.width * CONST.ui.UNIT;
+    canvas.height = Model.ui.screenSize.height * CONST.ui.UNIT;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+
+    Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
+    // Titre
+    arrayInstructions.push({drawText : true
+        , text : "Veuillez vous logguer"
+        , fontSize : '20px'
+        , x :  CONST.ui.UNIT * (position.x + 1) // X
+        , y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
+        , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+        , lineHeight : 30 // Line Height
+    });
+
+    paintInstructions(context, arrayInstructions);   
+
+    finaliseImage_(canvas, "loginUser");
+    
+    resolve();
+
+  });
+  return promise;
+}
+
+function prepareInside_(canvas, context, screenName){
+  var promise = new Promise(function promiseInside(resolve, reject){
+
+    
+    canvas.width = Model.ui.screenSize.width * CONST.ui.UNIT;
+    canvas.height = Model.ui.screenSize.height * CONST.ui.UNIT;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    var arrayInstructions = []
+    , arrayInside = []
+    , rowIndex = 2;
+
+    switch(screenName){
+      case CONST.screens.INSIDE_SILVER : 
+        arrayInside = Inside.showSilverStand(rowIndex);
+        break;
+      case CONST.screens.INSIDE_GOLD : 
+        arrayInside = Inside.showGoldStand(rowIndex);
+        break;
+      case CONST.screens.INSIDE_PLATINIUM : 
+        arrayInside = Inside.showPlatiniumStand(rowIndex);
+        break;
+    }
+
+    // On convertit les informations en instructions de dessin
+    var regExp = /(\d\d).(\d)/;
+    arrayInside.forEach(function(rowArray, rowIndex){
+      rowArray.forEach(function(colArray, colIndex){      
+        for (var doublon = 1; doublon < colArray.length; doublon++){
+          var pixelToPaint = colArray[doublon];
+          var rowOri = regExp.exec(pixelToPaint)[1]|0;
+          var colOri = regExp.exec(pixelToPaint)[2]|0;
+          
+          arrayInstructions.push({
+              key : colArray[0] // Sprite
+              , wOriValue : CONST.ui.UNIT // wOriValue
+              , hOriValue : CONST.ui.UNIT // hOriValue
+              , rowOri :  rowOri // rowOri
+              , colOri : colOri // colOri
+              , rowDest :  rowIndex|0 // rowDest
+              , colDest :  colIndex|0 // colDest
+            });       
+        }
+      });
+    });
+
+    paintInstructions(context, arrayInstructions);   
+
+    finaliseImage_(canvas, screenName);
     
     resolve();
 
@@ -744,7 +857,12 @@ function prepareUiElements(){
             , prepareBtnPressed_(canvasTmp, contextTmp)
             , prepareNPC_(canvasTmp, contextTmp)
             , prepareBackground_(canvasTmp, contextTmp)
+            , prepareAlphaBackground_(canvasTmp, contextTmp)
             , prepareChooseUserUI_(canvasTmp, contextTmp)
+            , prepareLoginUser_(canvasTmp, contextTmp)
+            , prepareInside_(canvasTmp, contextTmp, CONST.screens.INSIDE_SILVER)
+            , prepareInside_(canvasTmp, contextTmp, CONST.screens.INSIDE_GOLD)
+            , prepareInside_(canvasTmp, contextTmp, CONST.screens.INSIDE_PLATINIUM)
             ];
     Promise.all(promises)
           .then(function(){

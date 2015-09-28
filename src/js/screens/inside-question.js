@@ -105,7 +105,18 @@ function paintConfirmation_(){
 	  , w: Model.ui.screenSize.width - 2.5
 	  , h: 9
 	}
-	var arrayInstructions = InterfaceUtil.drawAlphaBackground();
+	var arrayInstructions = [{
+	     custom : true
+	      , key : "alphaBackground" // Sprite
+	      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+	      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+	      , rowOri :  0  // rowOri
+	      , colOri : 0 // colOri
+	      , yDest :  0 // rowDest
+	      , xDest :  0 // colDest
+	      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+	      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+	  }];
 	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
 	// Titre
 	arrayInstructions.push({drawText : true
@@ -173,7 +184,18 @@ function insideQuestion(){
 		registerInteractions_();
 		_addInteractions = true;
 	}
-	var arrayInstructions = [];
+	var arrayInstructions = [{
+	     custom : true
+	      , key : Model.ui.screen // Sprite
+	      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+	      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+	      , rowOri :  0  // rowOri
+	      , colOri : 0 // colOri
+	      , yDest :  0 // rowDest
+	      , xDest :  0 // colDest
+	      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+	      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+	  }];
 
 	// On récupère le bon type de stand
     var widthStand = Model.ui.screen === CONST.screens.INSIDE_SILVER ? _widthSilver :
@@ -185,25 +207,22 @@ function insideQuestion(){
 	var npc = '';
 	var npc_face = '';
 	switch(Model.ui.screen){
-		case CONST.screens.INSIDE_SILVER : 
-			arrayInside = Inside.showSilverStand(rowIndex);
+		case CONST.screens.INSIDE_SILVER : 			
 			npc = 'npc_silver';
 			npc_face = 'npc_face_silver';
 			break;
-		case CONST.screens.INSIDE_GOLD : 
-			arrayInside = Inside.showGoldStand(rowIndex);
+		case CONST.screens.INSIDE_GOLD : 			
 			npc = 'npc_gold';
 			npc_face = 'npc_face_gold';
 			break;
 		case CONST.screens.INSIDE_PLATINIUM : 
-			arrayInside = Inside.showPlatiniumStand(rowIndex);
 			npc = 'npc_platinium';
 			npc_face = 'npc_face_platinium';
 			break;
 	}
 
 	// On convertit les informations en instructions de dessin
-	var regExp = /(\d\d).(\d)/;
+	/*var regExp = /(\d\d).(\d)/;
 	arrayInside.forEach(function(rowArray, rowIndex){
 		rowArray.forEach(function(colArray, colIndex){			
 			for (var doublon = 1; doublon < colArray.length; doublon++){
@@ -223,7 +242,7 @@ function insideQuestion(){
 			}
 		});
 	});
-	
+	*/
 
 	// On ajoute la question
 	var question = Questions.filter(function(questionTmp){

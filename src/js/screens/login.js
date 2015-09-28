@@ -301,25 +301,26 @@ function loginScreen(){
     _addInteractions = true;
   }
 
-  var arrayInstructions = InterfaceUtil.drawAlphaBackground();
-
   // Zone autour du personnage
   var position = {
         x: 0
-      , y :3
+      , y: 2
       , w: Model.ui.screenSize.width - 1
-      , h: Model.ui.screenSize.height - 4}
-  Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexteAvecTitre(position));
-  // Titre
-  arrayInstructions.push({drawText : true
-      , text : "Veuillez vous logguer"
-      , fontSize : '20px'
-      , x :  CONST.ui.UNIT * (position.x + 1) // X
-      , y : CONST.ui.UNIT * (position.y + 1) - CONST.ui.UNIT / 3 // Y
-      , w : CONST.ui.UNIT * (position.w - 2) // Max Width
-      , lineHeight : 30 // Line Height
-  });
+      , h: Model.ui.screenSize.height - 4};
 
+  var arrayInstructions = [{
+     custom : true
+      , key : "loginUser" // Sprite
+      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+      , rowOri :  0  // rowOri
+      , colOri : 0 // colOri
+      , yDest :  0 // rowDest
+      , xDest :  0 // colDest
+      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+  }];
+  
 
   if (_showRegister){
     Array.prototype.push.apply(arrayInstructions, paintRegister_(position));
