@@ -77,7 +77,7 @@ function pageLoad(){
 	// On initialise le canvas
 	Model.ui.canvas = document.getElementById('game');
 	Model.ui.canvas.width  = window.innerWidth;
-	Model.ui.canvas.height = window.innerHeight;
+	Model.ui.canvas.height = window.innerHeight;	
 	Model.ui.context = Model.ui.canvas.getContext('2d');
 	Model.ui.ratio = 1;//window.devicePixelRatio || 1;
 	Model.ui.context.scale(Model.ui.ratio, Model.ui.ratio);
@@ -145,6 +145,8 @@ function pageLoad(){
 		return LocalStorageCheck.checkLocalStorage();
 	}).then(function(){
 		document.getElementById('game').style.display = '';
+		document.getElementById('game').style.width = window.innerWidth+"px";
+		document.getElementById('game').style.height = window.innerHeight+"px";
 		document.getElementById('load').style.display = 'none';
 		Engine.start();
 
