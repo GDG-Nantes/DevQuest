@@ -1,6 +1,6 @@
 var oauthshim = require('oauth-shim'),
         express = require('express'),
-        credentials = require('./src/js/model/credentials') ;
+        credentials = require('./credentials.json') ;
 
 var app = express();
 
