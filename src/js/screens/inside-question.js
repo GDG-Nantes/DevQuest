@@ -159,7 +159,7 @@ function paintConfirmation_(){
 		input.type = 'text';
 		input.placeholder = 'code du stand';
 		input.style.position = 'absolute';
-		input.style.top = (CONST.ui.UNIT * 8.5)+'px';  
+		input.style.top = (CONST.ui.UNIT * 8)+'px';  
 		input.style.left = (CONST.ui.UNIT * 2)+'px';  
 		input.style.width = (CONST.ui.UNIT * (position.w - 3))+'px';
 		document.body.appendChild(input);
