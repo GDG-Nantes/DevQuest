@@ -117,9 +117,9 @@ function $http_(url){
 
 function submitAnswer_(){
 	var email = Model.user.email;
-	if (Model.gameModel.typeSocial === Model.gameModel.typeSocial = CONST.uiElements.BTN_TWITTER){
+	if (Model.gameModel.typeSocial === CONST.uiElements.BTN_TWITTER){
 		email = "@"+Model.user.screen_name;
- 	}else if (Model.gameModel.typeSocial === Model.gameModel.typeSocial = CONST.uiElements.BTN_GITHUB){
+ 	}else if (Model.gameModel.typeSocial === CONST.uiElements.BTN_GITHUB){
  		if (!Model.user.email){
  			email = ""+Model.user.login;
  		}
