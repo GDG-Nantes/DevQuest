@@ -176,6 +176,7 @@ function run_(){
 
 function startEngine_(){
 	if (!runActiv){
+		Model.gameModel.lastTime = Date.now();
 		runActiv = true;		
 		run_();
 		UI.startPaint();
@@ -184,6 +185,7 @@ function startEngine_(){
 }
 
 function stopEngine_(){
+	Model.gameModel.time += Date.now() - Model.gameModel.lastTime;
 	runActiv = false;
 	UI.stopPaint();
 	Inputs.removeListeners();

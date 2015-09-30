@@ -29,12 +29,14 @@ var ui = {
 }; 
 
 var gameModel = {		
-	version : '4',
+	version : '5',
 	user : null,	
 	indexUser : -1,
 	showStory : false,
 	inputArray : [],
 	standId : '',
+	time : 0,
+	lastTime : 0,
 	positionScreen: {
 		x:0,
 		y:0

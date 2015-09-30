@@ -63,6 +63,9 @@ function checkInteractions_(event){
 		    	_drawFunctions.drawD = InterfaceUtil.drawBtnPressed;
 		    	break;
 		    case CONST.uiElements.BTN_SEND :   
+		    	// On incrémente le compteur de temps
+		    	Model.gameModel.time += Date.now() - Model.gameModel.lastTime;
+		    	Model.gameModel.lastTime = Date.now();
 		    	var input = document.getElementById('code-confirmation');
 		    	if (input && input.value){
 		    		var code = input.value;
@@ -70,6 +73,7 @@ function checkInteractions_(event){
 		    	}
 	    		document.body.removeChild(input);
 		    	Model.ui.changeScreen = CONST.screens.GAME;
+		    	// TODO envoyer la réponse
 		    	break;
 		}
 	}else if (event.type && 
