@@ -12,6 +12,11 @@ var _addInteractions = false
   , _interactionLogin = []
   , _state = -1;
 
+function validateEmail_(email){
+  var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  return re.test(email);
+}
+
 function checkInteractions_(event) {
   if (event.type && 
     event.type  === CONST.eventType.UP){    
@@ -35,7 +40,7 @@ function checkInteractions_(event) {
             return;
 
           }
-          if (inputEmail && inputEmail.value){
+          if (inputEmail && inputEmail.value && validateEmail_(inputEmail.value)){
             _emailEmpty = false;
             Model.gameModel.user.email = inputEmail.value;
             inputEmail.style.border = "";
