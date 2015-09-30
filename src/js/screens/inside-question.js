@@ -20,6 +20,7 @@ var _widthSilver = 7
 	}
 	, _showConfirmation = false
 	, _chooseAnswer = ''
+	, _code = ''
 	, _state = -1;
 
 function registerInteractions_(){
@@ -45,6 +46,99 @@ function registerInteractions_(){
 		, callback : checkInteractions_
 	});
 }
+// A-> $http cette fonction est implémentée pour respecter le patron
+// de conception (pattern) Adaptateur
+function $http_(url){
+ 
+  // Un exemple d'objet
+  var core = {
+
+    // La méthode qui effectue la requête AJAX
+    ajax : function (method, url, args) {
+
+      // On établit une promesse en retour
+      var promise = new Promise( function (resolve, reject) {
+
+        // On instancie un XMLHttpRequest
+        var client = new XMLHttpRequest();
+        var uri = url;
+
+        if (args && (method === 'POST' || method === 'PUT')) {
+          uri += '?';
+          var argcount = 0;
+          for (var key in args) {
+            if (args.hasOwnProperty(key)) {
+              if (argcount++) {
+                uri += '&';
+              }
+              uri += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]);
+            }
+          }
+        }
+
+        client.open(method, uri);
+        client.send();
+
+        client.onload = function () {
+          if (this.status >= 200 && this.status < 300) {
+            // On utilise la fonction "resolve" lorsque this.status vaut 2xx
+            resolve(this.response);
+          } else {
+            // On utilise la fonction "reject" lorsque this.status est différent de 2xx
+            reject(this.statusText);
+          }
+        };
+        client.onerror = function () {
+          reject(this.statusText);
+        };
+      });
+
+      // Return the promise
+      return promise;
+    }
+  };
+
+  // Pattern adaptateur
+  return {
+    'get' : function(args) {
+      return core.ajax('GET', url, args);
+    },
+    'post' : function(args) {
+      return core.ajax('POST', url, args);
+    },
+    'put' : function(args) {
+      return core.ajax('PUT', url, args);
+    },
+    'delete' : function(args) {
+      return core.ajax('DELETE', url, args);
+    }
+  };
+};
+
+function submitAnswer_(){
+	var email = Model.user.email;
+	if (Model.gameModel.typeSocial === Model.gameModel.typeSocial = CONST.uiElements.BTN_TWITTER){
+		email = "@"+Model.user.screen_name;
+ 	}else if (Model.gameModel.typeSocial === Model.gameModel.typeSocial = CONST.uiElements.BTN_GITHUB){
+ 		if (!Model.user.email){
+ 			email = ""+Model.user.login;
+ 		}
+ 	}
+	
+	$http_("/api/anwser")
+		.get({
+			'email' : email
+			,'resp' : _chooseAnswer
+			,'code' : _code
+			,'time' : Model.gameModel.time
+		})
+		.then(function(){
+
+		})
+		.catch(function(){
+
+		})
+}
 
 function checkInteractions_(event){
   if (event.type && 
@@ -68,12 +162,12 @@ function checkInteractions_(event){
 		    	Model.gameModel.lastTime = Date.now();
 		    	var input = document.getElementById('code-confirmation');
 		    	if (input && input.value){
-		    		var code = input.value;
+		    		_code = input.value;
 	    			// TODO faire quelque chose avec le code de confirmation
 		    	}
 	    		document.body.removeChild(input);
 		    	Model.ui.changeScreen = CONST.screens.GAME;
-		    	// TODO envoyer la réponse
+		    	submitAnswer_();
 		    	break;
 		}
 	}else if (event.type && 
@@ -366,6 +460,7 @@ function insideQuestion(){
 		  	, drawD : InterfaceUtil.drawBtn
 		};
 		_chooseAnswer = '';
+		_code = '';
 	}
 
 	var stateConfirmation = -1;

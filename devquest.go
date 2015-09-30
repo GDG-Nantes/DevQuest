@@ -62,7 +62,7 @@ var jsontype jsonobject
 
 func init() {
     http.HandleFunc("/api/v1/questions", questions)
-    http.HandleFunc("/api/v1/", anwser)
+    http.HandleFunc("/api/v1/anwser", anwser)
 
     file, e := ioutil.ReadFile("./credentials.json")
     if e != nil {

@@ -33,6 +33,17 @@ function login(type){
 		}
 		hello(auth.network).api('/me').then(function(r) {
 			Model.gameModel.user = r;
+			switch(network){
+				case 'google':
+					Model.gameModel.typeSocial = CONST.uiElements.BTN_G_PLUS;
+				break;
+				case 'twitter':
+					Model.gameModel.typeSocial = CONST.uiElements.BTN_TWITTER;
+				break;
+				case 'github':
+					Model.gameModel.typeSocial = CONST.uiElements.BTN_CUSTO;
+				break;
+			}
 			Model.ui.changeScreen = CONST.screens.CHOOSE_USER;
 			if (CONST.DEBUG){
 				console.debug(r);

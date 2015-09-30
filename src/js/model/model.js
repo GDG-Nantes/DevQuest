@@ -29,8 +29,9 @@ var ui = {
 }; 
 
 var gameModel = {		
-	version : '5',
-	user : null,	
+	version : '6',
+	user : null,
+	typeSocial : null,	
 	indexUser : -1,
 	showStory : false,
 	inputArray : [],
