@@ -11,14 +11,6 @@ function homeScreen(){
   var arrayInstructions = [];//InterfaceUtil.drawAlphaBackground();
 
   // Mise en place du parallax
-  Model.ui.stepAnimation += CONST.ui.SPEED_GRASS; 
-  if (Model.ui.stepAnimation > CONST.ui.MAX_WIDTH_PARALLAX){
-    Model.ui.stepAnimation = 0;
-  }
-  Model.ui.stepAnimationCloud += CONST.ui.SPEED_CLOUD; 
-  if (Model.ui.stepAnimationCloud > CONST.ui.WIDTH_CLOUD_PARALLAX){
-    Model.ui.stepAnimationCloud = 0;
-  }
   var imgSky = Model.resources.images['sky']
     , imgWater = Model.resources.images['water']
     , imgGrass = Model.resources.images['grass']
@@ -49,6 +41,14 @@ function homeScreen(){
       , maxWidth : ((heightScreen * ratioHeightCloud) / imgCloud.height) * CONST.ui.WIDTH_CLOUD_PARALLAX
       , x : -1 * Model.ui.stepAnimationCloud
     }
+  Model.ui.stepAnimation += CONST.ui.SPEED_GRASS; 
+  if (Model.ui.stepAnimation > grass.maxWidth){
+    Model.ui.stepAnimation = 0;
+  }
+  Model.ui.stepAnimationCloud += CONST.ui.SPEED_CLOUD; 
+  if (Model.ui.stepAnimationCloud > cloud.maxWidth){
+    Model.ui.stepAnimationCloud = 0;
+  }
 
   arrayInstructions.push({
       custom : true
