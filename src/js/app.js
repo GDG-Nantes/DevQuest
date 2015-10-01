@@ -7,6 +7,7 @@ var Engine = require('./engine/engine.js');
 var UI = require('./engine/ui.js');
 var Model = require('./model/model.js');
 var Socials = require('./triggers/socials.js');
+var Questions = require('./model/questions.js');
 
 // Méthodes Internes
 
@@ -143,7 +144,11 @@ function pageLoad(){
 	.then(function(){
 		Socials.initSocialsLogins();
 		return LocalStorageCheck.checkLocalStorage();
-	}).then(function(){
+	})
+	.then(function(){
+		return Questions.getQuestions();
+	})
+	.then(function(){
 		document.getElementById('game').style.display = '';
 		document.getElementById('game').style.width = window.innerWidth+"px";
 		document.getElementById('game').style.height = window.innerHeight+"px";

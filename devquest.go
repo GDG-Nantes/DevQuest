@@ -44,7 +44,7 @@ type SpreadSheet struct {
 }
 
 type Question struct{
-    Id int `json:"id"`
+    Id string `json:"id"`
     Title string `json:"title"`
     RepA string `json:"repA"`
     RepB string `json:"repB"`
@@ -115,7 +115,7 @@ func questions(w http.ResponseWriter, r *http.Request) {
             for _,element := range data.Feed.Entry{
                 keyId := "A"+strconv.Itoa(indexRow)
                 if element.Title.T == keyId{
-                    idTmp, _ := strconv.Atoi(element.Content.T)
+                    idTmp := element.Content.T
                     question := Question{
                         Id: idTmp,
                     }
@@ -163,7 +163,7 @@ func questions(w http.ResponseWriter, r *http.Request) {
 
             // On ajout au datastore les questions pour plus de facilité d'intérogation
             for _,question := range questions.Questions{
-                keyQuestion := datastore.NewKey(c,"Question", strconv.Itoa(question.Id), 0, nil)
+                keyQuestion := datastore.NewKey(c,"Question", question.Id, 0, nil)
                 _, err := datastore.Put(c, keyQuestion, &question)
                 if  err != nil{
                     // Print error

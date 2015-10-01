@@ -1,100 +1,31 @@
 'use strict'
+var Helper = require('../util/helper.js');
 
-module.exports = [
-	{
-		  id : 'stand1'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand2'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand3'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand4'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand5'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand6'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand7'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand8'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand9'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand10'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand11'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	},
-	{
-		  id : 'stand12'
-		, question : 'une super question ? '
-		, reponseA : 'la réponse A'
-		, reponseB : 'la réponse B'
-		, reponseC : 'la réponse C'
-		, reponseD : 'la réponse D'
-	}
-];
+var _questions = [];
+
+function exposeQuestions_(){
+	return _questions;
+}
+
+function getQuestions(){
+	var promise = new Promise(function promiseQuestions(resolve, reject){
+
+		Helper.http("/api/v1/questions")
+			.get()
+			.then(function (data){
+				_questions = JSON.parse(data).questions;
+				resolve();
+			})
+			.catch(function(error){
+				reject(error);
+			});
+	});
+
+	return promise;
+
+}
+
+module.exports = {
+	getQuestions : getQuestions,
+	questions : exposeQuestions_
+};

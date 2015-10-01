@@ -6,6 +6,7 @@ var Inside = require('../assets/inside.js');
 var Inputs = require('../triggers/inputs.js');
 var Questions = require('../model/questions.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
+var Helper = require('../util/helper.js');
 
 var _widthSilver = 7
 	, _widthGold = 9
@@ -48,88 +49,24 @@ function registerInteractions_(){
 }
 // A-> $http cette fonction est implémentée pour respecter le patron
 // de conception (pattern) Adaptateur
-function $http_(url){
- 
-  // Un exemple d'objet
-  var core = {
 
-    // La méthode qui effectue la requête AJAX
-    ajax : function (method, url, args) {
-
-      // On établit une promesse en retour
-      var promise = new Promise( function (resolve, reject) {
-
-        // On instancie un XMLHttpRequest
-        var client = new XMLHttpRequest();
-        var uri = url;
-
-        if (args && (method === 'POST' || method === 'PUT')) {
-          uri += '?';
-          var argcount = 0;
-          for (var key in args) {
-            if (args.hasOwnProperty(key)) {
-              if (argcount++) {
-                uri += '&';
-              }
-              uri += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]);
-            }
-          }
-        }
-
-        client.open(method, uri);
-        client.send();
-
-        client.onload = function () {
-          if (this.status >= 200 && this.status < 300) {
-            // On utilise la fonction "resolve" lorsque this.status vaut 2xx
-            resolve(this.response);
-          } else {
-            // On utilise la fonction "reject" lorsque this.status est différent de 2xx
-            reject(this.statusText);
-          }
-        };
-        client.onerror = function () {
-          reject(this.statusText);
-        };
-      });
-
-      // Return the promise
-      return promise;
-    }
-  };
-
-  // Pattern adaptateur
-  return {
-    'get' : function(args) {
-      return core.ajax('GET', url, args);
-    },
-    'post' : function(args) {
-      return core.ajax('POST', url, args);
-    },
-    'put' : function(args) {
-      return core.ajax('PUT', url, args);
-    },
-    'delete' : function(args) {
-      return core.ajax('DELETE', url, args);
-    }
-  };
-};
 
 function submitAnswer_(){
-	var email = Model.user.email;
+	var email = Model.gameModel.user.email;
 	if (Model.gameModel.typeSocial === CONST.uiElements.BTN_TWITTER){
-		email = "@"+Model.user.screen_name;
+		email = "@"+Model.gameModel.user.screen_name;
  	}else if (Model.gameModel.typeSocial === CONST.uiElements.BTN_GITHUB){
- 		if (!Model.user.email){
- 			email = ""+Model.user.login;
+ 		if (!Model.gameModel.user.email){
+ 			email = ""+Model.gameModel.user.login;
  		}
  	}
 	
-	$http_("/api/anwser")
-		.get({
+	Helper.http("/api/v1/anwser")
+		.post({
 			'email' : email
 			,'resp' : _chooseAnswer
-			,'code' : _code
+			,'code' : _code === '' ? '-1' : _code
+			,'indexQuestion' : Model.gameModel.standId
 			,'time' : Model.gameModel.time
 		})
 		.then(function(){
@@ -343,11 +280,11 @@ function insideQuestion(){
 	*/
 
 	// On ajoute la question
-	var question = Questions.filter(function(questionTmp){
+	var question = Questions.questions().filter(function(questionTmp){
 		return questionTmp.id === Model.gameModel.standId;
 	})[0];
 	 arrayInstructions.push({drawText : true
-      , text : question.question
+      , text : question.title
       , fontSize : '15px'
       , x :  CONST.ui.UNIT * 2.5 // X
       , y : CONST.ui.UNIT * 1 // Y
@@ -395,7 +332,7 @@ function insideQuestion(){
 	};
 	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawA(positionBtnRepA));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseA
+	  , text : question.repA
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepA.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepA.y + 2) - CONST.ui.UNIT / 3 // Y
@@ -410,7 +347,7 @@ function insideQuestion(){
 	};
 	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawB(positionBtnRepB));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseB
+	  , text : question.repB
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepB.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepB.y + 2) - CONST.ui.UNIT / 3 // Y
@@ -425,7 +362,7 @@ function insideQuestion(){
 	};
 	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawC(positionBtnRepC));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseC
+	  , text : question.repC
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepC.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepC.y + 2) - CONST.ui.UNIT / 3 // Y
@@ -440,7 +377,7 @@ function insideQuestion(){
 	};
 	Array.prototype.push.apply(arrayInstructions, _drawFunctions.drawD(positionBtnRepD));
 	arrayInstructions.push({drawText : true
-	  , text : question.reponseD
+	  , text : question.repD
 	  , fontSize : fontSize
 	  , x :  CONST.ui.UNIT * (positionBtnRepD.x + 1) // X
 	  , y : CONST.ui.UNIT * (positionBtnRepD.y + 2) - CONST.ui.UNIT / 3 // Y
