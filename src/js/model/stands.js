@@ -120,7 +120,7 @@ var stands = [
 		, position : {
 			x : 25
 			, y : 10
-			, orientation : CONST.directions.DOWN
+			, orientation : CONST.directions.UP
 		}
 		
 	}

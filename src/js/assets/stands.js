@@ -286,60 +286,60 @@ function standGold(direction){
 			definition['row0'] = {
 				col0 : ['23.0']
 				, colN : ['23.1']
-				, col4 : ['23.2']
+				, col3 : ['23.2']
+				, col4 : []
 				, col5 : []
-				, col6 : []
 			};
 			definition['row1'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
-				, col4 : ['24.2']
+				, col3 : ['24.2']
+				, col4 : []
 				, col5 : []
-				, col6 : []
 			};
 			definition['row2'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
-				, col4 : ['24.2']
-				, col5 : ['09.0']
-				, col6 : ['09.2']
+				, col3 : ['24.2']
+				, col4 : ['09.0']
+				, col5 : ['09.2']
 			};
 			definition['row3'] = definition['row4'] = {
 				col0 : ['24.0']
 				, colN : ['24.1']
-				, col4 : ['24.2']
-				, col5 : ['10.0']
-				, col6 : ['10.2']
+				, col3 : ['24.2']
+				, col4 : ['10.0']
+				, col5 : ['10.2']
 			};
 			definition['row5'] = {
 				col0 : ['25.0']
 				, colN : ['25.1']
-				, col4 : ['25.2']
+				, col3 : ['25.2']
 				// Porte
-				, col5 : ['10.0','08.0']
-				, col6 : ['10.2']
+				, col4 : ['10.0','08.0']
+				, col5 : ['10.2']
 			}; 
 			//Maison
 			definition['row6'] = { 
 				col0 : ['04.0']
 				, colN : ['04.1'] 
-				, col4 : ['04.2']
-				, col5 : ['10.0']
-				, col6 : ['10.2']
+				, col3 : ['04.2']
+				, col4 : ['10.0']
+				, col5 : ['10.2']
 			}; 
 			definition['row7'] = { 
 				col0 : ['04.0']
 				, colN : ['04.1'] 
-				, col4 : ['04.2']
-				, col5 : ['10.0']
-				, col6 : ['10.2']
+				, col3 : ['04.2']
+				, col4 : ['10.0']
+				, col5 : ['10.2']
 			}; 
 			definition['row8'] = { 
 				col0 : ['05.0']
 				,colN : ['05.1'] 
-				, col4 : ['05.2']
-				, col5 : ['11.0']
-				, col6 : ['11.2']
+				, col3 : ['05.2']
+				, col4 : ['11.0']
+				, col5 : ['11.2']
 			}; 
 			// Sol
 			
@@ -421,7 +421,7 @@ function standPlatinium(direction){
 	switch(direction){
 		case CONST.directions.DOWN : 
 			definition.width  = 9;
-			definition.height =  8;
+			definition.height =  9;
 			// Toit
 			definition['row0'] = {
 				col0 : ['23.5']
@@ -863,9 +863,9 @@ function applyInteractionsAreasPlatinium(row, col, rowStand, colStand, direction
 			}else{
 				Model.ui.mapCollision[row+rowStand][col+colStand] = true;
 				// On gère l'interaction (entrée dans un stand)
-				if (colStand === 5 && rowStand === 6){
+				if (colStand === 4 && rowStand === 4){
 					_arrayInteraction.push({
-				        x : CONST.ui.UNIT * (col + 5)
+				        x : CONST.ui.UNIT * (col + 4)
 				      , y : CONST.ui.UNIT * (row + 4)
 				      , w : CONST.ui.UNIT * 1
 				      , h : CONST.ui.UNIT * 2
