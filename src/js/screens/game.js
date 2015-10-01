@@ -1,6 +1,7 @@
 'use strict';
 var CONST = require('../model/const.js');
 var Model = require('../model/model.js');
+var StandsModel = require('../model/stands.js');
 var Stands = require('../assets/stands.js');
 var Inputs = require('../triggers/inputs.js');
 var InterfaceUtil = require('../assets/interface-utils.js');
@@ -78,6 +79,13 @@ function processInteractions_(event){
 		    	Model.ui.changeScreen = _eventTmp.key;        
 		    	_showConfirmStand = false;
 		    	_eventTmp = null;
+		    	// On met à jour la position du personnage en fonction du stand
+		    	var stand = StandsModel.filter(function(standTmp){
+					return standTmp.name === Model.gameModel.standId;
+				})[0];
+				Model.gameModel.position.x = stand.positionDoor.x;
+				Model.gameModel.position.y = stand.positionDoor.y;
+				Model.gameModel.position.direction = stand.position.orientation;
 		    	break;
 		    case CONST.uiElements.BTN_NO :   
 		    	_showConfirmStand = false;
