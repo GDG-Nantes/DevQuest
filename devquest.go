@@ -82,6 +82,51 @@ func init() {
 
 }
 
+func marshalQuestions(data SpreadSheet) Questions{
+    questions := Questions{}
+    questions.Questions = make([]Question,(len(data.Feed.Entry)/6));    
+    indexQuestion :=0
+    indexRow := 1;
+    for _,element := range data.Feed.Entry{
+        keyId := "A"+strconv.Itoa(indexRow)
+        if element.Title.T == keyId{
+            idTmp := element.Content.T
+            question := Question{
+                Id: idTmp,
+            }
+            questions.Questions[indexQuestion] = question
+        }else{
+            question := &questions.Questions[indexQuestion]                 
+
+            keyQuestionTitle := "B"+strconv.Itoa(indexRow)
+            keyRepA := "C"+strconv.Itoa(indexRow)
+            keyRepB := "D"+strconv.Itoa(indexRow)
+            keyRepC := "E"+strconv.Itoa(indexRow)
+            keyRepD := "F"+strconv.Itoa(indexRow)
+            keyCode := "G"+strconv.Itoa(indexRow)
+            keyResp := "H"+strconv.Itoa(indexRow)
+            if element.Title.T == keyQuestionTitle{
+                question.Title = element.Content.T;
+            }else if element.Title.T == keyRepA{
+                question.RepA = element.Content.T;
+            }else if element.Title.T == keyRepB{
+                question.RepB = element.Content.T;
+            }else if element.Title.T == keyRepC{
+                question.RepC = element.Content.T;
+            }else if element.Title.T == keyRepD{
+                question.RepD = element.Content.T;
+            }else if element.Title.T == keyCode{
+                question.Code = element.Content.T;
+            }else if element.Title.T == keyResp{
+                question.Resp = element.Content.T;
+                indexRow++
+                indexQuestion++
+            }
+        }
+    }
+    return questions
+}
+
 func questions(w http.ResponseWriter, r *http.Request) {
     //w.Header().Set("SUPER-HACK", "@GDGNANTES")
     //w.WriteHeader(http.StatusFound) 
@@ -90,94 +135,75 @@ func questions(w http.ResponseWriter, r *http.Request) {
 
     // Mise en cache direct du spreadsheet
     keyMemCache := "questions"+jsontype.SPREADSHEET_KEY;
-    item, err := memcache.Get(c, keyMemCache);        
+    item, err := memcache.Get(c, keyMemCache);       
+    var strJson []byte 
     if  err == memcache.ErrCacheMiss || err != nil{
-        // No Cache info
-        url := "https://spreadsheets.google.com/feeds/cells/"+jsontype.SPREADSHEET_KEY+"/od6/public/basic?alt=json";
-        resp, err := client.Get(url)
 
-        if err != nil {
-            fmt.Fprintf(w, "%s\n", err)
-            os.Exit(1)
-        } else {
-            body, err := ioutil.ReadAll(resp.Body)
+        // Si c'est pas en cache, on regarde si c'est en base
+        var questions Questions
+        keyQuestions := datastore.NewKey(c, "Questions", keyMemCache, 0, nil)
+        if err := datastore.Get(c, keyQuestions, &questions); err != nil{
+            // Si c'est pas présent en base, alors on récupère depuis le webservice
+            // No Cache info
+            url := "https://spreadsheets.google.com/feeds/cells/"+jsontype.SPREADSHEET_KEY+"/od6/public/basic?alt=json";
+            resp, err := client.Get(url)
+
             if err != nil {
+                // En cas d'erreur on quitte le prog
                 fmt.Fprintf(w, "%s\n", err)
                 os.Exit(1)
-            }
-            data := SpreadSheet{}
-            json.Unmarshal([]byte(string(body)), &data)
-        
-            questions := Questions{}
-            questions.Questions = make([]Question,(len(data.Feed.Entry)/6));    
-            indexQuestion :=0
-            indexRow := 1;
-            for _,element := range data.Feed.Entry{
-                keyId := "A"+strconv.Itoa(indexRow)
-                if element.Title.T == keyId{
-                    idTmp := element.Content.T
-                    question := Question{
-                        Id: idTmp,
-                    }
-                    questions.Questions[indexQuestion] = question
-                }else{
-                    question := &questions.Questions[indexQuestion]                 
-
-                    keyQuestionTitle := "B"+strconv.Itoa(indexRow)
-                    keyRepA := "C"+strconv.Itoa(indexRow)
-                    keyRepB := "D"+strconv.Itoa(indexRow)
-                    keyRepC := "E"+strconv.Itoa(indexRow)
-                    keyRepD := "F"+strconv.Itoa(indexRow)
-                    keyCode := "G"+strconv.Itoa(indexRow)
-                    keyResp := "H"+strconv.Itoa(indexRow)
-                    if element.Title.T == keyQuestionTitle{
-                        question.Title = element.Content.T;
-                    }else if element.Title.T == keyRepA{
-                        question.RepA = element.Content.T;
-                    }else if element.Title.T == keyRepB{
-                        question.RepB = element.Content.T;
-                    }else if element.Title.T == keyRepC{
-                        question.RepC = element.Content.T;
-                    }else if element.Title.T == keyRepD{
-                        question.RepD = element.Content.T;
-                    }else if element.Title.T == keyCode{
-                        question.Code = element.Content.T;
-                    }else if element.Title.T == keyResp{
-                        question.Resp = element.Content.T;
-                        indexRow++
-                        indexQuestion++
-                    }
-                }
-
-            }
-            strJson, _ := json.Marshal(questions);
-            itemValue := &memcache.Item{
-                Key: keyMemCache, 
-                Value: strJson,
-            }
-            if err := memcache.Add(c, itemValue); err == memcache.ErrNotStored {
-                c.Infof("itemValue with key %q already exists", itemValue.Key)
-            } else if err != nil {
-                c.Errorf("error adding itemValue: %v", err)
-            }
-
-            // On ajout au datastore les questions pour plus de facilité d'intérogation
-            for _,question := range questions.Questions{
-                keyQuestion := datastore.NewKey(c,"Question", question.Id, 0, nil)
-                _, err := datastore.Put(c, keyQuestion, &question)
-                if  err != nil{
-                    // Print error
+            } else {
+                // Sinon on transforme les données pour les sauvegardées
+                body, err := ioutil.ReadAll(resp.Body)
+                if err != nil {
                     fmt.Fprintf(w, "%s\n", err)
+                    os.Exit(1)
+                }
+                data := SpreadSheet{}
+                json.Unmarshal([]byte(string(body)), &data)
+            
+                questions = marshalQuestions(data)
+               
+                // On ajoute dans le datastore
+                _, errDataStore := datastore.Put(c, keyQuestions, &questions)
+                if  errDataStore != nil{
+                    // Print error 
+                    fmt.Fprintf(w, "%s\n", errDataStore)
                     // TODO jeter une erreur
                     return
                 }
+
+                // On ajout au datastore les questions pour plus de facilité d'intérogation
+                for _,question := range questions.Questions{
+                    keyQuestion := datastore.NewKey(c,"Question", question.Id, 0, nil)
+                    _, errDataStore := datastore.Put(c, keyQuestion, &question)
+                    if  errDataStore != nil{
+                        // Print error
+                        fmt.Fprintf(w, "%s\n", errDataStore)
+                        // TODO jeter une erreur
+                        return
+                    }
+                }
             }
-            fmt.Fprintf(w, "%s\n", strJson)
         }
+
+        tmpStrJson, _ := json.Marshal(questions);
+        strJson = tmpStrJson
+        itemValue := &memcache.Item{
+            Key: keyMemCache, 
+            Value: strJson,
+        }
+        // On ajoute dans le memcache
+        if err := memcache.Add(c, itemValue); err == memcache.ErrNotStored {
+            c.Infof("itemValue with key %q already exists", itemValue.Key)
+        } else if err != nil {
+            c.Errorf("error adding itemValue: %v", err)
+        }
+       
     } else{
-        
-        fmt.Fprintf(w, "%s\n", item.Value)
+        strJson = item.Value
     }   
+    fmt.Fprintf(w, "%s\n", strJson)
     
 }
 
