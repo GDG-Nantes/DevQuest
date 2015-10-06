@@ -64,7 +64,7 @@ func init() {
     http.HandleFunc("/api/v1/questions", questions)
     http.HandleFunc("/api/v1/anwser", anwser)
 
-    file, e := ioutil.ReadFile("./credentials.json")
+    /*file, e := ioutil.ReadFile("./credentials.json")
     if e != nil {
         log.Printf("File error: %v\n", e)
         os.Exit(1)
@@ -76,8 +76,15 @@ func init() {
     if e!=nil{
         log.Print("Error:",e)
     }
-    log.Print(jsontype)
-
+    log.Print(jsontype)*/
+    log.Print("\n")
+    jsontype := jsonobject{
+        }
+    if v := os.Getenv("SPREADSHEET_VAR"); v != "" {
+      //...
+        jsontype.SPREADSHEET_KEY = v
+        log.Print(v)
+    }
 
 
 }

@@ -1,5 +1,6 @@
 "use strict";
 // Include gulp
+var fs = require("fs");
 var gulp = require("gulp");
 var sourcemaps = require("gulp-sourcemaps")
 var path = require("path");
@@ -29,7 +30,17 @@ if (!credentials){
   credentials['TWITTER_CLIENT_SECRET'] = "xxxxxxx";
   credentials['GITHUB_CLIENT'] = "xxxxxxx";
   credentials['GITHUB_CLIENT_SECRET'] = "xxxxxxx";
+  credentials['SPREADSHEET_KEY'] = "xxxxxxxx";
 }
+
+fs.writeFile('app_env.yaml'
+            , "env_variables:\n"
+                +"  SPREADSHEET_VAR: '"+credentials['SPREADSHEET_KEY']+"'"
+            , function(err){
+              if(err){
+                return console.log(err);
+              }
+            });
 
 gulp.task('clean', function(){
   return del.sync([
