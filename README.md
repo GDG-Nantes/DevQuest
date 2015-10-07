@@ -40,3 +40,20 @@ Les crédentials sont à placer dans un fichier credentials.json à la racine du
     "GITHUB_CLIENT" : "<GITHUB_CLIENT>",
     "GITHUB_CLIENT_SECRET" : "<GITHUB_CLIENT_SECRET>"
 }
+```
+
+La partie secret est à garder pour les tests en local à lancer aussi avec le serveur server-shim.js
+
+## SpreadSheet
+L'identifiant de la clé du spreadsheet à utiliser est contenue dans une variable d'environement. Voici un exemple de fichier à créer pour setter la variable  set_env.sh ou set_env.bat
+
+set_env.sh
+```sh
+#!/bin/bash
+export SPREADSHEET_VAR='xxxxxx'
+```
+
+set_env.bat
+```bat
+set SPREADSHEET_VAR='xxxxxx'
+```

@@ -22,7 +22,7 @@ type Resp struct {
 }
 
 type jsonobject struct {
-    SPREADSHEET_KEY string
+    SpreadsheetKey string
 }
 
 type Value struct{    
@@ -58,31 +58,14 @@ type Questions struct{
     Questions []Question `json:"questions"`
 }
 
-var jsontype jsonobject
+
 
 func init() {
     http.HandleFunc("/api/v1/questions", questions)
     http.HandleFunc("/api/v1/anwser", anwser)
 
-    /*file, e := ioutil.ReadFile("./credentials.json")
-    if e != nil {
-        log.Printf("File error: %v\n", e)
-        os.Exit(1)
-    }
-    log.Print(string(file))
-
-    
-    e= json.Unmarshal(file, &jsontype)   
-    if e!=nil{
-        log.Print("Error:",e)
-    }
-    log.Print(jsontype)*/
-    log.Print("\n")
-    jsontype := jsonobject{
-        }
     if v := os.Getenv("SPREADSHEET_VAR"); v != "" {
       //...
-        jsontype.SPREADSHEET_KEY = v
         log.Print(v)
     }
 
@@ -139,20 +122,25 @@ func questions(w http.ResponseWriter, r *http.Request) {
     //w.WriteHeader(http.StatusFound) 
     c := appengine.NewContext(r)
     client := urlfetch.Client(c)
+    spreadsheetKey := os.Getenv("SPREADSHEET_VAR");
 
     // Mise en cache direct du spreadsheet
-    keyMemCache := "questions"+jsontype.SPREADSHEET_KEY;
+    keyMemCache := "questions"+spreadsheetKey;
     item, err := memcache.Get(c, keyMemCache);       
     var strJson []byte 
+    log.Print("questions")
+    log.Print(keyMemCache)
     if  err == memcache.ErrCacheMiss || err != nil{
-
+        log.Print("No Cache")
         // Si c'est pas en cache, on regarde si c'est en base
         var questions Questions
         keyQuestions := datastore.NewKey(c, "Questions", keyMemCache, 0, nil)
         if err := datastore.Get(c, keyQuestions, &questions); err != nil{
+            log.Print("No Datastore")
             // Si c'est pas présent en base, alors on récupère depuis le webservice
             // No Cache info
-            url := "https://spreadsheets.google.com/feeds/cells/"+jsontype.SPREADSHEET_KEY+"/od6/public/basic?alt=json";
+            url := "https://spreadsheets.google.com/feeds/cells/"+spreadsheetKey+"/od6/public/basic?alt=json";
+            log.Print(url)
             resp, err := client.Get(url)
 
             if err != nil {
