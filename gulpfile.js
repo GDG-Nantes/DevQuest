@@ -116,14 +116,13 @@ gulp.task('browserify',function(){
   return browserify(['./src/js/app.js'], {debug:ENV==='dev'})
     .bundle()    
     .on('error', function(err){
-      console.log(err.stack);
+      console.log(err);
       this.emit('end');
     })    
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('debug-path', shell.task(['ls -l', 'pwd', 'ls -l dist/']));
 
 /* Default task */
 gulp.task("default", ["dev"]);
@@ -132,7 +131,6 @@ gulp.task('build', function(){
     'set_prod'
     , ['clean', 'browserify', 'sass']
     , 'copy'
-    , 'debug-path'
     , 'rev_index'
   );  
 });
