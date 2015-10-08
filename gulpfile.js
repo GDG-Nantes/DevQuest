@@ -23,6 +23,7 @@ var replace = require("gulp-replace");
 var reload = browserSync.reload;
 var ENV = "dev";
 
+console.log("Variable d'environement : "+process.env.SPREADSHEET_VAR);
 fs.writeFile('app_env.yaml'
             , "env_variables:\n"
                 +"  SPREADSHEET_VAR: '"+process.env.SPREADSHEET_VAR+"'"
@@ -127,7 +128,8 @@ gulp.task('browserify',function(){
 gulp.task("default", ["dev"]);
 gulp.task('build', function(){
   runSequence(
-    ['clean', 'browserify', 'sass']
+    'set_prod'
+    , ['clean', 'browserify', 'sass']
     , 'copy'
     , 'rev_index'
   );  
