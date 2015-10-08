@@ -41,7 +41,7 @@ gulp.task('clean', function(){
 
 
 gulp.task("copy", function () {
-  return gulp.src(["app.yaml", "devquest.go", "index.html", "redirect.html", "robots.txt", "sitemap.xml", "bundle.js", "assets/**", "css/**", "lib/**"], { "base" : "." })
+  return gulp.src(["app.yaml", "app_env.yaml", "devquest.go", "index.html", "redirect.html", "robots.txt", "sitemap.xml", "bundle.js", "assets/**", "css/**", "lib/**"], { "base" : "." })
     .pipe(gulp.dest("dist"));
 });
 
