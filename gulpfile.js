@@ -123,6 +123,7 @@ gulp.task('browserify',function(){
     .pipe(gulp.dest('./'));
 });
 
+gulp.task('debug-path', shell.task(['ls -l', 'pwd', 'ls -l dist/']));
 
 /* Default task */
 gulp.task("default", ["dev"]);
@@ -131,6 +132,7 @@ gulp.task('build', function(){
     'set_prod'
     , ['clean', 'browserify', 'sass']
     , 'copy'
+    , 'debug-path'
     , 'rev_index'
   );  
 });
