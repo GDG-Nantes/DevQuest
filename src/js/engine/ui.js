@@ -11,51 +11,10 @@ var ScreenStory = require('../screens/story.js');
 var CONST = require('../model/const.js');
 
 // On défini l'ensemble des array qui vont servir pour le dessin
-//var solArray = Background.initSol();
-//var contourArray = Background.initContour();
-//var mursArray = Background.initMurs();;
-//var herbeArray = Background.initHerbe();
-//var sortiesArray = Background.initSorties();
-//var standsArray = Stands.initStands();
+
 var stepMove = 0;
 var paintActive = false;
 
-/*
-function addFromArray_(cel, arrayOri, row, col){
-	var valueTmp = arrayOri[row][col];
-	if (Array.isArray(arrayOri[row][col])){
-		for (var doublon in valueTmp){
-			cel.push(valueTmp[doublon]);
-		}
-	}else if (valueTmp != ''){
-		cel.push(valueTmp);
-	}
-}*/
-
-/*
-	Extrait le background correspond à la taille de l'écran
-*/
-function extractBackground_(){
-	var array = [];
-	var minX = Model.gameModel.positionScreen.x;
-	var minY = Model.gameModel.positionScreen.y;
-
-	for (var row = minY; row < minY + Model.ui.screenSize.height; row++){
-		var arrayRow = [];
-		for (var col =minX; col < minX + Model.ui.screenSize.width; col++){
-			var cel = [];
-			addFromArray_(cel,solArray,row, col);
-			addFromArray_(cel,contourArray,row, col);
-			addFromArray_(cel,mursArray,row, col);
-			addFromArray_(cel,herbeArray,row, col);
-			addFromArray_(cel,sortiesArray,row, col);
-			addFromArray_(cel,standsArray,row, col);
-			arrayRow.push(cel);
-		}
-		array.push(arrayRow);
-	}
-	return array;
-}
 
 // Fonction générique d'écriture d'un pixel
 function drawPixel_(spriteToUse, wOriValue, hOriValue, rowOri, colOri, rowDest, colDest){
@@ -107,17 +66,6 @@ function paintBackground_(){
 		, Model.ui.screenSize.height * CONST.ui.UNIT // height taille du dessin
 		);
 
-	/*extractBackground_().forEach(function bgForEach(rowArray, rowIndex){
-		rowArray.forEach(function rowForEach(colValue, colIndex){
-			if (Array.isArray(colValue)){
-				colValue.forEach(function doublonForEach(doublon){
-					drawPixelBackground_(doublon, rowIndex, colIndex);
-				});
-			}else{
-				drawPixelBackground_(colValue, rowIndex, colIndex);
-			}
-		});
-	});	*/
 }
 
 

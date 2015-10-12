@@ -943,7 +943,7 @@ function initMap(){
 	for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 		var arrayRow = [];
 		for (var col =0; col < CONST.ui.SIZE_UNIT.w; col++){
-			arrayRow.push('');
+			arrayRow.push(['']);
 		}
 		array.push(arrayRow);
 	}
@@ -961,7 +961,11 @@ function placeStand(type, idStand, orientation, rowIndex, colIndex, map){
 			if (row === rowIndex && col === colIndex){
 				for (var rowStand = 0; rowStand < standArray.length; rowStand++){
 					for (var colStand = 0; colStand < standArray[0].length; colStand++){
-						map[row+rowStand][col+colStand] = standArray[rowStand][colStand];
+						//if (map[row+rowStand][col+colStand].length > 0){
+							Array.prototype.push.apply(map[row+rowStand][col+colStand],standArray[rowStand][colStand]);
+						//}else{
+							//map[row+rowStand][col+colStand] = standArray[rowStand][colStand];
+						//}
 						// On doit aussi mettre à jour la map de collision 
 						switch (type){
 							case CONST.common.STAND_SILVER :
