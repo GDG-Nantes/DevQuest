@@ -43,6 +43,11 @@ type SpreadSheet struct {
     Version string `json:"version"`
 }
 
+type Answer struct {
+    User string
+    Question string
+}
+
 type Question struct{
     Id string `json:"id"`
     Title string `json:"title"`
@@ -62,7 +67,7 @@ type Questions struct{
 
 func init() {
     http.HandleFunc("/api/v1/questions", questions)
-    http.HandleFunc("/api/v1/anwser", anwser)
+    http.HandleFunc("/api/v1/answer", answer)
 
     if v := os.Getenv("SPREADSHEET_VAR"); v != "" {
       //...
@@ -203,7 +208,7 @@ func questions(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func anwser(w http.ResponseWriter, r *http.Request) {
+func answer(w http.ResponseWriter, r *http.Request) {
     //w.Header().Set("SUPER-HACK", "@GDGNANTES")
     //w.WriteHeader(http.StatusFound)
     //fmt.Fprint(w, "Hello World\n")
@@ -229,6 +234,23 @@ func anwser(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)    
     var scoreQuestion int8
     scoreQuestion = 0
+    // On va vérifier qu'on a pas déjà répondu à la question
+    keyAnswer := datastore.NewIncompleteKey(c, "Answer", nil)
+    queryAnswer := datastore.NewQuery("Answer").Filter("Question = ", indexQuestion)
+    answerResults := queryAnswer.Run(c)
+    var answer Answer
+    _, errAnswers := answerResults.Next(&answer)
+    
+    answerData := Answer{
+        User: email,
+        Question: indexQuestion,
+    }
+     _, errPutData := datastore.Put(c, keyAnswer, &answerData)
+    if errPutData != nil {
+        http.Error(w, errPutData.Error(), http.StatusInternalServerError)
+        return
+    }
+    
     // Vérification du code de réponse
     // Get the item from the memcache
     var question Question
@@ -238,10 +260,10 @@ func anwser(w http.ResponseWriter, r *http.Request) {
         // TODO jeter une erreur
         return
     }
-    if resp == question.Resp{
+    if resp == question.Resp && errAnswers == datastore.Done{
         scoreQuestion += 10
-    }
-    if code == question.Code{
+    } 
+    if code == question.Code && errAnswers == datastore.Done{
         scoreQuestion += 5
     }
 
