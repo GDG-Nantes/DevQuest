@@ -17,13 +17,13 @@ function checkConfig(){
 	OBLIGATOIRE
 		* Promise
 		* Canvas
-		* HTML5 Audio
 		* WebSockets
 		* localStorage
-		* getusermedia
 		* page visibility
 		* ForEach ES6
 	OPTIONNELS
+		* HTML5 Audio
+		* getusermedia
 		* Touch Events
 		* full screen
 		* Device motion
@@ -54,9 +54,7 @@ function checkConfig(){
 		&& Modernizr.canvas
 		&& Modernizr.localstorage
 		&& Modernizr.websockets
-		&& Modernizr.getusermedia
 		&& Array.prototype.forEach
-		&& (window.AudioContext || window.webkitAudioContext)
 		&& (typeof document.hidden != "undefined"
 			|| typeof document.mozHidden != "undefined"
 			|| typeof document.msHidden != "undefined"

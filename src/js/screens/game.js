@@ -668,7 +668,7 @@ function gameScreen(){
 		Array.prototype.push.apply(arrayInstructions, paintConfirmation_());
 	}else if (Model.gameModel.parameters.wrongOrientation){		
 		Array.prototype.push.apply(arrayInstructions, paintWrongOrientation_());
-	}else{
+	}else if (Model.gameModel.parameters.useParams){
 		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());
 
 	}

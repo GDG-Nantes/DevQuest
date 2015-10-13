@@ -29,7 +29,7 @@ var ui = {
 }; 
 
 var gameModel = {		
-	version : '6',
+	version : '7',
 	user : null,
 	typeSocial : null,	
 	indexUser : -1,
@@ -49,8 +49,9 @@ var gameModel = {
 		stepCount : 0
 	},
 	parameters : {
-		mic : true
-		, motion : true
+		useParams : false
+		, mic : false
+		, motion : false
 		, wrongOrientation : false
 	}
 };
