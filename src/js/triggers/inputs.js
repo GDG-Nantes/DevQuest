@@ -6,6 +6,7 @@ var Stands = require('../assets/stands.js');
 var CONST = require('../model/const.js');
 var SonicServer = require('../ultrasonic/sonic-server.js');
 
+
 var _trackAcceleration = true
 	, _arrayZ = []
 	, _maxY = 0

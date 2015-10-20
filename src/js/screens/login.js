@@ -43,6 +43,7 @@ function checkInteractions_(event) {
           if (inputEmail && inputEmail.value && validateEmail_(inputEmail.value)){
             _emailEmpty = false;
             Model.gameModel.user.email = inputEmail.value;
+            Model.gameModel.userHash = ""+Model.gameModel.user.email.hashCode();
             inputEmail.style.border = "";
             // TODO faire quelque chose avec le code de confirmation
           }else{

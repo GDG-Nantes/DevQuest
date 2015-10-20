@@ -36,12 +36,15 @@ function login(type){
 			switch(network){
 				case 'google':
 					Model.gameModel.typeSocial = CONST.uiElements.BTN_G_PLUS;
+					Model.gameModel.userHash = ""+r.email.hashCode();
 				break;
 				case 'twitter':
 					Model.gameModel.typeSocial = CONST.uiElements.BTN_TWITTER;
+					Model.gameModel.userHash = ""+r.screen_name.hashCode();
 				break;
 				case 'github':
-					Model.gameModel.typeSocial = CONST.uiElements.BTN_CUSTO;
+					Model.gameModel.typeSocial = CONST.uiElements.BTN_GITHUB;
+					Model.gameModel.userHash = ""+r.login.hashCode();
 				break;
 			}
 			Model.ui.changeScreen = CONST.screens.CHOOSE_USER;
