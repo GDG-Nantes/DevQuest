@@ -150,7 +150,7 @@ function checkInteractions_(){
 }
  
 
-function paintCharacter_(sprite, direction, step, x, y){
+function paintCharacter_(sprite, alpha, direction, step, x, y){
 	var rowOri = 0;
 	switch(direction){
 		case CONST.directions.UP:
@@ -168,6 +168,8 @@ function paintCharacter_(sprite, direction, step, x, y){
 	}
 	var colOri = step;
 	return {key : sprite
+		, touchContext : alpha != 1
+		, alpha : alpha
 		, wOriValue : CONST.ui.UNIT // wOriValue
 		, hOriValue : CONST.ui.HEIGHT_CHARS // hOriValue
 		, rowOri : rowOri // rowOri
@@ -179,11 +181,36 @@ function paintCharacter_(sprite, direction, step, x, y){
 
 function paintUser_(){
 	return paintCharacter_(CONST.characters[Model.gameModel.indexUser].key,// sprite à utiliser
-		Model.gameModel.position.direction, // Orientation du joeur
+		1, // Pas d'alpha
+		Model.gameModel.position.direction, // Orientation du joueur
 		Model.gameModel.position.stepCount, // état du sprite
 		Model.gameModel.position.x - Model.gameModel.positionScreen.x, // x du joueur
 		Model.gameModel.position.y - Model.gameModel.positionScreen.y // y du joueur
 		);
+}
+
+function paintUsers_(){
+	var arrayInstructions = [];
+	var tmpMapPositions = {};
+	Object.keys(Model.services.activUsers).forEach(function forFbUsers(idUser){
+		var userTmp = Model.services.activUsers[idUser];
+		if (userTmp.position.x >= Model.gameModel.positionScreen.x
+			&& userTmp.position.x < (Model.gameModel.positionScreen.x + Model.ui.screenSize.width)
+			&& userTmp.position.y >= Model.gameModel.positionScreen.y
+			&& userTmp.position.y < (Model.gameModel.positionScreen.y + Model.ui.screenSize.height)
+			&& !tmpMapPositions[userTmp.positionScreen.xScreen+'.'+userTmp.positionScreen.yScreen]){
+			arrayInstructions.push(paintCharacter_(CONST.characters[userTmp.indexUser].key, // sprite à utiliser
+				0.75, // Alpha léger 
+				userTmp.position.direction, // Orientation du joeur
+				userTmp.position.stepCount, // état du sprite
+				userTmp.position.x - Model.gameModel.positionScreen.x, // x du joueur
+				userTmp.position.y - Model.gameModel.positionScreen.y // y du joueur
+				));
+			tmpMapPositions[userTmp.positionScreen.xScreen+'.'+userTmp.positionScreen.yScreen] = true;
+		}
+	});
+	return arrayInstructions;
+	
 }
 
 function paintConfirmation_(){
@@ -661,6 +688,7 @@ function gameScreen(){
 	if (!Model.gameModel.parameters.motion){
 		Array.prototype.push.apply(arrayInstructions, paintBtnArrow_());
 	}
+	Array.prototype.push.apply(arrayInstructions, paintUsers_());
 	arrayInstructions.push(paintUser_());
 	if(_showParam){
 		Array.prototype.push.apply(arrayInstructions, paintParameters_());

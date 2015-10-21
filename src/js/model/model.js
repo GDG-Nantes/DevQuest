@@ -7,6 +7,11 @@ var resources = {
 	patterns : []
 };
 
+var services = {
+	fbActivRef : null, 
+	activUsers : {}
+};
+
 var ui = {
 	canvas : null,
 	context : null,
@@ -71,5 +76,6 @@ for (var row = 0; row < CONST.ui.SIZE_UNIT.h; row++){
 module.exports = {
 	resources : resources,
 	ui : ui,
-	gameModel : gameModel
+	gameModel : gameModel,
+	services : services
 };

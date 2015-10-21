@@ -4,8 +4,6 @@ var Inputs = require('../triggers/inputs.js');
 var UI = require('./ui.js');
 var CONST = require('../model/const.js');
 var Socials = require('../triggers/socials.js');
-var activRef = new Firebase("https://boiling-inferno-138.firebaseio.com/activ");
-var innactivRef = new Firebase("https://boiling-inferno-138.firebaseio.com/innactiv");
 
 var runActiv = false;	
 
@@ -127,9 +125,13 @@ function processDirection_(){
 		Model.gameModel.positionScreen.y = positionScreenTmp.y;		
 
 		// Mise à jour du modèle firebase
-		activRef.child(Model.gameModel.userHash).set({
-			positionScreen : positionScreenTmp,
-			position : positionTmp,
+		Model.services.fbActivRef.child(Model.gameModel.userHash).set({
+			id : Model.gameModel.userHash,
+			positionScreen : {
+				xScreen : positionScreenTmp.x,
+				yScreen : positionScreenTmp.y
+			},
+			position : Model.gameModel.position,
 			indexUser : Model.gameModel.indexUser
 		});
 	}
@@ -190,6 +192,7 @@ function startEngine_(){
 		run_();
 		UI.startPaint();
 		Inputs.initListeners();
+		Firebase.goOnline();
 	}	
 }
 
@@ -198,6 +201,8 @@ function stopEngine_(){
 	runActiv = false;
 	UI.stopPaint();
 	Inputs.removeListeners();
+	Model.services.fbActivRef.child(Model.gameModel.userHash).remove();
+	Firebase.goOffline();
 }
 
 // API

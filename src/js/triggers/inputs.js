@@ -291,6 +291,19 @@ function callBackSonic_(message){
 	}
 }
 
+function fbAddOrChange_(datas){
+	var userTmp = datas.val();
+	Model.services.activUsers[userTmp.id] = userTmp;
+	console.log("fb_AddOrChange : ",userTmp);
+}
+
+function fbRemove_(datas){
+	var userTmp = datas.val();
+	delete Model.services.activUsers[userTmp.id];
+	console.log("fb_Remove : ",userTmp);
+
+}
+
 // API
 
 function initListeners(){
@@ -313,6 +326,24 @@ function initListeners(){
 		window.addEventListener('devicemotion', motionCallBack_, false);
 		window.addEventListener('deviceorientation', orientationCallBack_, false);
 	}
+
+	// Firebase Listeners
+	Model.services.fbActivRef
+		/*.orderByChild('xScreen')
+		.startAt(Model.gameModel.positionScreen.x)
+		.endAt(Model.gameModel.positionScreen.x+Model.ui.screenSize.width)*/
+		.on('child_added', fbAddOrChange_);
+	Model.services.fbActivRef
+		/*.orderByChild('xScreen')
+		.startAt(Model.gameModel.positionScreen.x)
+		.endAt(Model.gameModel.positionScreen.x+Model.ui.screenSize.width)*/
+		.on('child_removed', fbRemove_);
+	Model.services.fbActivRef
+		/*.orderByChild('xScreen')
+		.startAt(Model.gameModel.positionScreen.x)
+		.endAt(Model.gameModel.positionScreen.x+Model.ui.screenSize.width)*/
+		.on('child_changed', fbAddOrChange_);
+	
 
 // TODO à décommenter !!!
 	/*if (!_sonicServer){
@@ -343,6 +374,24 @@ function removeListeners(){
 		window.removeEventListener('devicemotion', motionCallBack_, false);
 		window.removeEventListener('deviceorientation', orientationCallBack_, false);
 	}
+
+	// Firebase remove
+	Model.services.fbActivRef
+		/*.orderByChild('xScreen')
+		.startAt(Model.gameModel.positionScreen.x)
+		.endAt(Model.gameModel.positionScreen.x+Model.ui.screenSize.width)*/
+		.off('child_added', fbAddOrChange_);
+	Model.services.fbActivRef
+		/*.orderByChild('xScreen')
+		.startAt(Model.gameModel.positionScreen.x)
+		.endAt(Model.gameModel.positionScreen.x+Model.ui.screenSize.width)*/
+		.off('child_removed', fbRemove_);
+	Model.services.fbActivRef
+		/*.orderByChild('xScreen')
+		.startAt(Model.gameModel.positionScreen.x)
+		.endAt(Model.gameModel.positionScreen.x+Model.ui.screenSize.width)*/
+		.off('child_changed', fbAddOrChange_);
+
 	// TODO à décommenter
 	//_sonicServer.stop();
 	console.log("RemoveListeners");

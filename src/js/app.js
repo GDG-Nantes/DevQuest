@@ -89,6 +89,9 @@ function pageLoad(){
 	Model.ui.middlePoint.x = Math.floor(Model.ui.screenSize.width/2);
 	Model.ui.middlePoint.y = Math.floor(Model.ui.screenSize.height/2);
 
+	// On initialise firebase
+	Model.services.fbActivRef = new Firebase("https://boiling-inferno-138.firebaseio.com/activ");
+
 	if (CONST.DEBUG){
 		console.debug("============SCREEN SIZES==========");
 		console.debug("==================================");
