@@ -127,10 +127,6 @@ function processDirection_(){
 		// Mise à jour du modèle firebase
 		Model.services.fbActivRef.child(Model.gameModel.userHash).set({
 			id : Model.gameModel.userHash,
-			positionScreen : {
-				xScreen : positionScreenTmp.x,
-				yScreen : positionScreenTmp.y
-			},
 			position : Model.gameModel.position,
 			indexUser : Model.gameModel.indexUser
 		});
@@ -193,6 +189,9 @@ function startEngine_(){
 		UI.startPaint();
 		Inputs.initListeners();
 		Firebase.goOnline();
+		Model.services.fbActivRef.once("value", function(snap){
+			Model.services.activUsers = !snap.val() ? {} : snap.val() ;
+		});
 	}	
 }
 

@@ -198,7 +198,7 @@ function paintUsers_(){
 			&& userTmp.position.x < (Model.gameModel.positionScreen.x + Model.ui.screenSize.width)
 			&& userTmp.position.y >= Model.gameModel.positionScreen.y
 			&& userTmp.position.y < (Model.gameModel.positionScreen.y + Model.ui.screenSize.height)
-			&& !tmpMapPositions[userTmp.positionScreen.xScreen+'.'+userTmp.positionScreen.yScreen]){
+			&& !tmpMapPositions[userTmp.position.x+'.'+userTmp.position.y]){
 			arrayInstructions.push(paintCharacter_(CONST.characters[userTmp.indexUser].key, // sprite à utiliser
 				0.75, // Alpha léger 
 				userTmp.position.direction, // Orientation du joeur
@@ -206,7 +206,7 @@ function paintUsers_(){
 				userTmp.position.x - Model.gameModel.positionScreen.x, // x du joueur
 				userTmp.position.y - Model.gameModel.positionScreen.y // y du joueur
 				));
-			tmpMapPositions[userTmp.positionScreen.xScreen+'.'+userTmp.positionScreen.yScreen] = true;
+			tmpMapPositions[userTmp.position.x+'.'+userTmp.position.y] = true;
 		}
 	});
 	return arrayInstructions;
