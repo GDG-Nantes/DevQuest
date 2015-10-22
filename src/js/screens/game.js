@@ -192,22 +192,14 @@ function paintUser_(){
 function paintUsers_(){
 	var arrayInstructions = [];
 	var tmpMapPositions = {};
-	Object.keys(Model.services.activUsers).forEach(function forFbUsers(idUser){
-		var userTmp = Model.services.activUsers[idUser];
-		if (userTmp.position.x >= Model.gameModel.positionScreen.x
-			&& userTmp.position.x < (Model.gameModel.positionScreen.x + Model.ui.screenSize.width)
-			&& userTmp.position.y >= Model.gameModel.positionScreen.y
-			&& userTmp.position.y < (Model.gameModel.positionScreen.y + Model.ui.screenSize.height)
-			&& !tmpMapPositions[userTmp.position.x+'.'+userTmp.position.y]){
-			arrayInstructions.push(paintCharacter_(CONST.characters[userTmp.indexUser].key, // sprite à utiliser
-				0.75, // Alpha léger 
-				userTmp.position.direction, // Orientation du joeur
-				userTmp.position.stepCount, // état du sprite
-				userTmp.position.x - Model.gameModel.positionScreen.x, // x du joueur
-				userTmp.position.y - Model.gameModel.positionScreen.y // y du joueur
-				));
-			tmpMapPositions[userTmp.position.x+'.'+userTmp.position.y] = true;
-		}
+	Model.ui.users.forEach(function forEachUsers(userTmp){
+		arrayInstructions.push(paintCharacter_(CONST.characters[userTmp.indexUser].key, // sprite à utiliser
+			0.75, // Alpha léger 
+			userTmp.position.direction, // Orientation du joeur
+			userTmp.position.stepCount, // état du sprite
+			userTmp.position.x - Model.gameModel.positionScreen.x, // x du joueur
+			userTmp.position.y - Model.gameModel.positionScreen.y // y du joueur
+			));
 	});
 	return arrayInstructions;
 	

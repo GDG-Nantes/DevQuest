@@ -133,6 +133,26 @@ function processDirection_(){
 	}
 }
 
+function processUsers_(){
+	if (Model.ui.usersChange){		
+		Model.ui.usersChange = false;
+		var arrayUsersTmp = [];
+		var tmpMapPositions = {};
+		Object.keys(Model.services.activUsers).forEach(function forFbUsers(idUser){
+			var userTmp = Model.services.activUsers[idUser];
+			if (userTmp.position.x >= Model.gameModel.positionScreen.x
+				&& userTmp.position.x < (Model.gameModel.positionScreen.x + Model.ui.screenSize.width)
+				&& userTmp.position.y >= Model.gameModel.positionScreen.y
+				&& userTmp.position.y < (Model.gameModel.positionScreen.y + Model.ui.screenSize.height)
+				&& !tmpMapPositions[userTmp.position.x+'.'+userTmp.position.y]){
+				arrayUsersTmp.push(userTmp);			
+				tmpMapPositions[userTmp.position.x+'.'+userTmp.position.y] = true;
+			}
+		});
+		Model.ui.users = arrayUsersTmp;
+	}
+}
+
 function manageVisibility_(){
 	// Set the name of the hidden property and the change event for visibility
 	var hidden, visibilityChange; 
@@ -173,6 +193,7 @@ function run_(){
 	try{		
 		processDirection_();
 		processInteraction_();
+		processUsers_();
 		if (runActiv){
 			window.requestAnimationFrame(run_);
 		}

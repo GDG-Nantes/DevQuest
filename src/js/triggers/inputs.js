@@ -292,12 +292,14 @@ function callBackSonic_(message){
 }
 
 function fbAddOrChange_(datas){
+	Model.ui.usersChange = true;
 	var userTmp = datas.val();
 	Model.services.activUsers[userTmp.id] = userTmp;
 	console.log("fb_AddOrChange : ",userTmp);
 }
 
 function fbRemove_(datas){
+	Model.ui.usersChange = true;
 	var userTmp = datas.val();
 	delete Model.services.activUsers[userTmp.id];
 	console.log("fb_Remove : ",userTmp);
