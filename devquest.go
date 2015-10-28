@@ -260,6 +260,8 @@ func answer(w http.ResponseWriter, r *http.Request) {
         // TODO jeter une erreur
         return
     }
+    fmt.Fprint(w, question.Resp+"\n")
+    fmt.Fprint(w, question.Code+"\n")
     if resp == question.Resp && errAnswers == datastore.Done{
         scoreQuestion += 10
     } 

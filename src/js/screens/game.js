@@ -23,7 +23,7 @@ var _lastPoint = {
 
 function registerInteractions_(){
 	Inputs.registerInteraction({
-		type : CONST.eventType.DOWN
+		type : CONST.eventType.UP
 		, key : [
 			CONST.uiElements.BTN_PARAM,			
 			CONST.uiElements.BTN_PARAM_CLOSE,			
@@ -52,7 +52,7 @@ function registerInteractions_(){
 
 function processInteractions_(event){
   if (event.type && 
-		event.type  === CONST.eventType.DOWN		
+		event.type  === CONST.eventType.UP		
 		){		
 		switch(event.key){
 		    case CONST.uiElements.BTN_PARAM :   

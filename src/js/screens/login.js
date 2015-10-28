@@ -255,7 +255,7 @@ function paintRegister_(position){
   if (!inputEmail){
     inputEmail = document.createElement('input');
     inputEmail.id = 'email-register';
-    inputEmail.type = 'text';
+    inputEmail.type = 'email';
     inputEmail.placeholder = 'email de contact';
     inputEmail.style.position = 'absolute';
     inputEmail.style.top = (CONST.ui.UNIT * (positionEmail.y + 1))+'px';  

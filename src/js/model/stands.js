@@ -97,7 +97,7 @@ function computeDoorPosition_(stand){
 var stands = [
 	// Up Line
 	{
-		name :"stand1"
+		name :"softeam"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 6
@@ -107,7 +107,7 @@ var stands = [
 		
 	},
 	{
-		name :"stand2"
+		name :"netapsys"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 12
@@ -117,7 +117,7 @@ var stands = [
 		
 	},
 	{
-		name :"stand3"
+		name :"beapp"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 20
@@ -127,7 +127,7 @@ var stands = [
 		
 	},
 	{
-		name :"stand4"
+		name :"sii"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 26
@@ -137,7 +137,7 @@ var stands = [
 		
 	},
 	{
-		name :"stand5"
+		name :"pivotal"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 34
@@ -147,7 +147,7 @@ var stands = [
 		
 	},
 	{
-		name :"stand6"
+		name :"jfrog"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 40
@@ -158,7 +158,7 @@ var stands = [
 	}, 
 	// Left Part
 	{
-		name :"stand7"
+		name :"iadvize"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 1
@@ -166,7 +166,7 @@ var stands = [
 			, orientation : CONST.directions.RIGHT
 		}		
 	},{
-		name :"stand8"
+		name :"capgemini"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 1
@@ -175,7 +175,7 @@ var stands = [
 		}		
 	},
 	{
-		name :"stand9"
+		name :"externatic"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 1
@@ -185,7 +185,7 @@ var stands = [
 		
 	},
 	{
-		name :"stand10"
+		name :"zenika"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 1
@@ -196,7 +196,7 @@ var stands = [
 	}
 	// Right Part
 	,{
-		name :"stand11"
+		name :"accenture"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 49
@@ -206,7 +206,7 @@ var stands = [
 		
 	}
 	,{
-		name :"stand12"
+		name :"epitech"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 49
@@ -216,7 +216,7 @@ var stands = [
 		
 	}
 	,{
-		name :"stand13"
+		name :"vsct"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 50
@@ -226,7 +226,7 @@ var stands = [
 		
 	}
 	,{
-		name :"stand14"
+		name :"sqli"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 49
@@ -236,7 +236,7 @@ var stands = [
 	}
 	// Central Part Row 1
 	,{
-		name :"stand15"
+		name :"codenvy"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 15
@@ -245,7 +245,7 @@ var stands = [
 		}		
 	}
 	,{
-		name :"stand16"
+		name :"open"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 21
@@ -254,7 +254,7 @@ var stands = [
 		}		
 	}
 	,{
-		name :"stand17"
+		name :"gfi"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 27
@@ -263,7 +263,7 @@ var stands = [
 		}		
 	}
 	,{
-		name :"stand18"
+		name :"seyos"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 35
@@ -273,7 +273,7 @@ var stands = [
 	}
 	// Central Part Row 2
 	,{
-		name :"stand19"
+		name :"proxiad"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 17
@@ -282,7 +282,7 @@ var stands = [
 		}		
 	}
 	,{
-		name :"stand20"
+		name :"streamdata"
 		, type : CONST.common.STAND_SILVER
 		, position : {
 			x : 25
@@ -291,7 +291,7 @@ var stands = [
 		}		
 	}
 	,{
-		name :"stand21"
+		name :"obs"
 		, type : CONST.common.STAND_GOLD
 		, position : {
 			x : 31
@@ -301,7 +301,7 @@ var stands = [
 	}
 	// Low Part
 	,{
-		name :"stand22"
+		name :"gdgnantes"
 		, type : CONST.common.STAND_PLATINIUM
 		, position : {
 			x : 35
@@ -309,15 +309,7 @@ var stands = [
 			, orientation : CONST.directions.UP
 		}		
 	}
-	,{
-		name :"stand23"
-		, type : CONST.common.STAND_PLATINIUM
-		, position : {
-			x : 45
-			, y : 36
-			, orientation : CONST.directions.UP
-		}		
-	}
+	
 
 	
 ];

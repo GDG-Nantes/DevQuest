@@ -61,7 +61,7 @@ function submitAnswer_(){
  		}
  	}
 	
-	Helper.http("/api/v1/anwser")
+	Helper.http("/api/v1/answer")
 		.post({
 			'email' : email
 			,'resp' : _chooseAnswer
@@ -187,7 +187,7 @@ function paintConfirmation_(){
 	if (!input){
 		input = document.createElement('input');
 		input.id = 'code-confirmation';
-		input.type = 'text';
+		input.type = 'number';
 		input.placeholder = 'code du stand';
 		input.style.position = 'absolute';
 		input.style.top = (CONST.ui.UNIT * 8)+'px';  
@@ -256,40 +256,17 @@ function insideQuestion(){
 			break;
 	}
 
-	// On convertit les informations en instructions de dessin
-	/*var regExp = /(\d\d).(\d)/;
-	arrayInside.forEach(function(rowArray, rowIndex){
-		rowArray.forEach(function(colArray, colIndex){			
-			for (var doublon = 1; doublon < colArray.length; doublon++){
-				var pixelToPaint = colArray[doublon];
-				var rowOri = regExp.exec(pixelToPaint)[1]|0;
-				var colOri = regExp.exec(pixelToPaint)[2]|0;
-				
-				arrayInstructions.push({
-			      key : colArray[0] // Sprite
-			      , wOriValue : CONST.ui.UNIT // wOriValue
-			      , hOriValue : CONST.ui.UNIT // hOriValue
-			      , rowOri :  rowOri // rowOri
-			      , colOri : colOri // colOri
-			      , rowDest :  rowIndex|0 // rowDest
-			      , colDest :  colIndex|0 // colDest
-			    });				
-			}
-		});
-	});
-	*/
-
 	// On ajoute la question
 	var question = Questions.questions().filter(function(questionTmp){
 		return questionTmp.id === Model.gameModel.standId;
 	})[0];
 	 arrayInstructions.push({drawText : true
       , text : question.title
-      , fontSize : '15px'
+      , fontSize : '16px'
       , x :  CONST.ui.UNIT * 2.5 // X
       , y : CONST.ui.UNIT * 1 // Y
-      , w : CONST.ui.UNIT * 10 // Max Width
-      , lineHeight : 30 // Line Height
+      , w : (Model.ui.screenSize.width * CONST.ui.UNIT) - (CONST.ui.NPC_HEAD_W * 0.75) - (CONST.ui.UNIT * 0.5) // Max Width
+      , lineHeight : 20 // Line Height
   	});
 
 
@@ -323,7 +300,7 @@ function insideQuestion(){
     // Ajout des boutons
     var widthBtn = Model.ui.screenSize.width; //Math.floor(Model.ui.screenSize.width / 2) - 1;
     var heightBtn = 3;
-    var fontSize = '12px';
+    var fontSize = '15px';
     var positionBtnRepA = {
 		  x : 0
 		, y : rowIndex + heightStand - 1
@@ -341,7 +318,7 @@ function insideQuestion(){
 	});
 	var positionBtnRepB = {
 		  x : positionBtnRepA.x// + widthBtn
-		, y : positionBtnRepA.y + heightBtn - 1.5
+		, y : positionBtnRepA.y + heightBtn - 1.0
 		, w : widthBtn
 		, h : heightBtn
 	};
@@ -356,7 +333,7 @@ function insideQuestion(){
 	});
 	var positionBtnRepC = {
 		  x : positionBtnRepA.x
-		, y : positionBtnRepB.y + heightBtn - 1.5
+		, y : positionBtnRepB.y + heightBtn - 1.0
 		, w : widthBtn
 		, h : heightBtn
 	};
@@ -371,7 +348,7 @@ function insideQuestion(){
 	});
 	var positionBtnRepD = {
 		  x : positionBtnRepB.x
-		, y : positionBtnRepC.y + heightBtn - 1.5
+		, y : positionBtnRepC.y + heightBtn - 1.0
 		, w : widthBtn
 		, h : heightBtn
 	};
