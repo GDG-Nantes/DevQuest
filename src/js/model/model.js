@@ -36,7 +36,7 @@ var ui = {
 }; 
 
 var gameModel = {		
-	version : '8',
+	version : '9',
 	userHash : null,
 	user : null,
 	typeSocial : null,	

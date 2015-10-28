@@ -23,8 +23,10 @@ var _addInteractions = false
         'warrior_m']
   , _page = 0
   , _storyArray = [
-    'Vous incarnez un jeune developpeur ....'
-    , 'blablabla ....'];
+    'Vous incarnez DevLink, un développeur à la recherche de la balise perdue ! La légende raconte que cette balise permet de contrôler son destin et de devenir un maître Devi. Les Devi sont des développeurs dôtés de supers pouvoirs et sont capable de venir à bout de tous les problèmes d\'algorithmie possible'
+    , 'Pour venir à bout de votre quête, vous allez devoir passer des épreuves en répondant correctement à des questions posées par les "anciens".'
+    , 'A chaque question, il vous sera demandé un code de confirmation qui ne peut être obtenu q\'en discutant avec le peuple de la tribu de l\'ancien que vous visitez'
+    , 'Bonne chance jeune DevLink, que la tabulation soit avec toi !'];
 
 
 setInterval(function intervalCol(){
