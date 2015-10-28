@@ -2,7 +2,7 @@
 var Characters = require('./charaters-cst.js');
 
 module.exports = {
-	DEBUG : true,
+	DEBUG : false,
 	// Ui Const
 	ui : {		
 		UNIT : 32,
@@ -98,6 +98,7 @@ module.exports = {
 		BTN_YES : 'btn-yes',
 		BTN_OK : 'btn-ok',
 		BTN_NO : 'btn-no',
-		BTN_SEND : 'btn-send'
+		BTN_SEND : 'btn-send',
+		BTN_CANCEL : 'btn-cancel'
 	}
 };

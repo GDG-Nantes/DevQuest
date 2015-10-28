@@ -32,7 +32,6 @@ function registerInteractions_(){
 			, CONST.uiElements.BTN_REP_B
 			, CONST.uiElements.BTN_REP_C
 			, CONST.uiElements.BTN_REP_D
-			, CONST.uiElements.BTN_SEND
 		]
 		, callback : checkInteractions_
 	});
@@ -43,6 +42,8 @@ function registerInteractions_(){
 			, CONST.uiElements.BTN_REP_B
 			, CONST.uiElements.BTN_REP_C
 			, CONST.uiElements.BTN_REP_D
+			, CONST.uiElements.BTN_SEND
+			, CONST.uiElements.BTN_CANCEL
 		]
 		, callback : checkInteractions_
 	});
@@ -93,6 +94,30 @@ function checkInteractions_(event){
 		    case CONST.uiElements.BTN_REP_D :   
 		    	_drawFunctions.drawD = InterfaceUtil.drawBtnPressed;
 		    	break;
+		}
+	}else if (event.type && 
+		event.type  === CONST.eventType.UP){		
+		switch(event.key){
+		    case CONST.uiElements.BTN_REP_A :   
+		    	_drawFunctions.drawA = InterfaceUtil.drawBtn;
+		    	_chooseAnswer = 'A';
+				_showConfirmation = true;
+		    	break;
+		    case CONST.uiElements.BTN_REP_B :   
+		    	_drawFunctions.drawB = InterfaceUtil.drawBtn;
+		    	_chooseAnswer = 'B';
+				_showConfirmation = true;
+		    	break;
+		    case CONST.uiElements.BTN_REP_C :   
+		    	_drawFunctions.drawC = InterfaceUtil.drawBtn;
+		    	_chooseAnswer = 'C';
+				_showConfirmation = true;
+		    	break;
+		    case CONST.uiElements.BTN_REP_D :   
+		    	_drawFunctions.drawD = InterfaceUtil.drawBtn;		    	
+		    	_chooseAnswer = 'D';
+				_showConfirmation = true;
+		    	break;
 		    case CONST.uiElements.BTN_SEND :   
 		    	// On incrémente le compteur de temps
 		    	Model.gameModel.time += Date.now() - Model.gameModel.lastTime;
@@ -106,28 +131,12 @@ function checkInteractions_(event){
 		    	Model.ui.changeScreen = CONST.screens.GAME;
 		    	submitAnswer_();
 		    	break;
-		}
-	}else if (event.type && 
-		event.type  === CONST.eventType.UP){		
-		switch(event.key){
-		    case CONST.uiElements.BTN_REP_A :   
-		    	_drawFunctions.drawA = InterfaceUtil.drawBtn;
-		    	_chooseAnswer = 'A';
-		    	break;
-		    case CONST.uiElements.BTN_REP_B :   
-		    	_drawFunctions.drawB = InterfaceUtil.drawBtn;
-		    	_chooseAnswer = 'B';
-		    	break;
-		    case CONST.uiElements.BTN_REP_C :   
-		    	_drawFunctions.drawC = InterfaceUtil.drawBtn;
-		    	_chooseAnswer = 'C';
-		    	break;
-		    case CONST.uiElements.BTN_REP_D :   
-		    	_drawFunctions.drawD = InterfaceUtil.drawBtn;		    	
-		    	_chooseAnswer = 'D';
+		    case CONST.uiElements.BTN_CANCEL :   
+		    	var input = document.getElementById('code-confirmation');
+		    	document.body.removeChild(input);
+		    	_showConfirmation = false;
 		    	break;
 		}
-		_showConfirmation = true;
 	}
 	return _drawFunctions;
 }
@@ -137,7 +146,7 @@ function paintConfirmation_(){
 	var position = {
 	    x: 1
 	  , y : (Model.ui.screenSize.height - 4) / 4
-	  , w: Model.ui.screenSize.width - 2.5
+	  , w: Model.ui.screenSize.width - 1.5
 	  , h: 9
 	}
 	var arrayInstructions = [{
@@ -165,7 +174,7 @@ function paintConfirmation_(){
 
 	// Boutons
 	var positionBtnSend = {
-		  x : (Model.ui.screenSize.width - 6) / 2
+		  x : ((Model.ui.screenSize.width - 6) / 2) + 2
 		, y : position.y + 5.5
 		, w : 6
 		, h : 3
@@ -178,6 +187,25 @@ function paintConfirmation_(){
 		, x :  CONST.ui.UNIT * (positionBtnSend.x + 1) // X
 		, y : CONST.ui.UNIT * (positionBtnSend.y + 2) - CONST.ui.UNIT / 4 // Y
 		, w : CONST.ui.UNIT * (positionBtnSend.w - 2) // Max Width
+		, lineHeight : 30 // Line Height
+	});
+
+	var positionBtnCancel = {
+		  x : 1.5
+		, y : position.y + 5.5
+		, w : 3
+		, h : 3
+	};
+	var instructionsBtnCancel = InterfaceUtil.drawBtn(positionBtnCancel);
+	Array.prototype.push.apply(arrayInstructions, instructionsBtnCancel);
+	arrayInstructions.push({drawText : true
+		, text : "\ue804"
+		, color : "#8f563b"
+		, font : 'Fontello'
+		, fontSize : '30px'
+		, x :  CONST.ui.UNIT * (positionBtnCancel.x + 1) // X
+		, y : CONST.ui.UNIT * (positionBtnCancel.y + 2) - CONST.ui.UNIT / 4 // Y
+		, w : CONST.ui.UNIT * (positionBtnCancel.w - 2) // Max Width
 		, lineHeight : 30 // Line Height
 	});
 	
@@ -206,6 +234,14 @@ function paintConfirmation_(){
 		  , w : CONST.ui.UNIT * positionBtnSend.w
 		  , h : CONST.ui.UNIT * positionBtnSend.h
 		  , key : CONST.uiElements.BTN_SEND
+		});			
+
+		_interactionConfirmation.push({
+		    x : CONST.ui.UNIT * positionBtnCancel.x
+		  , y : CONST.ui.UNIT * positionBtnCancel.y
+		  , w : CONST.ui.UNIT * positionBtnCancel.w
+		  , h : CONST.ui.UNIT * positionBtnCancel.h
+		  , key : CONST.uiElements.BTN_CANCEL
 		});			
 		
 	}
