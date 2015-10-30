@@ -294,6 +294,41 @@ function paintConfirmation_(){
 	return arrayInstructions;
 }
 
+function paintFinalMessage_(){
+	// Zone autour 
+	var position = {
+	    x: 0
+	  , y : 2
+	  , w: Model.ui.screenSize.width
+	  , h: 12
+	}
+	var arrayInstructions = [{
+	     custom : true
+	      , key : "alphaBackground" // Sprite
+	      , wOriValue : Model.ui.screenSize.width * CONST.ui.UNIT // wOriValue
+	      , hOriValue : Model.ui.screenSize.height * CONST.ui.UNIT // hOriValue
+	      , rowOri :  0  // rowOri
+	      , colOri : 0 // colOri
+	      , yDest :  0 // rowDest
+	      , xDest :  0 // colDest
+	      , hDest :  Model.ui.screenSize.height * CONST.ui.UNIT // hDest
+	      , wDest :  Model.ui.screenSize.width * CONST.ui.UNIT // wDest
+	  }];
+	Array.prototype.push.apply(arrayInstructions, InterfaceUtil.drawZoneTexte(position));
+	// Titre
+	arrayInstructions.push({drawText : true
+	  , text : "Félicitations ! Vous avez répondu à toutes les questions. Vous avez donc trouvé la balise ancestralle : le <DRALL/>. \nRendez vous à l'after pour savoir si vous avez gagné un lot"
+	  , fontSize : '20px'
+	  , x :  CONST.ui.UNIT * (position.x + 1) // X
+	  , y : CONST.ui.UNIT * (position.y + 2) // Y
+	  , w : CONST.ui.UNIT * (position.w - 2) // Max Width
+	  , lineHeight : 30 // Line Height
+	});
+
+	
+	return arrayInstructions;
+}
+
 function paintWrongOrientation_(){
 	// Zone autour 
 	var position = {
@@ -682,7 +717,9 @@ function gameScreen(){
 	}
 	Array.prototype.push.apply(arrayInstructions, paintUsers_());
 	arrayInstructions.push(paintUser_());
-	if(_showParam){
+	if(Model.gameModel.anwserQuestions.length === StandsModel.length){
+		Array.prototype.push.apply(arrayInstructions, paintFinalMessage_());
+	}else if(_showParam){
 		Array.prototype.push.apply(arrayInstructions, paintParameters_());
 	}else if (_showConfirmStand){
 		Array.prototype.push.apply(arrayInstructions, paintConfirmation_());
@@ -690,7 +727,6 @@ function gameScreen(){
 		Array.prototype.push.apply(arrayInstructions, paintWrongOrientation_());
 	}else if (Model.gameModel.parameters.useParams){
 		Array.prototype.push.apply(arrayInstructions, paintBtnParameter_());
-
 	}
 
 	// Calcul des interactions

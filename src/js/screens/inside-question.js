@@ -61,6 +61,10 @@ function submitAnswer_(){
  			email = ""+Model.gameModel.user.login;
  		}
  	}
+
+ 	if (Model.gameModel.anwserQuestions.indexOf(Model.gameModel.standId) === -1){
+ 		Model.gameModel.anwserQuestions.push(Model.gameModel.standId);
+ 	}
 	
 	Helper.http("/api/v1/answer")
 		.post({
@@ -128,8 +132,8 @@ function checkInteractions_(event){
 	    			// TODO faire quelque chose avec le code de confirmation
 		    	}
 	    		document.body.removeChild(input);
-		    	Model.ui.changeScreen = CONST.screens.GAME;
 		    	submitAnswer_();
+		    	Model.ui.changeScreen = CONST.screens.GAME;
 		    	break;
 		    case CONST.uiElements.BTN_CANCEL :   
 		    	var input = document.getElementById('code-confirmation');

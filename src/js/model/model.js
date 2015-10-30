@@ -36,7 +36,7 @@ var ui = {
 }; 
 
 var gameModel = {		
-	version : '9',
+	version : '10',
 	userHash : null,
 	user : null,
 	typeSocial : null,	
@@ -46,6 +46,7 @@ var gameModel = {
 	standId : '',
 	time : 0,
 	lastTime : 0,
+	anwserQuestions : [],
 	positionScreen: {
 		x:0,
 		y:0

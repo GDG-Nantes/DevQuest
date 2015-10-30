@@ -63,6 +63,7 @@ function processInteraction_(event){
 		    case CONST.screens.INSIDE_SILVER :    
 		    case CONST.screens.INSIDE_GOLD :    
 		    case CONST.screens.INSIDE_PLATINIUM :    
+		    	Model.services.fbActivRef.child(Model.gameModel.userHash).remove();
 		    	Model.gameModel.standId = event.id;
 		    	Model.ui.changeScreen = event.key;        
 		    default:

@@ -16,7 +16,7 @@ function validateEmail_(email){
   var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   return re.test(email);
 }
-
+ 
 function checkInteractions_(event) {
   if (event.type && 
     event.type  === CONST.eventType.UP){    
