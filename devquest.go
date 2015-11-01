@@ -15,11 +15,11 @@ import (
 )
 
 type Resp struct {
-    IdUser string
-    Pseudo string
-    Network string
-    Score int8
-    Time int64
+    IdUser string `json:id`
+    Pseudo string `json:pseudo`
+    Network string `json:network`
+    Score int8 `json:score`
+    Time int64 `json:time`
 }
 
 type jsonobject struct {
@@ -69,6 +69,7 @@ type Questions struct{
 func init() {
     http.HandleFunc("/api/v1/questions", questions)
     http.HandleFunc("/api/v1/answer", answer)
+    http.HandleFunc("/api/v1/scores", scores)
 
     if v := os.Getenv("SPREADSHEET_VAR"); v != "" {
       //...
@@ -298,4 +299,28 @@ func answer(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
+}
+
+
+func scores(w http.ResponseWriter, r *http.Request) {
+    //w.Header().Set("SUPER-HACK", "@GDGNANTES")
+    //w.WriteHeader(http.StatusFound) 
+    c := appengine.NewContext(r)
+
+    // Mise en cache direct du spreadsheet
+    var strJson []byte 
+    log.Print("scores")
+    query := datastore.NewQuery("Score").
+        Order("Score")
+    var scores []Resp
+    _, err := query.GetAll(c, &scores)
+     if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    tmpStrJson, _ := json.Marshal(scores);
+    strJson = tmpStrJson        
+       
+    fmt.Fprintf(w, "%s\n", strJson)
+    
 }

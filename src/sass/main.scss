@@ -27,7 +27,7 @@ canvas{
 }
 
 
-#load, #not-compatible{
+#load, #not-compatible, #scores-parent{
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -86,6 +86,57 @@ canvas{
   left: 50%;
   margin: -5px;
 }
+
+#scores-parent{  
+  .text{
+    top: 40px;
+    font-size: 40px;
+    margin-top: 0;  
+  }
+  #scores{
+    position: absolute;
+    overflow : scroll;
+    top: 80px;
+    left: 50%;
+    width : 800px;
+    height : calc(100% - 20px - 4px - 80px - 20px);
+    margin-left: -400px;
+    padding:10px;
+  }
+
+  .rowScores, .parentScore{
+    position : relative;
+    height: 20px;
+  }
+
+  .rank, .pseudo, .score{
+    border : 1px solid black;
+    position : absolute;
+    height: 19px;
+  }
+  .rank{
+    top:0;
+    left:0;
+    width : 100px;
+    text-align : left;
+    padding-left:20px;
+  }
+  .pseudo{
+    top:0;
+    left:121px;
+    width : calc(100% - 120px - 4px - 120px);
+    text-align : center;
+  }
+  .score{
+    top:0;
+    right:0;
+    width:100px;
+    text-align : right;
+    padding-right:20px;
+  }
+  
+}
+
 
 @keyframes spin {
   0% {

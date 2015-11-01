@@ -13,6 +13,10 @@ handlers:
   static_files: index.html
   upload: index.html
 
+- url: /
+  static_files: scores.html
+  upload: scores.html
+
 - url: /(.*\.(css|gif|png|jpg|ico|js|html|ttf|json|svg|woff|eot|xcf))
   static_files: \1
   upload: (.*\.(css|gif|png|jpg|ico|js|html|ttf|json|svg|woff|eot|xcf))
