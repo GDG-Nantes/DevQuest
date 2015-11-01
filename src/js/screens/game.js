@@ -75,6 +75,7 @@ function processInteractions_(event){
 		    	_showConfirmStand = true;
 		    	break;
 		    case CONST.uiElements.BTN_YES :   
+		    	Model.services.fbActivRef.child(Model.gameModel.userHash).remove();
 		    	Model.gameModel.standId = _eventTmp.id;
 		    	Model.ui.changeScreen = _eventTmp.key;        
 		    	_showConfirmStand = false;
