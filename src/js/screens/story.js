@@ -23,7 +23,8 @@ var _addInteractions = false
         'warrior_m']
   , _page = 0
   , _storyArray = [
-    'Vous incarnez DevLink, un développeur à la recherche de la balise perdue ! La légende raconte que cette balise permet de contrôler son destin et de devenir un maître Devi. Les Devi sont des développeurs dôtés de supers pouvoirs et sont capable de venir à bout de tous les problèmes d\'algorithmie possible'
+    'Vous incarnez DevLink, un développeur à la recherche de la balise perdue !'
+    ,'La légende raconte que cette balise permet de contrôler son destin et de devenir un maître "Devi". Les "Devi" sont des développeurs dôtés de supers pouvoirs et sont capable de venir à bout de tous les problèmes d\'algorithmie possible'
     , 'Pour réussir votre quête, vous allez devoir passer des épreuves en répondant correctement à des questions posées par les "anciens".'
     , 'A chaque question, il vous sera demandé un code de confirmation qui ne peut être obtenu q\'en discutant avec le peuple de la tribu de l\'ancien que vous visitez'
     , 'Bonne chance jeune DevLink, que la tabulation soit avec toi !'];
@@ -199,9 +200,9 @@ function storyScreen(){
       , text : _storyArray[_page]
       , fontSize : '20px'
       , color : "black"
-      , x : CONST.ui.UNIT * 1 // X
-      , y : CONST.ui.UNIT *2// Y
-      , w : widthScreen - 20 // Max Width
+      , x : CONST.ui.UNIT * 0.5 // X
+      , y : CONST.ui.UNIT * 2// Y
+      , w : widthScreen - 40 // Max Width
       , lineHeight : 30 // Line Height
   });
 

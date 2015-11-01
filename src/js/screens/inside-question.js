@@ -53,13 +53,25 @@ function registerInteractions_(){
 
 
 function submitAnswer_(){
-	var email = Model.gameModel.user.email;
+	var id = null
+		, pseudo = null
+		, network = null;
 	if (Model.gameModel.typeSocial === CONST.uiElements.BTN_TWITTER){
-		email = "@"+Model.gameModel.user.screen_name;
+		id = ""+Model.gameModel.user.id;
+		pseudo = Model.gameModel.user.screen_name;
+		network = 'twitter';
  	}else if (Model.gameModel.typeSocial === CONST.uiElements.BTN_GITHUB){
- 		if (!Model.gameModel.user.email){
- 			email = ""+Model.gameModel.user.login;
- 		}
+ 		id = ""+Model.gameModel.user.id;
+ 		pseudo = Model.gameModel.user.login;
+ 		network = 'github'; 		
+ 	}else if (Model.gameModel.typeSocial === CONST.uiElements.BTN_G_PLUS){
+ 		id = ""+Model.gameModel.user.id;
+ 		pseudo = Model.gameModel.user.displayName;
+ 		network = 'gplus';
+ 	}else{
+ 		id = encodeURIComponent(Model.gameModel.user.email);
+		pseudo = Model.gameModel.user.displayName;
+		network = 'custo';
  	}
 
  	if (Model.gameModel.anwserQuestions.indexOf(Model.gameModel.standId) === -1){
@@ -68,7 +80,9 @@ function submitAnswer_(){
 	
 	Helper.http("/api/v1/answer")
 		.post({
-			'email' : email
+			'id' : id
+			,'pseudo' : encodeURIComponent(pseudo)
+			,'network' : network
 			,'resp' : _chooseAnswer
 			,'code' : _code === '' ? '-1' : _code
 			,'indexQuestion' : Model.gameModel.standId

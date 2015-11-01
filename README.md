@@ -57,3 +57,10 @@ set_env.bat
 ```bat
 set SPREADSHEET_VAR='xxxxxx'
 ```
+
+
+## Reverse Socials Links 
+
+ * Pour twitter : http://tweeterid.com/
+ * Pour Github : https://api.github.com/user/{idUser}
+ * Pour Gplus : https://plus.google.com/u/0/{idUser}

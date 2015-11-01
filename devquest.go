@@ -15,8 +15,9 @@ import (
 )
 
 type Resp struct {
-    Email string
+    IdUser string
     Pseudo string
+    Network string
     Score int8
     Time int64
 }
@@ -214,17 +215,21 @@ func answer(w http.ResponseWriter, r *http.Request) {
     //fmt.Fprint(w, "Hello World\n")
     //fmt.Fprint(w, jsontype.SPREADSHEET_KEY);
     //fmt.Fprint(w, "\n")
-    email := r.FormValue("email")
+    id := r.FormValue("id")
+    pseudo := r.FormValue("pseudo")
+    network := r.FormValue("network")
     indexQuestion := r.FormValue("indexQuestion")
     resp := r.FormValue("resp")
     code := r.FormValue("code")
     time := r.FormValue("time")
-    if len(email) == 0 || len(indexQuestion) == 0 || len(resp) == 0 || len(code) == 0 || len(time) == 0{
+    if len(id) == 0 || len(indexQuestion) == 0 || len(resp) == 0 || len(code) == 0 || len(time) == 0 || len(pseudo) == 0 || len(network) == 0{
         fmt.Fprint(w, "Parametre manquant\n")    
         // TODO jetter une erreur
         return
     }
-    fmt.Fprint(w, email+"\n")
+    fmt.Fprint(w, id+"\n")
+    fmt.Fprint(w, pseudo+"\n")
+    fmt.Fprint(w, network+"\n")
     fmt.Fprint(w, time+"\n")
     fmt.Fprint(w, code+"\n")
     fmt.Fprint(w, resp+"\n")
@@ -242,7 +247,7 @@ func answer(w http.ResponseWriter, r *http.Request) {
     _, errAnswers := answerResults.Next(&answer)
     
     answerData := Answer{
-        User: email,
+        User: id,
         Question: indexQuestion,
     }
      _, errPutData := datastore.Put(c, keyAnswer, &answerData)
@@ -270,7 +275,7 @@ func answer(w http.ResponseWriter, r *http.Request) {
     }
 
     // Préparation du Data Store
-    key := datastore.NewKey(c,"Score", email, 0, nil)
+    key := datastore.NewKey(c,"Score", id, 0, nil)
 
 
 
@@ -278,7 +283,9 @@ func answer(w http.ResponseWriter, r *http.Request) {
     if err := datastore.Get(c, key, &respDataStore); err != nil{
         // Data pas déjà présente => on la créé
         respDataStore = Resp{
-            Email: email,
+            IdUser: id,
+            Pseudo : pseudo,
+            Network : network,
             Time: 0,
             Score: 0,
         }
