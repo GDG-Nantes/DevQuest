@@ -23,6 +23,11 @@ var _trackAcceleration = true
 	, _fireSoundStand = null
 	, _addInteractions = false;
 
+function isFullScreen_(){
+	return (document.fullscreenElement ||    // alternative standard method
+      document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement );
+}
+
 function toggleFullScreen_() {
   if (!document.fullscreenElement &&    // alternative standard method
       !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
@@ -158,12 +163,12 @@ function checkMouseIntersection_(event){
 
 		// Cas particulier du bouton démarer car on passe en fullScreen
 		/*
-		TODO à décomenter
-		if (!_fullscreen){
-			toggleFullScreen_();
-				_fullscreen = true
+		TODO à décomenter*/
+		if (!isFullScreen_()){
+			//toggleFullScreen_();
+				//_fullscreen = true
 		}
-		*/
+		
 	}
 }
 

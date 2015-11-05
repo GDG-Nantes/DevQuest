@@ -71,45 +71,8 @@ function pageLoad(){
 		return;
 	}
 
-	// On initialise le canvas
-	Model.ui.canvas = document.getElementById('game');
-	Model.ui.canvas.width  = window.innerWidth;
-	Model.ui.canvas.height = window.innerHeight;	
-	Model.ui.context = Model.ui.canvas.getContext('2d');
-	Model.ui.ratio = 1;//window.devicePixelRatio || 1;
-	Model.ui.context.scale(Model.ui.ratio, Model.ui.ratio);
-	var widthRatio = Model.ui.canvas.width / Model.ui.ratio / CONST.ui.UNIT;
-	var heightRatio = Model.ui.canvas.height / Model.ui.ratio / CONST.ui.UNIT;
-	Model.ui.ratioScreen = 1;//document.body.scrollHeight / (heightRatio * CONST.ui.UNIT);
-	Model.ui.ratio = Model.ui.ratioScreen;
-	Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
-	Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
-	Model.ui.middlePoint.x = Math.floor(Model.ui.screenSize.width/2);
-	Model.ui.middlePoint.y = Math.floor(Model.ui.screenSize.height/2);
-
-	if (Model.ui.screenSize.height < 18){
-		document.getElementById('not-compatible').style.display = '';
-		document.getElementById('load').style.display = 'none';
-		// On acceptes pas les trop petites résolutions
-		return;
-	}
-
-	// On initialise firebase
-	Model.services.fbActivRef = new Firebase("https://boiling-inferno-138.firebaseio.com/activ");
-
-	if (CONST.DEBUG){
-		console.debug("============SCREEN SIZES==========");
-		console.debug("==================================");
-		console.debug("Ratio : %s",Model.ui.ratio);
-		console.debug("RatioScreen : %s",Model.ui.ratioScreen);
-		console.debug("Screen Size in px : {%s/%s} ratio : %s",screen.width, screen.height, screen.width / screen.height);
-		console.debug("Body Size in px : {%s/%s} ratio : %s",document.body.scrollWidth, document.body.scrollHeight, document.body.scrollWidth / document.body.scrollHeight);
-		console.debug("Canvas Size : {%s/%s} ratio : %s",Model.ui.canvas.width, Model.ui.canvas.height, Model.ui.canvas.width / Model.ui.canvas.height);
-		console.debug("Screen Size according to unit: {%s/%s} ratio : %s",widthRatio, heightRatio, widthRatio / heightRatio);
-		console.debug("Screen Size in pix: {%s/%s}",widthRatio * CONST.ui.UNIT, heightRatio * CONST.ui.UNIT);
-		console.debug("Screen Size in Unit : {%s/%s}",Model.ui.screenSize.width, Model.ui.screenSize.height);
-
-	}
+	
+	
 
 	// On précharge toutes les ressources nécessaires
 	Resources.loadSprites([
@@ -145,6 +108,67 @@ function pageLoad(){
 				{title: 'socials', url: 'assets/img/socials.png'}
 			])
 	.then(function(value) {
+		return new Promise(function promiseScreenSize(resolve, reject){
+			var offset = 56;
+			if (((/iphone/gi).test(navigator.userAgent) || (/ipod/gi).test(navigator.userAgent)) &&
+			    (!("standalone" in window.navigator) && !window.navigator.standalone)) {
+			    offset = 60;
+			}else if ((/android/gi).test(navigator.userAgent)) {
+			    offset = 56;				    
+			}
+			document.body.style['height'] = (window.innerHeight + offset) + 'px';
+			Model.ui.canvas = document.getElementById('game');
+			Model.ui.canvas.width  = window.innerWidth;
+			Model.ui.canvas.height = (window.innerHeight + offset);
+			resolve();
+
+			
+
+		});
+	})
+	.then(function(value) {
+		return new Promise(function promiseComputeScreen(resolve, reject){
+			// On initialise le canvas
+			Model.ui.context = Model.ui.canvas.getContext('2d');
+			Model.ui.ratio = 1;//window.devicePixelRatio || 1;
+			Model.ui.context.scale(Model.ui.ratio, Model.ui.ratio);
+			var widthRatio = Model.ui.canvas.width / Model.ui.ratio / CONST.ui.UNIT;
+			var heightRatio = Model.ui.canvas.height / Model.ui.ratio / CONST.ui.UNIT;
+			Model.ui.ratioScreen = 1;//document.body.scrollHeight / (heightRatio * CONST.ui.UNIT);
+			Model.ui.ratio = Model.ui.ratioScreen;
+			Model.ui.screenSize.width = Math.floor(widthRatio) != widthRatio ?  Math.floor(widthRatio) + 1 : widthRatio;
+			Model.ui.screenSize.height = Math.floor(heightRatio) != heightRatio ?  Math.floor(heightRatio) + 1 : heightRatio;
+			Model.ui.middlePoint.x = Math.floor(Model.ui.screenSize.width/2);
+			Model.ui.middlePoint.y = Math.floor(Model.ui.screenSize.height/2);
+
+			if (Model.ui.screenSize.height < 18){
+				document.getElementById('not-compatible').style.display = '';
+				document.getElementById('load').style.display = 'none';
+				// On acceptes pas les trop petites résolutions
+				return;
+			}
+
+			// On initialise firebase
+			Model.services.fbActivRef = new Firebase("https://boiling-inferno-138.firebaseio.com/activ");
+
+			if (CONST.DEBUG){
+				console.debug("============SCREEN SIZES==========");
+				console.debug("==================================");
+				console.debug("Ratio : %s",Model.ui.ratio);
+				console.debug("RatioScreen : %s",Model.ui.ratioScreen);
+				console.debug("Screen Size in px : {%s/%s} ratio : %s",screen.width, screen.height, screen.width / screen.height);
+				console.debug("Body Size in px : {%s/%s} ratio : %s",document.body.scrollWidth, document.body.scrollHeight, document.body.scrollWidth / document.body.scrollHeight);
+				console.debug("Canvas Size : {%s/%s} ratio : %s",Model.ui.canvas.width, Model.ui.canvas.height, Model.ui.canvas.width / Model.ui.canvas.height);
+				console.debug("Screen Size according to unit: {%s/%s} ratio : %s",widthRatio, heightRatio, widthRatio / heightRatio);
+				console.debug("Screen Size in pix: {%s/%s}",widthRatio * CONST.ui.UNIT, heightRatio * CONST.ui.UNIT);
+				console.debug("Screen Size in Unit : {%s/%s}",Model.ui.screenSize.width, Model.ui.screenSize.height);
+
+			}
+
+			resolve();
+		});
+	})
+	.then(function(value) {
 		return UiInterface.prepareUiElements();
 	})
 	.then(function(){
@@ -157,9 +181,13 @@ function pageLoad(){
 	.then(function(){
 		document.getElementById('game').style.display = '';
 		document.getElementById('game').style.width = window.innerWidth+"px";
-		document.getElementById('game').style.height = window.innerHeight+"px";
+		document.getElementById('game').style.height = document.body.style['height'];
 		document.getElementById('load').style.display = 'none';
 		Engine.start();
+
+		setTimeout( function(){ 
+			window.scrollTo(0, 1); 
+		}, 10 );
 
 	})
 	.catch(function(err){
