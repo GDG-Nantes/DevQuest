@@ -12,10 +12,12 @@ handlers:
 - url: /
   static_files: index.html
   upload: index.html
+  secure: always
 
-- url: /
+- url: /scores
   static_files: scores.html
   upload: scores.html
+  secure: always
 
 - url: /(.*\.(css|gif|png|jpg|ico|js|html|ttf|json|svg|woff|eot|xcf))
   static_files: \1
