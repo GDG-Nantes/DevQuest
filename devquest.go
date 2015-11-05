@@ -18,7 +18,7 @@ type Resp struct {
     IdUser string `json:id`
     Pseudo string `json:pseudo`
     Network string `json:network`
-    Score int8 `json:score`
+    Scores int `json:score`
     Time int64 `json:time`
 }
 
@@ -238,7 +238,7 @@ func answer(w http.ResponseWriter, r *http.Request) {
 
 
     c := appengine.NewContext(r)    
-    var scoreQuestion int8
+    var scoreQuestion int
     scoreQuestion = 0
     // On va vérifier qu'on a pas déjà répondu à la question
     keyAnswer := datastore.NewIncompleteKey(c, "Answer", nil)
@@ -288,12 +288,12 @@ func answer(w http.ResponseWriter, r *http.Request) {
             Pseudo : pseudo,
             Network : network,
             Time: 0,
-            Score: 0,
+            Scores: 0,
         }
     }
     timeTmp, _ :=strconv.ParseInt(time, 10, 64)
     respDataStore.Time += timeTmp
-    respDataStore.Score +=scoreQuestion
+    respDataStore.Scores +=scoreQuestion
     _, err := datastore.Put(c, key, &respDataStore)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
